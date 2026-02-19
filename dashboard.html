@@ -108,7 +108,7 @@
         }
 
         async function acionarIA(nome, preco) {
-            document.getElementById('resTitulo').innerText = "IA GERANDO... 🔥";
+            document.getElementById('resTitulo').innerText = " GERANDO... 🔥";
             try {
                 const response = await fetch('/api/gerarTexto', {
                     method: 'POST',
@@ -129,6 +129,72 @@
             await _supabase.auth.signOut();
             window.location.href = 'index.html';
         }
+
+	async function travaAntiCompartilhamento() {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) return;
+
+    const userId = session.user.id;
+    // Criamos um ID único para este navegador/dispositivo
+    const browserId = navigator.userAgent + screen.width + screen.height;
+    
+    // Verificamos no banco de dados se esse usuário já está logado em outro lugar
+    const { data: perfil } = await _supabase
+        .from('profiles') // Certifique-se de ter uma tabela 'profiles'
+        .select('last_browser_id')
+        .eq('id', userId)
+        .single();
+
+    if (perfil && perfil.last_browser_id && perfil.last_browser_id !== browserId) {
+        alert("Sua conta foi acessada em outro dispositivo. Você será deslogado por segurança.");
+        await _supabase.auth.signOut();
+        window.location.href = 'index.html';
+    } else {
+        // Atualiza o ID do navegador atual no banco
+        await _supabase
+            .from('profiles')
+            .update({ last_browser_id: browserId })
+            .eq('id', userId);
+    }
+}
+
+async function travaAntiCompartilhamento() {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) return;
+
+    const userId = session.user.id;
+    const userEmail = session.user.email;
+    const browserId = navigator.userAgent + screen.width; // Identidade do PC/Celular
+
+    // 1. Tenta buscar o perfil do usuário
+    let { data: perfil, error } = await _supabase
+        .from('profiles')
+        .select('last_browser_id')
+        .eq('id', userId)
+        .single();
+
+    // 2. Se o perfil não existir (usuário novo), nós criamos agora
+    if (error && error.code === 'PGRST116') {
+        await _supabase.from('profiles').insert([
+            { id: userId, email: userEmail, last_browser_id: browserId }
+        ]);
+        return;
+    }
+
+    // 3. Se existir e o ID for diferente, bloqueia!
+    if (perfil && perfil.last_browser_id && perfil.last_browser_id !== browserId) {
+        alert("⚠️ BLOQUEIO DE SEGURANÇA: Sua conta já está sendo usada em outro dispositivo. O compartilhamento de senha é proibido.");
+        await _supabase.auth.signOut();
+        window.location.href = 'index.html';
+    } else {
+        // Atualiza para manter a sessão ativa neste navegador
+        await _supabase.from('profiles').update({ last_browser_id: browserId }).eq('id', userId);
+    }
+}
+
+// Verifica a cada 1 minuto se alguém "roubou" a sessão em outro lugar
+setInterval(travaAntiCompartilhamento, 60000);
+travaAntiCompartilhamento();
     </script>
 </body>
 </html>
