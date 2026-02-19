@@ -7,27 +7,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen">
-    <div class="max-w-md w-full bg-white p-10 rounded-[3rem] shadow-2xl border border-gray-100 text-center">
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-6">
+    <div class="max-w-md w-full bg-white p-10 rounded-[2.5rem] shadow-2xl border border-gray-100 text-center">
         <span class="text-3xl font-black text-orange-600 uppercase italic">Shopee Booster 🔥</span>
-        <form id="loginForm" class="mt-8 space-y-4">
-            <input type="email" id="email" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="E-mail de Assinante" required>
+        <p class="text-gray-400 text-[10px] font-black uppercase mt-2">Área de Assinantes 2026</p>
+        
+        <form id="loginForm" class="mt-8 space-y-4 text-left">
+            <input type="email" id="email" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="E-mail" required>
             <input type="password" id="password" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="Senha" required>
             <button class="w-full bg-orange-600 text-white font-black py-5 rounded-2xl shadow-lg uppercase tracking-widest hover:bg-orange-700">Acessar Painel</button>
         </form>
+        
         <div class="mt-8">
-            <a href="https://pay.hotmart.com/SEU_ID" class="text-orange-600 font-black text-xs uppercase tracking-widest">Ainda não é assinante?</a>
+            <a href="venda.html" class="text-orange-600 font-black text-xs uppercase tracking-widest">Ainda não é Assinante?</a>
         </div>
     </div>
+
     <script>
-        const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
+        const _supabase = supabase.createClient('SUA_URL_DO_SUPABASE', 'SUA_CHAVE_ANON');
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const { error } = await _supabase.auth.signInWithPassword({
                 email: document.getElementById('email').value,
                 password: document.getElementById('password').value
             });
-            if (error) alert("Assinatura não encontrada ou dados incorretos.");
+            if (error) alert("Acesso negado. Verifique sua assinatura.");
             else window.location.href = 'dashboard.html';
         });
     </script>
