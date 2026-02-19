@@ -67,28 +67,50 @@
         const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
 
         // --- TRAVA DE ACESSO ÚNICO ---
-        async function verificarSessao() {
-            const { data: { session } } = await _supabase.auth.getSession();
-            if (!session) return window.location.href = 'index.html';
+      // --- TRAVA DE ACESSO INTELIGENTE ---
+async function verificarSessao() {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) return;
 
-            const userId = session.user.id;
-            if (!sessionStorage.getItem('session_token')) {
-                sessionStorage.setItem('session_token', 'token_' + Math.random().toString(36).substring(7));
-            }
-            const meuToken = sessionStorage.getItem('session_token');
+    const userId = session.user.id;
+    
+    // Se não tiver um token nesta aba, cria um único para ela
+    if (!sessionStorage.getItem('session_token')) {
+        sessionStorage.setItem('session_token', 'token_' + Math.random().toString(36).substring(7));
+    }
+    const meuToken = sessionStorage.getItem('session_token');
 
-            let { data: perfil } = await _supabase.from('profiles').select('last_browser_id').eq('id', userId).single();
+    // 1. Busca o token que está no banco agora
+    let { data: perfil } = await _supabase
+        .from('profiles')
+        .select('last_browser_id, updated_at')
+        .eq('id', userId)
+        .single();
 
-            if (perfil && perfil.last_browser_id && perfil.last_browser_id !== meuToken) {
-                alert("⚠️ ACESSO BLOQUEADO: Sua conta já está em uso em outra aba ou dispositivo.");
-                await _supabase.auth.signOut();
-                window.location.href = 'index.html';
-            } else {
-                await _supabase.from('profiles').upsert({ id: userId, last_browser_id: meuToken });
-            }
-        }
-        setInterval(verificarSessao, 8000);
-        verificarSessao();
+    const agora = new Date().getTime();
+    const ultimaAtividade = perfil?.updated_at ? new Date(perfil.updated_at).getTime() : 0;
+    
+    // REGRA DE OURO: Se o token for diferente, mas a última atividade foi há mais de 20 segundos, 
+    // significa que a aba anterior foi fechada ou travou. Então nós assumimos o controle.
+    const sessaoExpirada = (agora - ultimaAtividade) > 20000; 
+
+    if (perfil && perfil.last_browser_id && perfil.last_browser_id !== meuToken && !sessaoExpirada) {
+        alert("⚠️ CONTA EM USO: Este acesso já está ativo em outra aba ou dispositivo.");
+        await _supabase.auth.signOut();
+        window.location.href = 'index.html';
+    } else {
+        // "Batida de ponto": Avisa ao banco que esta aba está ativa agora
+        await _supabase.from('profiles').upsert({ 
+            id: userId, 
+            last_browser_id: meuToken,
+            updated_at: new Date().toISOString() 
+        });
+    }
+}
+
+// Verifica a cada 10 segundos
+setInterval(verificarSessao, 10000);
+verificarSessao();
 
         // --- CÁLCULOS ---
         async function calcularTudo() {
@@ -127,7 +149,7 @@
         }
 
         async function acionarIA(nome, preco) {
-            document.getElementById('resTitulo').innerText = "IA PROCESSANDO... 🔥";
+            document.getElementById('resTitulo').innerText = " PROCESSANDO... 🔥";
             try {
                 const response = await fetch('/api/gerarTexto', {
                     method: 'POST',
