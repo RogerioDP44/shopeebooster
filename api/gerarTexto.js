@@ -9,7 +9,7 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: "gpt-4.0-mini",
+                model: "gpt-5.2",
                 messages: [{
                     role: "system",
                     content: "Você é um especialista em SEO para Shopee. Responda APENAS no formato: TITULO | DESCRIÇÃO | TAGS"
@@ -27,3 +27,4 @@ export default async function handler(req, res) {
     }
 
 }
+
