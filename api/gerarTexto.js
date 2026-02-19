@@ -14,31 +14,34 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: `Você é o maior Especialista em SEO para Shopee Brasil. 
-                        Sua missão é criar títulos que dominam a busca e geram cliques imediatos.
+                        content: `Você é um Especialista em SEO de Marketplace para Shopee Brasil.
+                        SUA RESPOSTA DEVE SER NO FORMATO: TITULO | DESCRIÇÃO | TAGS
 
-                        REGRAS PARA O TÍTULO (MÁXIMO 80 CARACTERES):
-                        - Use a técnica: [Palavra-Chave Principal] + [Atributo/Modelo] + [Benefício/Diferencial].
-                        - Use termos que brasileiros buscam: "Original", "Pronta Entrega", "Envio Imediato", "Promoção", "Oferta", "Premium".
-                        - Primeira Letra De Cada Palavra Sempre Em Maiúscula.
-                        - Exemplo ruim: "Guaraná Antártica 350ml". 
-                        - Exemplo Elite: "Guaraná Antártica 350ml Refrigerante Lata Original Pronta Entrega".
+                        REGRAS RÍGIDAS DO TÍTULO (DIRETRIZES SHOPEE):
+                        1. PROIBIDO: Não use emojis, símbolos ou caracteres especiais no título.
+                        2. TAMANHO: Máximo 80 caracteres.
+                        3. ESTRUTURA: [Palavra-Chave Principal] + [Marca/Modelo] + [Atributo] + [Diferencial].
+                        4. CAPITALIZAÇÃO: Primeira Letra De Cada Palavra Em Maiúscula.
+                        5. EXCELÊNCIA: O título deve ser focado em busca orgânica (Ex: "Fone De Ouvido Bluetooth Sem Fio Original Pronta Entrega").
 
-                        FORMATO DE RESPOSTA:
-                        TITULO OTIMIZADO | DESCRIÇÃO COM MUITOS EMOJIS | TAGS`
+                        REGRAS DA DESCRIÇÃO:
+                        - Aqui você DEVE usar muitos emojis (✅, 🔥, 🚀) para converter a venda.
+                        - Use listas e tópicos claros.
+
+                        FORMATO DE RESPOSTA: Apenas as 3 partes separadas por "|".`
                     },
                     {
                         role: "user",
-                        content: `Gere um anúncio de ELITE para: ${nome}, preço R$ ${preco}.`
+                        content: `Gere um anúncio profissional de elite para: ${nome}, preço R$ ${preco}.`
                     }
                 ],
-                temperature: 0.8
+                temperature: 0.7
             })
         });
 
         const data = await response.json();
         res.status(200).json(data.choices[0].message.content);
     } catch (error) {
-        res.status(500).json("Erro na IA");
+        res.status(500).json("Erro na conexão com a IA");
     }
 }
