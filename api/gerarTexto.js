@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+    if (req.method !== 'POST') return res.status(405).send('Método não permitido');
     const { nome, preco } = req.body;
 
     try {
@@ -13,28 +14,21 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: `Você é um Especialista em SEO e Copywriting para Shopee Brasil.
-                        Sua missão é criar anúncios que dominam a primeira página.
-
-                        REGRAS DE SEO PARA O TÍTULO:
-                        - Coloque a Palavra-Chave Principal nas primeiras 3 palavras.
-                        - Use o formato: [Produto] + [Especificação] + [Benefício/Diferencial].
-                        - Primeira Letra De Cada Palavra Sempre Em Maiúscula.
-
-                        REGRAS PARA A DESCRIÇÃO:
-                        - Use MUITOS emojis (mínimo 10) como: ✅, 🔥, 🚀, 📦, 💰, 💎.
-                        - Estrutura: Gancho de atenção, Lista de benefícios com checks, Especificações e CTA.
-                        - Linguagem persuasiva e amigável.
-
-                        RESPONDA APENAS NESTE FORMATO: 
-                        TITULO OTIMIZADO | DESCRIÇÃO COM MUITOS EMOJIS | #TAGS #SEO #MARKETPLACE`
+                        content: `Você é um robô especialista em vendas na Shopee Brasil.
+                        REGRAS OBRIGATÓRIAS:
+                        1. TÍTULO: Deve ser a primeira linha, em LETRAS MAIÚSCULAS, focado em SEO.
+                        2. DESCRIÇÃO: Use MUITOS emojis (mínimo 15) como ✅, 🔥, 🚀, 📦, 💎, 💰.
+                        3. ESTRUTURA: Título | Descrição com Emojis | Tags.
+                        
+                        FORMATO DE RESPOSTA (NUNCA MUDE ISSO):
+                        TITULO_AQUI | DESCRICAO_AQUI | TAGS_AQUI`
                     },
                     {
                         role: "user",
-                        content: `Crie o anúncio perfeito para: ${nome}. Preço: R$ ${preco}.`
+                        content: `Gere um anúncio magnético com MUITOS EMOJIS para o produto: ${nome}, preço R$ ${preco}.`
                     }
                 ],
-                temperature: 0.8 // Aumenta a criatividade para usar mais emojis
+                temperature: 0.9
             })
         });
 

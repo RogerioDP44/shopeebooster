@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Shopee Booster - 2026</title>
+    <title>Shopee Booster - Dashboard 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -11,54 +11,54 @@
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans min-h-screen">
-    <nav class="bg-white shadow-sm p-4 flex justify-between items-center px-6 border-b-2 border-orange-500 text-xs font-bold uppercase italic">
-        <span class="text-2xl font-black text-orange-600 tracking-tighter uppercase italic">Shopee Booster 🔥</span>
-        <button onclick="fazerLogout()" class="text-gray-400 hover:text-red-500 tracking-widest uppercase">Sair</button>
+<body class="bg-gray-50 min-h-screen font-sans">
+    <nav class="bg-white border-b-2 border-orange-500 p-4 flex justify-between items-center shadow-sm">
+        <span class="text-2xl font-black text-orange-600 uppercase italic">Shopee Booster 🔥</span>
+        <button onclick="fazerLogout()" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest hover:text-red-500">Sair</button>
     </nav>
 
     <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-1 bg-white p-6 rounded-3xl border border-gray-100 card-shadow space-y-5 h-fit text-xs font-bold uppercase">
-            <h2 class="text-xl font-bold text-gray-800 italic uppercase">Cálculo 2026</h2>
+        <div class="lg:col-span-1 bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 space-y-6">
+            <h2 class="text-xl font-bold text-gray-800 uppercase italic">Cálculo Março 2026</h2>
             <div class="space-y-4">
-                <input type="text" id="nome" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none focus:border-orange-500" placeholder="Nome do Produto">
+                <input type="text" id="nome" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="Nome do Produto">
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="custo" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="Custo R$">
-                    <input type="number" id="embalagem" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="Embalagem R$">
+                    <input type="number" id="custo" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Custo R$">
+                    <input type="number" id="embalagem" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Embalagem R$">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="margem" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none" value="30">
-                    <input type="number" id="imposto" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="Imposto DAS %">
+                    <input type="number" id="margem" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" value="30">
+                    <input type="number" id="imposto" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Imposto DAS %">
                 </div>
-                <label class="flex items-center gap-2 p-3 bg-orange-50 rounded-xl cursor-pointer">
+                <label class="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl cursor-pointer">
                     <input type="checkbox" id="freteGratis" class="w-5 h-5 accent-orange-600" checked>
-                    <span class="text-[11px] font-black text-orange-900 italic tracking-tighter">Frete Grátis (+6%)</span>
+                    <span class="text-xs font-black text-orange-900 uppercase">Programa Frete Grátis (+6%)</span>
                 </label>
-                <button onclick="calcularEGerar()" id="btnAcao" class="w-full bg-orange-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-orange-700 transition-all active:scale-95">Turbinar Anúncio</button>
+                <button onclick="calcularTudo()" class="w-full bg-orange-600 text-white font-black py-5 rounded-2xl shadow-lg hover:bg-orange-700 transition-all uppercase tracking-widest">Turbinar Anúncio</button>
             </div>
         </div>
 
         <div class="lg:col-span-2 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center font-black">
-                <div class="bg-white p-6 rounded-3xl border-b-4 border-green-500 card-shadow text-green-600">
-                    <span class="text-[10px] text-gray-400 uppercase tracking-widest">Preço de Venda</span>
-                    <p id="resPreco" class="text-3xl">R$ 0,00</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-black text-center">
+                <div class="bg-white p-6 rounded-[2rem] border-b-4 border-green-500 shadow-lg">
+                    <span class="text-[10px] text-gray-400 uppercase">Preço Venda</span>
+                    <p id="resPreco" class="text-3xl text-green-600">R$ 0,00</p>
                 </div>
-                <div class="bg-white p-6 rounded-3xl border-b-4 border-blue-500 card-shadow text-blue-600">
-                    <span class="text-[10px] text-gray-400 uppercase tracking-widest">Lucro Padrão</span>
-                    <p id="resLucro" class="text-3xl">R$ 0,00</p>
+                <div class="bg-white p-6 rounded-[2rem] border-b-4 border-blue-500 shadow-lg">
+                    <span class="text-[10px] text-gray-400 uppercase">Lucro Padrão</span>
+                    <p id="resLucro" class="text-3xl text-blue-600">R$ 0,00</p>
                 </div>
-                <div class="bg-white p-6 rounded-3xl border-b-4 border-purple-600 bg-purple-50 card-shadow text-purple-700">
-                    <span class="text-[10px] text-purple-400 uppercase italic tracking-widest">Lucro via Pix</span>
-                    <p id="resLucroPix" class="text-3xl">R$ 0,00</p>
+                <div class="bg-white p-6 rounded-[2rem] border-b-4 border-purple-600 shadow-lg bg-purple-50">
+                    <span class="text-[10px] text-purple-400 uppercase italic">Lucro via Pix</span>
+                    <p id="resLucroPix" class="text-3xl text-purple-700">R$ 0,00</p>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-3xl border border-gray-100 card-shadow space-y-4">
-                <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 Inteligência SEO</h3>
-                <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold uppercase text-sm border-l-4 border-orange-500">Aguardando...</div>
-                <div id="resDescricao" class="p-4 bg-gray-50 rounded-xl text-xs text-gray-600 whitespace-pre-line border-l-4 border-gray-300">...</div>
-                <div id="resTags" class="p-4 bg-green-50 rounded-xl text-[10px] font-mono border-l-4 border-green-500 tracking-tighter">...</div>
+            <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100 space-y-4">
+                <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 IA SEO & Copywriter</h3>
+                <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold text-gray-700 border-l-4 border-orange-500 uppercase">Aguardando...</div>
+                <div id="resDescricao" class="p-4 bg-gray-50 rounded-xl text-xs text-gray-600 border-l-4 border-gray-300 whitespace-pre-line">...</div>
+                <div id="resTags" class="p-4 bg-green-50 rounded-xl text-[10px] text-green-700 font-mono border-l-4 border-green-500">...</div>
             </div>
         </div>
     </main>
@@ -66,10 +66,32 @@
     <script>
         const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
 
-        async function calcularEGerar() {
+        // --- TRAVA DE ABA ÚNICA ---
+        async function travaAbaUnica() {
             const { data: { session } } = await _supabase.auth.getSession();
-            if (!session) return window.location.href = 'index.html';
+            if (!session) return;
+            const userId = session.user.id;
 
+            if (!sessionStorage.getItem('aba_token')) {
+                sessionStorage.setItem('aba_token', 'aba_' + Math.random().toString(36).substring(7));
+            }
+            const meuToken = sessionStorage.getItem('aba_token');
+
+            let { data: perfil } = await _supabase.from('profiles').select('last_browser_id').eq('id', userId).single();
+
+            if (perfil && perfil.last_browser_id && perfil.last_browser_id !== meuToken) {
+                alert("⚠️ ACESSO NEGADO: Outra aba ativa detectada. Use apenas uma janela.");
+                await _supabase.auth.signOut();
+                window.location.href = 'index.html';
+            } else {
+                await _supabase.from('profiles').update({ last_browser_id: meuToken }).eq('id', userId);
+            }
+        }
+        setInterval(travaAbaUnica, 10000);
+        travaAbaUnica();
+
+        // --- CÁLCULOS TAXAS 2026 ---
+        async function calcularTudo() {
             const nome = document.getElementById('nome').value;
             const custo = parseFloat(document.getElementById('custo').value) || 0;
             const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
@@ -77,9 +99,8 @@
             const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
             const comFrete = document.getElementById('freteGratis').checked;
 
-            if (!nome || custo <= 0) return alert("Preencha os dados básicos!");
+            if (!nome || custo <= 0) return alert("Preencha os dados básicos.");
 
-            // TAXAS REAIS 1º MARÇO 2026
             let estPV = (custo + embalagem) * 1.5;
             let comissaoBase = 0.14; 
             let taxaFixa = 26.00;
@@ -92,7 +113,7 @@
 
             let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
             let divisor = (1 - comissaoFinal - margem - imposto);
-            if (divisor <= 0) return alert("As taxas e lucro excedem 100%!");
+            if (divisor <= 0) return alert("As taxas excedem 100%!");
             
             let precoVenda = (custo + embalagem + taxaFixa) / divisor;
 
@@ -108,7 +129,7 @@
         }
 
         async function acionarIA(nome, preco) {
-            document.getElementById('resTitulo').innerText = " GERANDO... 🔥";
+            document.getElementById('resTitulo').innerText = "IA GERANDO... 🔥";
             try {
                 const response = await fetch('/api/gerarTexto', {
                     method: 'POST',
@@ -117,11 +138,14 @@
                 });
                 const data = await response.json();
                 let partes = data.split('|').map(p => p.trim());
-                document.getElementById('resTitulo').innerText = partes[0].toUpperCase();
-                document.getElementById('resDescricao').innerText = partes[1];
-                document.getElementById('resTags').innerText = partes[2];
+
+                if (partes.length >= 3) {
+                    document.getElementById('resTitulo').innerText = partes[0].toUpperCase();
+                    document.getElementById('resDescricao').innerText = partes[1];
+                    document.getElementById('resTags').innerText = partes[2];
+                }
             } catch (e) {
-                document.getElementById('resTitulo').innerText = "ERRO NA API";
+                document.getElementById('resTitulo').innerText = "ERRO NA IA";
             }
         }
 
@@ -129,72 +153,6 @@
             await _supabase.auth.signOut();
             window.location.href = 'index.html';
         }
-
-	async function travaAntiCompartilhamento() {
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (!session) return;
-
-    const userId = session.user.id;
-    // Criamos um ID único para este navegador/dispositivo
-    const browserId = navigator.userAgent + screen.width + screen.height;
-    
-    // Verificamos no banco de dados se esse usuário já está logado em outro lugar
-    const { data: perfil } = await _supabase
-        .from('profiles') // Certifique-se de ter uma tabela 'profiles'
-        .select('last_browser_id')
-        .eq('id', userId)
-        .single();
-
-    if (perfil && perfil.last_browser_id && perfil.last_browser_id !== browserId) {
-        alert("Sua conta foi acessada em outro dispositivo. Você será deslogado por segurança.");
-        await _supabase.auth.signOut();
-        window.location.href = 'index.html';
-    } else {
-        // Atualiza o ID do navegador atual no banco
-        await _supabase
-            .from('profiles')
-            .update({ last_browser_id: browserId })
-            .eq('id', userId);
-    }
-}
-
-async function travaSessaoUnica() {
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (!session) return;
-
-    const userId = session.user.id;
-    // Criamos um ID único para esta aba/janela aberta agora
-    const currentTabId = Math.random().toString(36).substring(7);
-    
-    // Se for a primeira vez na aba, salvamos no cache do navegador
-    if (!sessionStorage.getItem('tab_id')) {
-        sessionStorage.setItem('tab_id', currentTabId);
-    }
-
-    const myTabId = sessionStorage.getItem('tab_id');
-
-    // Verifica no banco qual foi a última aba que logou
-    let { data: perfil } = await _supabase
-        .from('profiles')
-        .select('last_browser_id')
-        .eq('id', userId)
-        .single();
-
-    if (perfil && perfil.last_browser_id && perfil.last_browser_id !== myTabId) {
-        alert("⚠️ ACESSO NEGADO: Você já tem o Shopee Booster aberto em outra aba ou dispositivo.");
-        await _supabase.auth.signOut();
-        window.location.href = 'index.html';
-    } else {
-        // Atualiza o banco dizendo que esta é a aba ativa
-        await _supabase
-            .from('profiles')
-            .update({ last_browser_id: myTabId })
-            .eq('id', userId);
-    }
-}
-
-// Verifica a cada 5 segundos se outra aba foi aberta
-setInterval(travaSessaoUnica, 5000);
-travaSessaoUnica();    </script>
+    </script>
 </body>
 </html>
