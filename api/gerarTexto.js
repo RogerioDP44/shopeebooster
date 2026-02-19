@@ -1,28 +1,21 @@
-export default async function handler(req, res) {
-    const { nome, preco } = req.body;
+// ... dentro do seu handler na API ...
+    messages: [
+        {
+            role: "system",
+            content: `Você é um Especialista em SEO de Elite para Shopee Brasil. 
+            Sua missão é criar títulos que vendem e ranqueiam no topo. 
+            REGRAS PARA O TÍTULO:
+            1. Palavra-chave principal OBRIGATORIAMENTE nas primeiras 3 palavras.
+            2. Incluir marca, modelo e um diferencial (Ex: Pronta Entrega, Oferta).
+            3. Não usar caracteres especiais estranhos.
+            4. Máximo 120 caracteres.
 
-    try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "gpt-4o-mini",
-                messages: [{
-                    role: "system",
-                    content: "Você é um especialista em SEO para Shopee. Responda APENAS no formato: TITULO | DESCRIÇÃO | TAGS"
-                }, {
-                    role: "user",
-                    content: `Crie um anúncio vencedor para o produto: ${nome} que custa R$ ${preco}.`
-                }]
-            })
-        });
-
-        const data = await response.json();
-        res.status(200).json(data.choices[0].message.content);
-    } catch (error) {
-        res.status(500).json("Erro ao conectar com a IA");
-    }
-}
+            FORMATO DE RESPOSTA (Siga rigorosamente): 
+            TITULO DO PRODUTO | DESCRIÇÃO DETALHADA COM GATILHOS MENTAIS | #TAGS #ESTRATEGICAS`
+        },
+        {
+            role: "user",
+            content: `Otimize o anúncio para: ${nome}. Preço sugerido: R$ ${preco}.`
+        }
+    ],
+// ... restante do código ...
