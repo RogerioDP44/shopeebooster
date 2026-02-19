@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopee Booster - SaaS 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen">
+    <nav class="bg-white shadow-sm p-4 flex justify-between items-center px-6 border-b-2 border-orange-500">
+        <span class="text-2xl font-black text-orange-600 uppercase italic">Shopee Booster 🔥</span>
+        <button onclick="fazerLogout()" class="text-gray-400 font-bold hover:text-red-500 text-xs uppercase tracking-widest">Sair</button>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-1 bg-white p-6 rounded-3xl border border-gray-100 card-shadow space-y-5 h-fit">
+            <h2 class="text-xl font-bold text-gray-800 uppercase italic">Calculadora de Lucro</h2>
+            <div class="space-y-4">
+                <input type="text" id="nome" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none focus:border-orange-500" placeholder="Nome do Produto">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" id="custo" class="p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="Custo R$">
+                    <input type="number" id="embalagem" class="p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="Embalagem R$">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" id="margem" class="p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="Lucro %" value="30">
+                    <input type="number" id="imposto" class="p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="Imposto DAS %">
+                </div>
+                <label class="flex items-center gap-2 p-3 bg-orange-50 rounded-xl cursor-pointer">
+                    <input type="checkbox" id="freteGratis" class="w-5 h-5 accent-orange-600" checked>
+                    <span class="text-[11px] font-black text-orange-900 uppercase italic">Programa Frete Grátis (+6%)</span>
+                </label>
+                <button onclick="calcularEGerar()" id="btnAcao" class="w-full bg-orange-600 text-white font-black py-4 rounded-xl shadow-lg uppercase tracking-widest hover:bg-orange-700 transition-all">Turbinar Anúncio</button>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center font-black">
+                <div class="bg-white p-6 rounded-3xl border-b-4 border-green-500 card-shadow text-green-600">
+                    <span class="text-[10px] text-gray-400 uppercase">Venda Sugerida</span>
+                    <p id="resPreco" class="text-3xl">R$ 0,00</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border-b-4 border-blue-500 card-shadow text-blue-600">
+                    <span class="text-[10px] text-gray-400 uppercase">Lucro Padrão</span>
+                    <p id="resLucro" class="text-3xl">R$ 0,00</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border-b-4 border-purple-600 bg-purple-50 card-shadow text-purple-700">
+                    <span class="text-[10px] text-purple-400 uppercase italic">Lucro via Pix</span>
+                    <p id="resLucroPix" class="text-3xl">R$ 0,00</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl border border-gray-200 card-shadow space-y-4">
+                <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 Inteligência SEO (Copywriter)</h3>
+                <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold text-gray-700 uppercase text-sm border-l-4 border-orange-500">Aguardando...</div>
+                <div id="resDescricao" class="p-4 bg-gray-50 rounded-xl text-xs text-gray-600 whitespace-pre-line border-l-4 border-gray-300">
