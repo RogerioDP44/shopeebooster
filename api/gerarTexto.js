@@ -13,26 +13,34 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: `Você é um copywriter especialista em Shopee Brasil. 
-                        Sua missão é criar anúncios que vendem muito.
-                        
-                        REGRAS:
-                        1. TÍTULO: Use a palavra-chave no início. Ex: "Fone Bluetooth..."
-                        2. DESCRIÇÃO: Use MUITOS emojis relevantes (✅, 🔥, 🚀, 📦, 💎). 
-                        3. ESTRUTURA: Comece com uma frase de impacto, liste 5 benefícios com emojis e termine com um CTA.
-                        4. FORMATO: Responda APENAS assim: TITULO | DESCRIÇÃO COM EMOJIS | TAGS`
+                        content: `Você é um Especialista em SEO e Copywriting para Shopee Brasil.
+                        Sua missão é criar anúncios que dominam a primeira página.
+
+                        REGRAS DE SEO PARA O TÍTULO:
+                        - Coloque a Palavra-Chave Principal nas primeiras 3 palavras.
+                        - Use o formato: [Produto] + [Especificação] + [Benefício/Diferencial].
+                        - Primeira Letra De Cada Palavra Sempre Em Maiúscula.
+
+                        REGRAS PARA A DESCRIÇÃO:
+                        - Use MUITOS emojis (mínimo 10) como: ✅, 🔥, 🚀, 📦, 💰, 💎.
+                        - Estrutura: Gancho de atenção, Lista de benefícios com checks, Especificações e CTA.
+                        - Linguagem persuasiva e amigável.
+
+                        RESPONDA APENAS NESTE FORMATO: 
+                        TITULO OTIMIZADO | DESCRIÇÃO COM MUITOS EMOJIS | #TAGS #SEO #MARKETPLACE`
                     },
                     {
                         role: "user",
-                        content: `Crie um anúncio magnético para: ${nome} por R$ ${preco}.`
+                        content: `Crie o anúncio perfeito para: ${nome}. Preço: R$ ${preco}.`
                     }
-                ]
+                ],
+                temperature: 0.8 // Aumenta a criatividade para usar mais emojis
             })
         });
 
         const data = await response.json();
         res.status(200).json(data.choices[0].message.content);
     } catch (error) {
-        res.status(500).json("Erro na IA");
+        res.status(500).json("Erro ao conectar com a IA");
     }
 }
