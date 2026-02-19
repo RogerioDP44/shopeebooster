@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
+    
     const { nome, preco } = req.body;
 
     try {
@@ -14,34 +15,39 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: `Você é um Especialista em SEO de Marketplace para Shopee Brasil.
-                        SUA RESPOSTA DEVE SER NO FORMATO: TITULO | DESCRIÇÃO | TAGS
+                        content: `Você é um Especialista em SEO de Elite para Shopee Brasil. Sua tarefa é transformar nomes simples de produtos em anúncios profissionais que dominam a busca orgânica.
 
-                        REGRAS RÍGIDAS DO TÍTULO (DIRETRIZES SHOPEE):
-                        1. PROIBIDO: Não use emojis, símbolos ou caracteres especiais no título.
-                        2. TAMANHO: Máximo 80 caracteres.
-                        3. ESTRUTURA: [Palavra-Chave Principal] + [Marca/Modelo] + [Atributo] + [Diferencial].
-                        4. CAPITALIZAÇÃO: Primeira Letra De Cada Palavra Em Maiúscula.
-                        5. EXCELÊNCIA: O título deve ser focado em busca orgânica (Ex: "Fone De Ouvido Bluetooth Sem Fio Original Pronta Entrega").
+                        REGRAS PARA O TÍTULO (Obrigatório):
+                        - NÃO USE EMOJIS NO TÍTULO.
+                        - Limite: Máximo 80 caracteres.
+                        - Estrutura: [Palavra-Chave Principal] + [Atributos/Especificações] + [Diferenciais de Venda].
+                        - Se o cliente digitar apenas "Fone", você deve criar algo como: "Fone De Ouvido Bluetooth Sem Fio Recarregável Original Pronta Entrega".
+                        - Use termos de alto volume: Original, Premium, Oferta, Envio Imediato, Full.
 
-                        REGRAS DA DESCRIÇÃO:
-                        - Aqui você DEVE usar muitos emojis (✅, 🔥, 🚀) para converter a venda.
-                        - Use listas e tópicos claros.
+                        REGRAS PARA A DESCRIÇÃO:
+                        - Use MUITOS EMOJIS (✅, 🔥, 🚀, 📦, 💎).
+                        - Crie uma copy persuasiva que destaque os benefícios para o comprador.
 
-                        FORMATO DE RESPOSTA: Apenas as 3 partes separadas por "|".`
+                        REGRAS PARA AS TAGS:
+                        - Gere 10 hashtags estratégicas focadas no algoritmo da Shopee.
+
+                        FORMATO DA RESPOSTA (Siga rigorosamente):
+                        TITULO_AQUI | DESCRICAO_AQUI | TAGS_AQUI`
                     },
                     {
                         role: "user",
-                        content: `Gere um anúncio profissional de elite para: ${nome}, preço R$ ${preco}.`
+                        content: `O cliente digitou o produto: "${nome}". O preço é R$ ${preco}. Crie o anúncio de elite para ranqueamento.`
                     }
                 ],
-                temperature: 0.7
+                temperature: 0.8
             })
         });
 
         const data = await response.json();
+        res.setHeader('Cache-Control', 'no-store'); // Evita que o navegador mostre resultado antigo
         res.status(200).json(data.choices[0].message.content);
+
     } catch (error) {
-        res.status(500).json("Erro na conexão com a IA");
+        res.status(500).json("Erro ao conectar com a IA");
     }
 }
