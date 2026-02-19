@@ -7,16 +7,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen p-6">
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-6 font-sans">
     <div class="max-w-md w-full bg-white p-10 rounded-[3rem] shadow-2xl border border-gray-100 text-center">
         <span class="text-3xl font-black text-orange-600 uppercase italic">Shopee Booster 🔥</span>
+        <p class="text-gray-400 text-[10px] font-bold uppercase mt-2 italic">Acesso Exclusivo</p>
         <form id="loginForm" class="mt-8 space-y-4">
             <input type="email" id="email" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="E-mail" required>
             <input type="password" id="password" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="Senha" required>
-            <button class="w-full bg-orange-600 text-white font-black py-5 rounded-2xl shadow-lg uppercase">Entrar</button>
+            <button class="w-full bg-orange-600 text-white font-black py-5 rounded-2xl shadow-lg hover:bg-orange-700 transition-all uppercase tracking-widest">Entrar</button>
         </form>
         <div class="mt-8">
-            <a href="venda.html" class="text-orange-600 font-black text-xs uppercase tracking-widest">Ainda não é Assinante?</a>
+            <a href="venda.html" class="text-orange-600 font-bold text-xs uppercase underline">Ainda não é assinante?</a>
         </div>
     </div>
     <script>

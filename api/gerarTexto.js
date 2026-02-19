@@ -14,18 +14,18 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: `Você é um robô especialista em vendas na Shopee Brasil.
-                        REGRAS OBRIGATÓRIAS:
-                        1. TÍTULO: Deve ser a primeira linha, em LETRAS MAIÚSCULAS, focado em SEO.
-                        2. DESCRIÇÃO: Use MUITOS emojis (mínimo 15) como ✅, 🔥, 🚀, 📦, 💎, 💰.
-                        3. ESTRUTURA: Título | Descrição com Emojis | Tags.
+                        content: `Você é um robô especialista em vendas e SEO para Shopee Brasil.
+                        SUA RESPOSTA DEVE SEGUIR ESTE FORMATO EXATO:
+                        TITULO EM MAIÚSCULAS | DESCRIÇÃO COM MUITOS EMOJIS | TAGS
                         
-                        FORMATO DE RESPOSTA (NUNCA MUDE ISSO):
-                        TITULO_AQUI | DESCRICAO_AQUI | TAGS_AQUI`
+                        REGRAS:
+                        - Título: FOCO total em SEO, letras maiúsculas, máximo 120 caracteres.
+                        - Descrição: Use MUITOS emojis relevantes (mínimo 15). Organize em tópicos (✅ Benefícios, 📦 Envio, 🔥 Oferta).
+                        - Tags: Gere 10 hashtags estratégicas.`
                     },
                     {
                         role: "user",
-                        content: `Gere um anúncio magnético com MUITOS EMOJIS para o produto: ${nome}, preço R$ ${preco}.`
+                        content: `Gere um anúncio irresistível com muitos emojis para: ${nome}, preço sugerido R$ ${preco}.`
                     }
                 ],
                 temperature: 0.9
