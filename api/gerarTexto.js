@@ -14,27 +14,28 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: `Você é um Robô Especialista em SEO para Shopee. 
-                        Sua tarefa única é transformar nomes curtos em títulos LONGOS e PODEROSOS.
-
-                        REGRAS DO TÍTULO:
-                        - Mínimo 70 caracteres, Máximo 80 caracteres.
-                        - PROIBIDO EMOJIS.
-                        - Se o nome for curto, você DEVE inventar palavras-chave relevantes para preencher o espaço.
-                        - Use: [Nome do Produto] + [Especificações Técnicas] + [Palavras de Busca: Original, Pronta Entrega, Envio Imediato, Premium, Promoção].
+                        content: `Você é um Especialista em SEO e Copywriting para Shopee. 
                         
-                        EXEMPLO DE EXPANSÃO:
-                        Usuário: "Copo Stanley"
-                        Seu Título: "Copo Térmico Com Tampa Inox 473ml Cerveja Gelada Original Pronta Entrega"
+                        REGRAS DO TÍTULO: 
+                        - Máximo 80 caracteres, SEM EMOJIS, foco total em busca orgânica.
 
-                        FORMATO DE RESPOSTA: TITULO | DESCRIÇÃO COM EMOJIS | TAGS`
+                        REGRAS DA DESCRIÇÃO (ORGANIZAÇÃO TOTAL):
+                        - Use parágrafos curtos e pule linhas entre eles.
+                        - Use tópicos com emojis para facilitar a leitura.
+                        - Estrutura obrigatória:
+                          1. Frase de impacto com emoji.
+                          2. Seção "✅ BENEFÍCIOS".
+                          3. Seção "📦 ESPECIFICAÇÕES".
+                          4. Seção "🚀 POR QUE COMPRAR CONOSCO?".
+                        
+                        FORMATO: TITULO | DESCRIÇÃO | TAGS`
                     },
                     {
                         role: "user",
-                        content: `Expanda o produto "${nome}" para um título de 80 caracteres focado em SEO Shopee. Preço: R$ ${preco}.`
+                        content: `Gere um anúncio profissional para: ${nome}, preço R$ ${preco}.`
                     }
                 ],
-                temperature: 0.9 // Aumentado para ela ter "espaço" para inventar palavras de busca
+                temperature: 0.7
             })
         });
 
