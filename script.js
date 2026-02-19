@@ -1,9 +1,8 @@
-// CONFIGURAÇÃO SUPABASE (Pegue no seu painel Supabase)
-const supabaseUrl = 'https://amseupdyzghcypepohsy.supabase.co';
-const supabaseKey = 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN';
-const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+// CONFIGURAÇÃO SUPABASE
+const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
 
 async function calcularEGerar() {
+    // Verificação de Segurança
     const { data: { session } } = await _supabase.auth.getSession();
     if (!session) return window.location.href = 'login.html';
 
@@ -14,19 +13,24 @@ async function calcularEGerar() {
     const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
     const comFrete = document.getElementById('freteGratis').checked;
 
-    if (!nome || custo <= 0) return alert("Preencha o nome e o custo!");
+    if (!nome || custo <= 0) return alert("Insira os dados básicos.");
 
-    // REGRAS OFICIAIS 2026 CONFORME TABELA
+    // TAXAS OFICIAIS 01/03/2026
     let estPV = (custo + embalagem) * 1.5;
     let comissaoBase = 0.14; 
     let taxaFixa = 26.00;
     let subsidioPix = 0.05;
 
-    // Lógica de Faixas
-    if (estPV < 80) { comissaoBase = 0.20; taxaFixa = 4.00; subsidioPix = 0; }
-    else if (estPV < 100) { taxaFixa = 16.00; }
-    else if (estPV < 200) { taxaFixa = 20.00; }
-    else if (estPV >= 500) { subsidioPix = 0.08; }
+    // Regras por Faixas de Preço da Imagem
+    if (estPV < 80) { 
+        comissaoBase = 0.20; taxaFixa = 4.00; subsidioPix = 0; 
+    } else if (estPV < 100) { 
+        taxaFixa = 16.00; 
+    } else if (estPV < 200) { 
+        taxaFixa = 20.00; 
+    } else if (estPV >= 500) { 
+        subsidioPix = 0.08; 
+    }
 
     let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
     let divisor = (1 - comissaoFinal - margem - imposto);
@@ -35,14 +39,14 @@ async function calcularEGerar() {
     
     let precoVenda = (custo + embalagem + taxaFixa) / divisor;
 
-    document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
-    
-    let vNormal = (precoVenda * comissaoFinal) + taxaFixa;
-    let vPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
-    let vImposto = precoVenda * imposto;
+    // Resultados Financeiros
+    let vComissaoNormal = (precoVenda * comissaoFinal) + taxaFixa;
+    let vComissaoPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
+    let vImpostoTotal = precoVenda * imposto;
 
-    document.getElementById('resLucro').innerText = `R$ ${(precoVenda - vNormal - custo - embalagem - vImposto).toFixed(2)}`;
-    document.getElementById('resLucroPix').innerText = `R$ ${(precoVenda - vPix - custo - embalagem - vImposto).toFixed(2)}`;
+    document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
+    document.getElementById('resLucro').innerText = `R$ ${(precoVenda - vComissaoNormal - custo - embalagem - vImpostoTotal).toFixed(2)}`;
+    document.getElementById('resLucroPix').innerText = `R$ ${(precoVenda - vComissaoPix - custo - embalagem - vImpostoTotal).toFixed(2)}`;
 
     acionarIA(nome, precoVenda.toFixed(2));
 }
@@ -57,10 +61,12 @@ async function acionarIA(nome, preco) {
         });
         const data = await response.json();
         let partes = data.split('|').map(p => p.trim());
-        document.getElementById('resTitulo').innerText = (partes[0] || "").toUpperCase();
-        document.getElementById('resDescricao').innerText = partes[1] || "";
-        document.getElementById('resTags').innerText = partes[2] || "";
-    } catch (e) { document.getElementById('resTitulo').innerText = "ERRO NA API"; }
+        document.getElementById('resTitulo').innerText = partes[0].toUpperCase();
+        document.getElementById('resDescricao').innerText = partes[1];
+        document.getElementById('resTags').innerText = partes[2];
+    } catch (e) {
+        document.getElementById('resTitulo').innerText = "ERRO NA API";
+    }
 }
 
 async function fazerLogout() {
