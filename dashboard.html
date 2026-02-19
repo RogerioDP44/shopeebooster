@@ -109,31 +109,45 @@
             acionarIA(nome, precoVenda.toFixed(2));
         }
 
-        async function acionarIA(nome, preco) {
-            document.getElementById('resTitulo').innerText = " PROCESSANDO... 🔥";
-            document.getElementById('resDescricao').innerText = "...";
-            try {
-                const response = await fetch('/api/gerarTexto', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nome, preco })
-                });
-                const data = await response.json();
-                
-                // Separa as partes usando o delimitador "|"
-                let partes = data.split('|').map(p => p.trim());
+       async function acionarIA(nome, preco) {
+    // 1. Reseta os campos para o usuário saber que começou
+    const tituloDiv = document.getElementById('resTitulo');
+    const descDiv = document.getElementById('resDescricao');
+    const tagsDiv = document.getElementById('resTags');
 
-                if (partes.length >= 3) {
-                    document.getElementById('resTitulo').innerText = partes[0].toUpperCase();
-                    document.getElementById('resDescricao').innerText = partes[1];
-                    document.getElementById('resTags').innerText = partes[2];
-                } else {
-                    document.getElementById('resDescricao').innerText = data;
-                }
-            } catch (e) {
-                document.getElementById('resTitulo').innerText = "ERRO NA API";
-            }
+    tituloDiv.innerText = "GERANDO TÍTULO... ⏳";
+    descDiv.innerText = "CRIANDO DESCRIÇÃO COM EMOJIS... ✨";
+    tagsDiv.innerText = "...";
+
+    try {
+        const response = await fetch('/api/gerarTexto', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome, preco })
+        });
+
+        if (!response.ok) throw new Error('Falha na resposta');
+
+        const data = await response.json();
+        
+        // Divide o texto pela barra "|"
+        let partes = data.split('|').map(p => p.trim());
+
+        if (partes.length >= 3) {
+            tituloDiv.innerText = partes[0].toUpperCase();
+            descDiv.innerText = partes[1];
+            tagsDiv.innerText = partes[2];
+        } else {
+            // Se a IA não usar o separador, coloca tudo na descrição
+            descDiv.innerText = data;
+            tituloDiv.innerText = "ANÚNCIO GERADO";
         }
+    } catch (e) {
+        tituloDiv.innerText = "ERRO AO GERAR ❌";
+        descDiv.innerText = "Verifique se a chave da OpenAI está correta na Vercel.";
+        console.error(e);
+    }
+}
 
         async function fazerLogout() {
             await _supabase.auth.signOut();

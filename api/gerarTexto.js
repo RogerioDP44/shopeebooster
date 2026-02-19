@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
-    if (req.method !== 'POST') return res.status(405).send('Método não permitido');
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
+    
     const { nome, preco } = req.body;
 
     try {
@@ -14,27 +15,27 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: `Você é um robô especialista em vendas e SEO para Shopee Brasil.
-                        SUA RESPOSTA DEVE SEGUIR ESTE FORMATO EXATO:
-                        TITULO EM MAIÚSCULAS | DESCRIÇÃO COM MUITOS EMOJIS | TAGS
-                        
-                        REGRAS:
-                        - Título: FOCO total em SEO, letras maiúsculas, máximo 120 caracteres.
-                        - Descrição: Use MUITOS emojis relevantes (mínimo 15). Organize em tópicos (✅ Benefícios, 📦 Envio, 🔥 Oferta).
-                        - Tags: Gere 10 hashtags estratégicas.`
+                        content: "Você é um especialista em Shopee Brasil. Responda APENAS no formato: TITULO | DESCRIÇÃO COM EMOJIS | TAGS. Use muitos emojis na descrição."
                     },
                     {
                         role: "user",
-                        content: `Gere um anúncio irresistível com muitos emojis para: ${nome}, preço sugerido R$ ${preco}.`
+                        content: `Crie um anúncio para: ${nome}, preço R$ ${preco}.`
                     }
                 ],
-                temperature: 0.9
+                temperature: 0.8
             })
         });
 
         const data = await response.json();
+        
+        // Se a OpenAI der erro, precisamos avisar o frontend
+        if (data.error) {
+            return res.status(500).json("Erro na chave da OpenAI");
+        }
+
         res.status(200).json(data.choices[0].message.content);
+
     } catch (error) {
-        res.status(500).json("Erro ao conectar com a IA");
+        res.status(500).json("Erro de conexão");
     }
 }
