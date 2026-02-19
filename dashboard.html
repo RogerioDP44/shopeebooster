@@ -158,43 +158,43 @@
     }
 }
 
-async function travaAntiCompartilhamento() {
+async function travaSessaoUnica() {
     const { data: { session } } = await _supabase.auth.getSession();
     if (!session) return;
 
     const userId = session.user.id;
-    const userEmail = session.user.email;
-    const browserId = navigator.userAgent + screen.width; // Identidade do PC/Celular
+    // Criamos um ID único para esta aba/janela aberta agora
+    const currentTabId = Math.random().toString(36).substring(7);
+    
+    // Se for a primeira vez na aba, salvamos no cache do navegador
+    if (!sessionStorage.getItem('tab_id')) {
+        sessionStorage.setItem('tab_id', currentTabId);
+    }
 
-    // 1. Tenta buscar o perfil do usuário
-    let { data: perfil, error } = await _supabase
+    const myTabId = sessionStorage.getItem('tab_id');
+
+    // Verifica no banco qual foi a última aba que logou
+    let { data: perfil } = await _supabase
         .from('profiles')
         .select('last_browser_id')
         .eq('id', userId)
         .single();
 
-    // 2. Se o perfil não existir (usuário novo), nós criamos agora
-    if (error && error.code === 'PGRST116') {
-        await _supabase.from('profiles').insert([
-            { id: userId, email: userEmail, last_browser_id: browserId }
-        ]);
-        return;
-    }
-
-    // 3. Se existir e o ID for diferente, bloqueia!
-    if (perfil && perfil.last_browser_id && perfil.last_browser_id !== browserId) {
-        alert("⚠️ BLOQUEIO DE SEGURANÇA: Sua conta já está sendo usada em outro dispositivo. O compartilhamento de senha é proibido.");
+    if (perfil && perfil.last_browser_id && perfil.last_browser_id !== myTabId) {
+        alert("⚠️ ACESSO NEGADO: Você já tem o Shopee Booster aberto em outra aba ou dispositivo.");
         await _supabase.auth.signOut();
         window.location.href = 'index.html';
     } else {
-        // Atualiza para manter a sessão ativa neste navegador
-        await _supabase.from('profiles').update({ last_browser_id: browserId }).eq('id', userId);
+        // Atualiza o banco dizendo que esta é a aba ativa
+        await _supabase
+            .from('profiles')
+            .update({ last_browser_id: myTabId })
+            .eq('id', userId);
     }
 }
 
-// Verifica a cada 1 minuto se alguém "roubou" a sessão em outro lugar
-setInterval(travaAntiCompartilhamento, 60000);
-travaAntiCompartilhamento();
-    </script>
+// Verifica a cada 5 segundos se outra aba foi aberta
+setInterval(travaSessaoUnica, 5000);
+travaSessaoUnica();    </script>
 </body>
 </html>
