@@ -3,37 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopee Booster - Dashboard</title>
+    <title>Shopee Booster - Painel 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .card-shadow { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        /* Garante que a descrição respeite as quebras de linha da IA */
+        .desc-box { white-space: pre-line; line-height: 1.6; }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen font-sans">
     <nav class="bg-white border-b-2 border-orange-500 p-4 flex justify-between items-center shadow-sm">
         <span class="text-2xl font-black text-orange-600 uppercase italic">Shopee Booster 🔥</span>
-        <button onclick="fazerLogout()" class="text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-red-500">Sair</button>
+        <button onclick="fazerLogout()" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest hover:text-red-500">Sair</button>
     </nav>
 
     <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-1 bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 space-y-5 uppercase font-bold text-[10px]">
-            <h2 class="text-xl font-bold text-gray-800 italic uppercase">Cálculos 2026</h2>
+        <div class="lg:col-span-1 bg-white p-8 rounded-[2rem] card-shadow border border-gray-100 space-y-6">
+            <h2 class="text-xl font-bold text-gray-800 uppercase italic">Cálculo Março 2026</h2>
             <div class="space-y-4">
-                <input type="text" id="nome" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="Nome do Produto">
+                <input type="text" id="nome" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="O que você está vendendo?">
                 <div class="grid grid-cols-2 gap-4">
                     <input type="number" id="custo" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Custo R$">
                     <input type="number" id="embalagem" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Embalagem R$">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="margem" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" value="30" placeholder="Margem %">
+                    <input type="number" id="margem" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" value="30">
                     <input type="number" id="imposto" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Imposto %">
                 </div>
-                <label class="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl cursor-pointer">
-                    <input type="checkbox" id="freteGratis" class="w-5 h-5 accent-orange-600" checked>
-                    <span class="text-orange-900 italic">Programa Frete Grátis (+6%)</span>
-                </label>
                 <button onclick="calcularTudo()" class="w-full bg-orange-600 text-white font-black py-5 rounded-2xl shadow-lg hover:bg-orange-700 transition-all uppercase tracking-widest">Turbinar Anúncio</button>
             </div>
         </div>
@@ -45,25 +42,27 @@
                     <p id="resPreco" class="text-3xl text-green-600">R$ 0,00</p>
                 </div>
                 <div class="bg-white p-6 rounded-[2rem] border-b-4 border-blue-500 shadow-lg">
-                    <span class="text-[10px] text-gray-400 uppercase">Lucro Padrão</span>
+                    <span class="text-[10px] text-gray-400 uppercase">Lucro Líquido</span>
                     <p id="resLucro" class="text-3xl text-blue-600">R$ 0,00</p>
                 </div>
                 <div class="bg-white p-6 rounded-[2rem] border-b-4 border-purple-600 shadow-lg bg-purple-50">
-                    <span class="text-[10px] text-purple-400 uppercase italic text-[8px]">Lucro via Pix (Novidade)</span>
+                    <span class="text-[10px] text-purple-400 uppercase italic">Lucro via Pix</span>
                     <p id="resLucroPix" class="text-3xl text-purple-700">R$ 0,00</p>
                 </div>
             </div>
 
-            <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100 space-y-4">
-                <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 Inteligência SEO & Emojis</h3>
-                <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold text-gray-700 border-l-4 border-orange-500 uppercase text-sm min-h-[50px]">
-                    Aguardando...
+            <div class="bg-white p-8 rounded-[3rem] shadow-xl border border-gray-100 space-y-6">
+                <div class="flex items-center gap-2 text-orange-600 font-black text-xs uppercase italic">
+                    <span>🪄 Inteligência SEO & Copywriter</span>
                 </div>
-                <div id="resDescricao" class="p-4 bg-gray-50 rounded-xl text-xs text-gray-600 border-l-4 border-gray-300 whitespace-pre-line leading-relaxed">
-                    ...
+                <div id="resTitulo" class="p-5 bg-orange-50 rounded-2xl font-bold text-gray-700 border-l-8 border-orange-500 uppercase text-sm">
+                    AGUARDANDO...
                 </div>
-                <div id="resTags" class="p-4 bg-green-50 rounded-xl text-[10px] text-green-700 font-mono border-l-4 border-green-500">
-                    ...
+                <div id="resDescricao" class="p-6 bg-gray-50 rounded-2xl text-xs text-gray-600 border-l-8 border-gray-200 desc-box">
+                    As informações do seu produto aparecerão aqui de forma organizada.
+                </div>
+                <div id="resTags" class="p-4 bg-green-50 rounded-2xl text-[10px] text-green-700 font-mono border-l-8 border-green-500">
+                    #SEO #Shopee #Vendas
                 </div>
             </div>
         </div>
@@ -72,87 +71,27 @@
     <script>
         const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
 
-        // FUNÇÃO DE CÁLCULO ATUALIZADA 2026
         async function calcularTudo() {
             const nome = document.getElementById('nome').value;
             const custo = parseFloat(document.getElementById('custo').value) || 0;
             const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
             const margem = (parseFloat(document.getElementById('margem').value) || 0) / 100;
             const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
-            const comFrete = document.getElementById('freteGratis').checked;
 
-            if (!nome || custo <= 0) return alert("Preencha os dados do produto.");
+            if (!nome || custo <= 0) return alert("Digite o nome e o custo do produto.");
 
-            // Lógica de taxas baseada no preço final estimado
-            let estPV = (custo + embalagem) * 1.5;
-            let comissaoBase = 0.14; let taxaFixa = 26.00; let subsidioPix = 0.05;
-
-            if (estPV < 80) { comissaoBase = 0.20; taxaFixa = 4.00; subsidioPix = 0; }
-            else if (estPV < 100) { taxaFixa = 16.00; }
-            else if (estPV < 200) { taxaFixa = 20.00; }
-            else if (estPV >= 500) { subsidioPix = 0.08; }
-
-            let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
-            let divisor = (1 - comissaoFinal - margem - imposto);
-            if (divisor <= 0) return alert("As taxas superam o preço!");
+            // Taxas 2026 simplificadas
+            let precoVenda = (custo + embalagem + 20) / (1 - 0.20 - margem - imposto);
             
-            let precoVenda = (custo + embalagem + taxaFixa) / divisor;
-
             document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
-            let vNormal = (precoVenda * comissaoFinal) + taxaFixa;
-            let vPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
-            let vImposto = precoVenda * imposto;
-
-            document.getElementById('resLucro').innerText = `R$ ${(precoVenda - vNormal - custo - embalagem - vImposto).toFixed(2)}`;
-            document.getElementById('resLucroPix').innerText = `R$ ${(precoVenda - vPix - custo - embalagem - vImposto).toFixed(2)}`;
+            document.getElementById('resLucro').innerText = `R$ ${(precoVenda * margem).toFixed(2)}`;
+            document.getElementById('resLucroPix').innerText = `R$ ${(precoVenda * (margem + 0.05)).toFixed(2)}`;
 
             acionarIA(nome, precoVenda.toFixed(2));
         }
 
-      async function acionarIA(nome, preco) {
-    // 1. Reseta os campos para o usuário saber que começou
-    const tituloDiv = document.getElementById('resTitulo');
-    const descDiv = document.getElementById('resDescricao');
-    const tagsDiv = document.getElementById('resTags');
-
-    tituloDiv.innerText = "GERANDO TÍTULO... ⏳";
-    descDiv.innerText = "CRIANDO DESCRIÇÃO COM EMOJIS... ✨";
-    tagsDiv.innerText = "...";
-
-    try {
-        const response = await fetch('/api/gerarTexto', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, preco })
-        });
-
-        if (!response.ok) throw new Error('Falha na resposta');
-
-        const data = await response.json();
-        
-        // Divide o texto pela barra "|"
-        let partes = data.split('|').map(p => p.trim());
-
-        if (partes.length >= 3) {
-            tituloDiv.innerText = partes[0].toUpperCase();
-            descDiv.innerText = partes[1];
-            tagsDiv.innerText = partes[2];
-        } else {
-            // Se a IA não usar o separador, coloca tudo na descrição
-            descDiv.innerText = data;
-            tituloDiv.innerText = "ANÚNCIO GERADO";
-        }
-    } catch (e) {
-        tituloDiv.innerText = "ERRO AO GERAR ❌";
-        descDiv.innerText = "Verifique se a chave da OpenAI está correta na Vercel.";
-        console.error(e);
-    }
-}
-
-        async function fazerLogout() {
-            await _supabase.auth.signOut();
-            window.location.href = 'index.html';
-        }
-    </script>
-</body>
-</html>
+        async function acionarIA(nome, preco) {
+            document.getElementById('resTitulo').innerText = "GERANDO SEO DE ELITE... 🔥";
+            try {
+                const response = await fetch('/api/gerarTexto', {
+                    method:
