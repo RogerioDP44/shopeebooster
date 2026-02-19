@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
-    
     const { nome, preco } = req.body;
 
     try {
@@ -15,27 +14,26 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: "Você é um especialista em Shopee Brasil. Responda APENAS no formato: TITULO | DESCRIÇÃO COM EMOJIS | TAGS. Use muitos emojis na descrição."
+                        content: `Você é um Especialista em SEO para Shopee Brasil.
+                        SUA RESPOSTA DEVE SER NO FORMATO: TITULO | DESCRIÇÃO | TAGS
+
+                        REGRAS RÍGIDAS:
+                        1. TÍTULO: Máximo 80 caracteres. Deve começar com a palavra-chave mais buscada. Use: [Produto] + [Atributo] + [Diferencial]. Ex: "Toalha De Banho Gigante Algodão Macia Pronta Entrega".
+                        2. DESCRIÇÃO: Use muitos emojis (✅, 🔥, 🚀) e organize em tópicos.
+                        3. FORMATO: Responda apenas com as 3 partes separadas por "|".`
                     },
                     {
                         role: "user",
-                        content: `Crie um anúncio para: ${nome}, preço R$ ${preco}.`
+                        content: `Gere um anúncio de alta conversão para: ${nome}, preço R$ ${preco}.`
                     }
                 ],
-                temperature: 0.8
+                temperature: 0.7
             })
         });
 
         const data = await response.json();
-        
-        // Se a OpenAI der erro, precisamos avisar o frontend
-        if (data.error) {
-            return res.status(500).json("Erro na chave da OpenAI");
-        }
-
         res.status(200).json(data.choices[0].message.content);
-
     } catch (error) {
-        res.status(500).json("Erro de conexão");
+        res.status(500).json("Erro na conexão com a IA");
     }
 }
