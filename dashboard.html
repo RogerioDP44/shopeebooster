@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopee Booster - Oficial 2026</title>
+    <title>Painel Shopee Booster - 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -13,77 +13,122 @@
 </head>
 <body class="bg-gray-50 font-sans min-h-screen">
     <nav class="bg-white shadow-sm p-4 flex justify-between items-center px-6 border-b-2 border-orange-500">
-        <span class="text-2xl font-black text-orange-600 uppercase italic tracking-tighter">Shopee Booster 🔥</span>
+        <span class="text-2xl font-black text-orange-600 uppercase italic">Shopee Booster 🔥</span>
         <button onclick="fazerLogout()" class="text-gray-400 font-bold hover:text-red-500 text-xs uppercase tracking-widest">Sair</button>
     </nav>
 
     <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-1 bg-white p-6 rounded-3xl border border-gray-100 card-shadow space-y-5 h-fit">
+        <div class="lg:col-span-1 bg-white p-6 rounded-3xl border border-gray-100 card-shadow space-y-5 h-fit text-xs font-bold">
             <h2 class="text-xl font-bold text-gray-800 uppercase italic">Cálculo 2026</h2>
             <div class="space-y-4">
-                <div>
-                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Nome do Produto</label>
-                    <input type="text" id="nome" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none focus:border-orange-500" placeholder="Ex: Fone Bluetooth">
-                </div>
-                
+                <input type="text" id="nome" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none focus:border-orange-500" placeholder="Nome do Produto">
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Custo (R$)</label>
-                        <input type="number" id="custo" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none" placeholder="0.00">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Embalagem (R$)</label>
-                        <input type="number" id="embalagem" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="0.00">
-                    </div>
+                    <input type="number" id="custo" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none" placeholder="Custo R$">
+                    <input type="number" id="embalagem" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none" placeholder="Embalagem R$">
                 </div>
-
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Margem (%)</label>
-                        <input type="number" id="margem" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none" value="30">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Imposto DAS (%)</label>
-                        <input type="number" id="imposto" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none" placeholder="Ex: 6">
-                    </div>
+                    <input type="number" id="margem" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none" value="30">
+                    <input type="number" id="imposto" class="w-full p-3 border-2 border-gray-50 rounded-xl outline-none" placeholder="Imposto DAS %">
                 </div>
-
                 <label class="flex items-center gap-2 p-3 bg-orange-50 rounded-xl cursor-pointer">
                     <input type="checkbox" id="freteGratis" class="w-5 h-5 accent-orange-600" checked>
-                    <span class="text-[11px] font-black text-orange-900 uppercase italic">Programa Frete Grátis (+6%)</span>
+                    <span class="text-[11px] font-black text-orange-900 uppercase italic tracking-tighter">Frete Grátis (+6%)</span>
                 </label>
-
-                <button onclick="calcularEGerar()" id="btnAcao" class="w-full bg-orange-600 text-white font-black py-4 rounded-xl shadow-lg uppercase tracking-widest hover:bg-orange-700 transition-all active:scale-95">
-                    Turbinar Anúncio
-                </button>
+                <button onclick="calcularEGerar()" id="btnAcao" class="w-full bg-orange-600 text-white font-black py-4 rounded-xl shadow-lg uppercase tracking-widest">Turbinar Anúncio</button>
             </div>
         </div>
 
         <div class="lg:col-span-2 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center font-black">
                 <div class="bg-white p-6 rounded-3xl border-b-4 border-green-500 card-shadow text-green-600">
-                    <span class="text-[10px] text-gray-400 uppercase">Preço Venda</span>
+                    <span class="text-[10px] text-gray-400 uppercase tracking-widest leading-loose">Preço Venda</span>
                     <p id="resPreco" class="text-3xl">R$ 0,00</p>
                 </div>
                 <div class="bg-white p-6 rounded-3xl border-b-4 border-blue-500 card-shadow text-blue-600">
-                    <span class="text-[10px] text-gray-400 uppercase">Lucro Padrão</span>
+                    <span class="text-[10px] text-gray-400 uppercase tracking-widest leading-loose">Lucro Padrão</span>
                     <p id="resLucro" class="text-3xl">R$ 0,00</p>
                 </div>
                 <div class="bg-white p-6 rounded-3xl border-b-4 border-purple-600 bg-purple-50 card-shadow text-purple-700">
-                    <span class="text-[10px] text-purple-400 uppercase italic">Lucro via Pix (Subsídio)</span>
+                    <span class="text-[10px] text-purple-400 uppercase italic tracking-widest leading-loose">Lucro Pix (Subsídio)</span>
                     <p id="resLucroPix" class="text-3xl">R$ 0,00</p>
                 </div>
             </div>
 
             <div class="bg-white p-6 rounded-3xl border border-gray-100 card-shadow space-y-4">
-                <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 Inteligência SEO (Copywriter)</h3>
-                <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold text-gray-700 border-l-4 border-orange-500">Aguardando...</div>
-                <div id="resDescricao" class="p-4 bg-gray-50 rounded-xl text-xs text-gray-600 border-l-4 border-gray-300 whitespace-pre-line">...</div>
+                <h3 class="font-black text-gray-800 uppercase text-xs italic pr-10 leading-loose">🪄 IA Copywriter</h3>
+                <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold uppercase text-sm border-l-4 border-orange-500">Aguardando...</div>
+                <div id="resDescricao" class="p-4 bg-gray-50 rounded-xl text-xs text-gray-600 whitespace-pre-line border-l-4 border-gray-300">...</div>
                 <div id="resTags" class="p-4 bg-green-50 rounded-xl text-[10px] text-green-700 font-mono border-l-4 border-green-500">...</div>
             </div>
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
+
+        async function calcularEGerar() {
+            const nome = document.getElementById('nome').value;
+            const custo = parseFloat(document.getElementById('custo').value) || 0;
+            const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
+            const margem = (parseFloat(document.getElementById('margem').value) || 0) / 100;
+            const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
+            const comFrete = document.getElementById('freteGratis').checked;
+
+            if (!nome || custo <= 0) return alert("Preencha o nome e o custo!");
+
+            // TAXAS OFICIAIS 2026
+            let estPV = (custo + embalagem) * 1.5;
+            let comissaoBase = 0.14; 
+            let taxaFixa = 26.00;
+            let subsidioPix = 0.05;
+
+            // Lógica por faixas
+            if (estPV < 80) { comissaoBase = 0.20; taxaFixa = 4.00; subsidioPix = 0; }
+            else if (estPV < 100) { taxaFixa = 16.00; }
+            else if (estPV < 200) { taxaFixa = 20.00; }
+            else if (estPV >= 500) { subsidioPix = 0.08; }
+
+            let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
+            let divisor = (1 - comissaoFinal - margem - imposto);
+            
+            if (divisor <= 0) return alert("As taxas somadas ultrapassam 100%!");
+            
+            let precoVenda = (custo + embalagem + taxaFixa) / divisor;
+
+            document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
+            
+            let vNormal = (precoVenda * comissaoFinal) + taxaFixa;
+            let vPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
+            let vImposto = precoVenda * imposto;
+
+            document.getElementById('resLucro').innerText = `R$ ${(precoVenda - vNormal - custo - embalagem - vImposto).toFixed(2)}`;
+            document.getElementById('resLucroPix').innerText = `R$ ${(precoVenda - vPix - custo - embalagem - vImposto).toFixed(2)}`;
+
+            acionarIA(nome, precoVenda.toFixed(2));
+        }
+
+        async function acionarIA(nome, preco) {
+            document.getElementById('resTitulo').innerText = "IA GERANDO... 🔥";
+            try {
+                const response = await fetch('/api/gerarTexto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, preco })
+                });
+                const data = await response.json();
+                let partes = data.split('|').map(p => p.trim());
+                document.getElementById('resTitulo').innerText = (partes[0] || "").toUpperCase();
+                document.getElementById('resDescricao').innerText = partes[1] || "";
+                document.getElementById('resTags').innerText = partes[2] || "";
+            } catch (e) {
+                document.getElementById('resTitulo').innerText = "ERRO NA API";
+            }
+        }
+
+        async function fazerLogout() {
+            await _supabase.auth.signOut();
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>
