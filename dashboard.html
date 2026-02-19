@@ -67,39 +67,47 @@
         const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
 
         // --- TRAVA DE ACESSO ÚNICO ---
-      // --- TRAVA DE ACESSO INTELIGENTE ---
+     // --- TRAVA DE ACESSO ESTÁVEL ---
 async function verificarSessao() {
     const { data: { session } } = await _supabase.auth.getSession();
     if (!session) return;
 
     const userId = session.user.id;
     
-    // Se não tiver um token nesta aba, cria um único para ela
     if (!sessionStorage.getItem('session_token')) {
         sessionStorage.setItem('session_token', 'token_' + Math.random().toString(36).substring(7));
     }
     const meuToken = sessionStorage.getItem('session_token');
 
-    // 1. Busca o token que está no banco agora
-    let { data: perfil } = await _supabase
+    // 1. Busca o perfil
+    let { data: perfil, error } = await _supabase
         .from('profiles')
         .select('last_browser_id, updated_at')
         .eq('id', userId)
         .single();
 
     const agora = new Date().getTime();
-    const ultimaAtividade = perfil?.updated_at ? new Date(perfil.updated_at).getTime() : 0;
-    
-    // REGRA DE OURO: Se o token for diferente, mas a última atividade foi há mais de 20 segundos, 
-    // significa que a aba anterior foi fechada ou travou. Então nós assumimos o controle.
-    const sessaoExpirada = (agora - ultimaAtividade) > 20000; 
 
-    if (perfil && perfil.last_browser_id && perfil.last_browser_id !== meuToken && !sessaoExpirada) {
-        alert("⚠️ CONTA EM USO: Este acesso já está ativo em outra aba ou dispositivo.");
+    // 2. Se o perfil não existir ou houver erro de "não encontrado", nós criamos/resetamos
+    if (error || !perfil) {
+        await _supabase.from('profiles').upsert({ 
+            id: userId, 
+            last_browser_id: meuToken,
+            updated_at: new Date().toISOString() 
+        });
+        return;
+    }
+
+    const ultimaAtividade = new Date(perfil.updated_at).getTime();
+    const tempoInativo = agora - ultimaAtividade;
+
+    // REGRA: Só bloqueia se o token for diferente E a última atividade foi há menos de 30 segundos
+    if (perfil.last_browser_id !== meuToken && tempoInativo < 30000) {
+        alert("⚠️ CONTA EM USO: Detectamos outra aba ativa. Use apenas uma janela.");
         await _supabase.auth.signOut();
         window.location.href = 'index.html';
     } else {
-        // "Batida de ponto": Avisa ao banco que esta aba está ativa agora
+        // "Batida de ponto" - Avisa que esta aba está viva
         await _supabase.from('profiles').upsert({ 
             id: userId, 
             last_browser_id: meuToken,
@@ -108,8 +116,8 @@ async function verificarSessao() {
     }
 }
 
-// Verifica a cada 10 segundos
-setInterval(verificarSessao, 10000);
+// Verifica a cada 15 segundos para não sobrecarregar
+setInterval(verificarSessao, 15000);
 verificarSessao();
 
         // --- CÁLCULOS ---
