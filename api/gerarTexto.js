@@ -14,34 +14,33 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        // Usamos CRASE (`) aqui para envolver todo o texto e evitar erro com aspas
                         content: `Você é um especialista em SEO Shopee Brasil. 
                         Responda seguindo RIGOROSAMENTE este formato: TITULO ### DESCRIÇÃO ### TAGS. 
                         
                         REGRAS DO TÍTULO:
-                        - Deve ter entre 70 e 90 caracteres (CONTE OS CARACTERES ANTES DE RESPONDER).
+                        - Deve ter entre 70 e 90 caracteres.
+                        - PROIBIDO: Não escreva a contagem de caracteres (ex: "80 caracteres") no texto final.
                         - SEM EMOJIS no título.
-                        - NÃO REPITA DE JEITO NENHUM este título anterior: "${evitar}".
-                        - Gere uma variação totalmente nova com diferentes gatilhos mentais.
+                        - NÃO REPITA o título anterior: "${evitar}". Gere uma variação totalmente nova.
                         
                         REGRAS DA DESCRIÇÃO:
                         - Use muitos emojis e organize em tópicos.
-                        
+                        - Não repita os mesmos argumentos da versão anterior: "${evitar}".
+
                         REGRAS DAS TAGS:
-                        - Use # e apenas o separador ###.`
+                        - Gere entre 6 e 10 tags relevantes.
+                        - Use # e separe por espaços.
+
+                        Use APENAS ### como separador entre as três partes.`
                     },
                     { role: "user", content: `Produto: ${nome}, Preço: ${preco}` }
                 ],
-                temperature: 0.8 // Aumentei um pouco para garantir mais criatividade nas variações
+                temperature: 0.8
             })
         });
 
         const data = await response.json();
-
-        // Verificação de segurança caso a OpenAI retorne erro
-        if (data.error) {
-            return res.status(500).json({ error: data.error.message });
-        }
+        if (data.error) return res.status(500).json({ error: data.error.message });
 
         res.status(200).json(data.choices[0].message.content);
     } catch (e) {

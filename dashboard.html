@@ -206,46 +206,81 @@
             }
         }
 
-        async function acionarIA(nome, preco) {
+       // Variável global para evitar repetição
+let ultimoTituloGerado = "";
+
+// Variáveis globais para controle de repetição
+let historicoIA = "";
+
+async function acionarIA(nome, preco) {
     const aT = document.getElementById('containerTitulo');
     const aD = document.getElementById('containerDescricao');
     const aTags = document.getElementById('containerTags');
 
-    aT.innerHTML = `<div class="p-4 bg-slate-50 rounded-2xl animate-pulse text-[10px] text-slate-400 font-black">IA GERANDO...</div>`;
+    aT.innerHTML = `<div class="p-4 bg-slate-50 rounded-2xl animate-pulse text-[10px] text-slate-400 font-black tracking-widest">IA GERANDO NOVA VARIAÇÃO...</div>`;
     
     try {
         const res = await fetch('/api/gerarTexto', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, preco })
+            body: JSON.stringify({ 
+                nome, 
+                preco,
+                evitar: historicoIA // Envia o que já foi gerado para evitar repetição
+            })
         });
+        
         const data = await res.json();
         const p = data.split('###').map(x => x.trim());
 
         if(p.length >= 3) {
-            // TÍTULO + BOTÃO
+            historicoIA = p[0]; // Salva o título atual como referência para a próxima
+
+            // TÍTULO + INDICADOR VISUAL (O indicador não vai para o Clipboard)
             aT.innerHTML = `
                 <div class="relative bg-orange-50 p-4 rounded-2xl border border-orange-100 mb-2">
-                    <h4 class="text-sm font-black text-slate-700 pr-16">${p[0].toUpperCase()}</h4>
-                    <button onclick="copiar('${p[0].replace(/'/g, "\\'")}', this)" class="absolute top-4 right-4 bg-[#ee4d2d] text-white text-[9px] font-black px-3 py-1 rounded-lg">COPIAR</button>
+                    <div class="flex flex-col">
+                        <h4 class="text-sm font-black text-slate-700 pr-16 leading-tight">${p[0].toUpperCase()}</h4>
+                        <span class="text-[8px] font-bold text-orange-400 mt-1 uppercase tracking-tighter">${p[0].length} CARACTERES</span>
+                    </div>
+                    <button onclick="copiar('${p[0].replace(/'/g, "\\'")}', this)" class="absolute top-4 right-4 bg-[#ee4d2d] text-white text-[9px] font-black px-3 py-1 rounded-lg hover:scale-105 transition">COPIAR</button>
                 </div>`;
             
             // DESCRIÇÃO + BOTÃO
             aD.innerHTML = `
                 <div class="relative bg-slate-50 p-6 rounded-3xl text-xs text-slate-600 italic leading-relaxed mb-2">
                     ${p[1]}
-                    <button onclick="copiar(\`${p[1].replace(/`/g, "\\`")}\`, this)" class="block mt-3 bg-slate-800 text-white text-[9px] font-black px-4 py-1.5 rounded-lg w-fit">COPIAR</button>
+                    <button onclick="copiar(\`${p[1].replace(/`/g, "\\`")}\`, this)" class="block mt-4 bg-slate-800 text-white text-[9px] font-black px-4 py-1.5 rounded-lg hover:bg-black transition">COPIAR DESCRIÇÃO</button>
                 </div>`;
             
             // TAGS + BOTÃO
             aTags.innerHTML = `
-                <div class="relative bg-green-50 p-4 rounded-2xl flex items-center justify-between">
-                    <span class="text-[10px] font-black text-green-600">${p[2]}</span>
-                    <button onclick="copiar('${p[2].replace(/'/g, "\\'")}', this)" class="bg-green-600 text-white text-[9px] font-black px-4 py-1.5 rounded-lg">COPIAR</button>
+                <div class="relative bg-green-50 p-4 rounded-2xl flex items-center justify-between border border-green-100">
+                    <span class="text-[10px] font-black text-green-600 tracking-tighter">${p[2]}</span>
+                    <button onclick="copiar('${p[2].replace(/'/g, "\\'")}', this)" class="bg-green-600 text-white text-[9px] font-black px-4 py-1.5 rounded-lg hover:scale-105 transition">COPIAR</button>
                 </div>`;
         }
-    } catch (e) { aT.innerHTML = "Erro IA"; }
+    } catch (e) { 
+        aT.innerHTML = "<div class='text-red-500 font-black text-[10px]'>ERRO AO GERAR TEXTO. TENTE NOVAMENTE.</div>"; 
+    }
 }
+
+function copiar(texto, btn) {
+    navigator.clipboard.writeText(texto).then(() => {
+        const original = btn.innerText;
+        btn.innerText = "OK! ✅";
+        btn.classList.add('bg-green-500');
+        
+        setTimeout(() => { 
+            btn.innerText = original;
+            btn.classList.remove('bg-green-500');
+        }, 2000);
+    }).catch(err => {
+        alert("Erro ao copiar: " + err);
+    });
+}
+
+
 
 function copiar(texto, btn) {
     navigator.clipboard.writeText(texto).then(() => {
