@@ -19,7 +19,7 @@
     <nav class="bg-white border-b border-gray-100 p-4 flex justify-between items-center shadow-sm">
         <span class="text-xl font-black text-[#ee4d2d] uppercase italic">Shopee Booster 🔥</span>
         <div class="flex items-center gap-4">
-            <span id="badgePlano" class="text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter bg-gray-100 text-gray-500 italic border border-gray-200">Plano: Bronze</span>
+            <span id="badgePlano" class="text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter bg-gray-100 text-gray-500 italic border border-gray-200">Plano: Carregando...</span>
             <button onclick="fazerLogout()" class="text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-red-500 transition">Sair</button>
         </div>
     </nav>
@@ -27,71 +27,65 @@
     <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         <div class="lg:col-span-4 space-y-6">
-            <div class="bg-white p-8 card-rounded shadow-xl shadow-gray-200/50 border border-gray-50 space-y-6">
+            <div class="bg-white p-8 card-rounded shadow-xl border border-gray-50 space-y-6">
                 <h2 class="text-2xl font-black text-slate-800 italic uppercase leading-none">Cálculos 2026</h2>
                 
-                <div class="space-y-4">
+                <div class="space-y-4 font-bold text-[10px] uppercase text-slate-400">
                     <div class="space-y-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Nome do Produto</label>
-                        <input type="text" id="nome" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] transition-all font-bold text-slate-700" placeholder="Ex: Toalha de Rosto Mundi">
+                        <label class="ml-2">Nome do Produto</label>
+                        <input type="text" id="nome" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] text-slate-700 font-bold" placeholder="Ex: Toalha de Rosto Mundi">
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Custo R$</label>
-                            <input type="number" id="custo" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] transition-all font-bold" placeholder="0,00">
+                            <label class="ml-2">Custo R$</label>
+                            <input type="number" id="custo" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]" placeholder="0,00">
                         </div>
                         <div class="space-y-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Embalagem R$</label>
-                            <input type="number" id="embalagem" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] transition-all font-bold" placeholder="0,00">
+                            <label class="ml-2">Embalagem R$</label>
+                            <input type="number" id="embalagem" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]" placeholder="0,00">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Margem %</label>
-                            <input type="number" id="margem" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] transition-all font-bold" value="30">
+                            <label class="ml-2">Margem %</label>
+                            <input type="number" id="margem" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]" value="30">
                         </div>
                         <div class="space-y-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Imposto %</label>
-                            <input type="number" id="imposto" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] transition-all font-bold" placeholder="0">
+                            <label class="ml-2">Imposto %</label>
+                            <input type="number" id="imposto" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]" placeholder="0">
                         </div>
                     </div>
 
-                    <label class="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl cursor-pointer border border-orange-100 group">
+                    <div class="space-y-1">
+                        <label class="ml-2">Shopee Ads %</label>
+                        <input type="number" id="ads" class="w-full p-4 bg-orange-50 border-2 border-orange-100 rounded-2xl outline-none focus:border-[#ee4d2d] text-[#ee4d2d]" value="5">
+                        <p id="adsWarning" class="text-[8px] text-orange-600 hidden mt-1 ml-2">* Ads bloqueado no plano Bronze</p>
+                    </div>
+
+                    <label class="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl cursor-pointer border border-orange-100">
                         <input type="checkbox" id="freteGratis" class="w-5 h-5 accent-[#ee4d2d]" checked>
                         <span class="text-[#ee4d2d] font-black uppercase text-[10px] italic">Programa Frete Grátis (+6%)</span>
                     </label>
 
-                    <button onclick="calcularTudo()" class="w-full bg-[#ee4d2d] text-white font-black py-5 rounded-2xl shadow-lg shadow-orange-200 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-sm">Turbinar Anúncio</button>
+                    <button onclick="calcularTudo()" class="w-full bg-[#ee4d2d] text-white font-black py-5 rounded-2xl shadow-lg hover:scale-[1.02] transition-all uppercase tracking-widest text-sm">Turbinar Anúncio</button>
                 </div>
             </div>
 
             <div class="bg-white p-6 card-rounded shadow-lg border border-gray-50">
-                <p class="text-[11px] text-slate-500 font-medium mb-4 leading-relaxed italic">
+                <p class="text-[11px] text-slate-500 font-medium mb-4 italic">
                     Para saber se sua somatória está "saudável", compare sua <strong>Margem de Contribuição</strong> com esta tabela padrão:
                 </p>
                 <div class="overflow-hidden rounded-2xl border border-slate-50">
-                    <table class="w-full text-[10px] text-left">
-                        <thead class="bg-slate-50 text-slate-400 font-black uppercase tracking-tighter">
-                            <tr>
-                                <th class="p-3">Categoria</th>
-                                <th class="p-3">Margem Ideal</th>
-                            </tr>
+                    <table class="w-full text-[10px] text-left uppercase">
+                        <thead class="bg-slate-50 text-slate-400 font-black">
+                            <tr><th class="p-3">Categoria</th><th class="p-3">Margem Ideal</th></tr>
                         </thead>
                         <tbody class="text-slate-700 font-black italic">
-                            <tr class="border-b border-slate-50 hover:bg-slate-50">
-                                <td class="p-3">Eletrônicos</td>
-                                <td class="p-3 text-green-600">10% a 15%</td>
-                            </tr>
-                            <tr class="border-b border-slate-50 hover:bg-slate-50">
-                                <td class="p-3">Moda / Acessórios</td>
-                                <td class="p-3 text-green-600">25% a 40%</td>
-                            </tr>
-                            <tr class="hover:bg-slate-50">
-                                <td class="p-3">Casa e Decoração</td>
-                                <td class="p-3 text-green-600">20% a 30%</td>
-                            </tr>
+                            <tr class="border-b border-slate-50"><td>Eletrônicos</td><td class="text-green-600">10% a 15%</td></tr>
+                            <tr class="border-b border-slate-50"><td>Moda / Acessórios</td><td class="text-green-600">25% a 40%</td></tr>
+                            <tr><td>Casa e Decoração</td><td class="text-green-600">20% a 30%</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -100,16 +94,16 @@
 
         <div class="lg:col-span-8 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 card-rounded border-b-8 border-green-500 shadow-xl shadow-gray-200/50 text-center">
+                <div class="bg-white p-6 card-rounded border-b-8 border-green-500 shadow-xl text-center">
                     <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Preço Venda</span>
                     <p id="resPreco" class="text-4xl font-black text-green-600 mt-2 tracking-tighter">R$ 0,00</p>
                 </div>
-                <div class="bg-white p-6 card-rounded border-b-8 border-blue-500 shadow-xl shadow-gray-200/50 text-center">
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Lucro Padrão</span>
+                <div class="bg-white p-6 card-rounded border-b-8 border-blue-500 shadow-xl text-center">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Lucro Líquido</span>
                     <p id="resLucro" class="text-4xl font-black text-blue-600 mt-2 tracking-tighter">R$ 0,00</p>
                 </div>
-                <div class="bg-white p-6 card-rounded border-b-8 border-purple-600 shadow-xl shadow-gray-200/50 text-center bg-gradient-to-br from-white to-purple-50">
-                    <span class="text-[10px] font-black text-purple-400 uppercase tracking-widest italic">Lucro via Pix (Novidade)</span>
+                <div class="bg-white p-6 card-rounded border-b-8 border-purple-600 shadow-xl text-center">
+                    <span class="text-[10px] font-black text-purple-400 uppercase tracking-widest italic">Lucro via Pix</span>
                     <p id="resLucroPix" class="text-4xl font-black text-purple-700 mt-2 tracking-tighter">R$ 0,00</p>
                 </div>
             </div>
@@ -118,10 +112,11 @@
                 <h3 class="font-black text-slate-800 uppercase text-xs italic flex items-center gap-2">
                     <i class="fas fa-magic text-[#ee4d2d]"></i> Inteligência SEO & Emojis
                 </h3>
-                
-                <div id="containerTitulo"></div>
-                <div id="containerDescricao"></div>
-                <div id="containerTags"></div>
+                <div id="containerSEO">
+                   <div id="containerTitulo"></div>
+                   <div id="containerDescricao"></div>
+                   <div id="containerTags"></div>
+                </div>
             </div>
         </div>
     </main>
@@ -136,28 +131,22 @@
             planoAtivo = perfil?.plano || 'bronze';
             
             const badge = document.getElementById('badgePlano');
-            badge.innerText = `Plano: ${planoAtivo}`;
-            if(planoAtivo !== 'bronze') {
-                badge.classList.replace('bg-gray-100', 'bg-orange-600');
-                badge.classList.replace('text-gray-500', 'text-white');
+            badge.innerText = `Plano: ${planoAtivo.toUpperCase()}`;
+            
+            if(planoAtivo === 'bronze') {
+                document.getElementById('ads').disabled = true;
+                document.getElementById('adsWarning').classList.remove('hidden');
+                document.getElementById('badgePlano').className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-gray-100 text-gray-500 border border-gray-200";
+            } else {
+                document.getElementById('badgePlano').className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-orange-600 text-white shadow-lg";
             }
-        }
-
-        function mostrarToast(msg) {
-            const toast = document.createElement("div");
-            toast.className = "toast-msg fixed bottom-10 right-10 bg-slate-900 text-white px-8 py-4 rounded-3xl shadow-2xl text-[11px] font-black uppercase tracking-[2px] z-[9999] flex items-center gap-4 border-b-4 border-green-500";
-            toast.innerHTML = `<span>${msg}</span> <i class="fas fa-check-circle text-green-400 text-lg"></i>`;
-            document.body.appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = '0.5s'; setTimeout(() => toast.remove(), 500); }, 3000);
         }
 
         function copiar(texto, btn) {
             navigator.clipboard.writeText(texto).then(() => {
                 const original = btn.innerHTML;
-                btn.innerHTML = "COPIADO!";
-                btn.classList.add('bg-green-600');
-                setTimeout(() => { btn.innerHTML = original; btn.classList.remove('bg-green-600'); }, 2000);
-                mostrarToast("CÓDIGO COPIADO COM SUCESSO!");
+                btn.innerHTML = "COPIADO! ✅";
+                setTimeout(() => { btn.innerHTML = original; }, 2000);
             });
         }
 
@@ -168,41 +157,54 @@
             const m = (parseFloat(document.getElementById('margem').value) || 0) / 100;
             const i = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
             const cf = document.getElementById('freteGratis').checked;
+            
+            // Força Ads a 0 se for Bronze
+            let a = planoAtivo === 'bronze' ? 0 : (parseFloat(document.getElementById('ads').value) || 0) / 100;
 
-            if (!n || c <= 0) return alert("Preencha o nome e custo!");
+            if (!n || c <= 0) return alert("Preencha o nome e o custo!");
 
             let estPV = (c + e) * 1.6;
             let comBase = 0.14, taxaF = 26.00, subPix = 0.05;
 
-            // TAXAS MARÇO 2026 (REGRAS IMAGEM)
+            // TAXAS 2026
             if (estPV <= 79.99) { comBase = 0.20; taxaF = 4.00; subPix = 0; }
             else if (estPV <= 99.99) { taxaF = 16.00; }
             else if (estPV <= 199.99) { taxaF = 20.00; }
             else if (estPV >= 500) { subPix = 0.08; }
 
             let comFinal = cf ? (comBase + 0.06) : comBase;
-            let divisor = (1 - comFinal - m - i);
-            if (divisor <= 0) return alert("Margem impeditiva!");
+            let divisor = (1 - comFinal - m - i - a);
+            if (divisor <= 0) return alert("Margem impossível para essas taxas!");
 
             let pv = (c + e + taxaF) / divisor;
-            let lucroP = pv - (pv * comFinal + taxaF) - c - e - (pv * i);
-            let lucroX = pv - (pv * (comFinal - subPix) + taxaF) - c - e - (pv * i);
+            let lucroP = pv - (pv * (comFinal + a) + taxaF) - c - e - (pv * i);
+            let lucroX = pv - (pv * (comFinal + a - subPix) + taxaF) - c - e - (pv * i);
 
             document.getElementById('resPreco').innerText = `R$ ${pv.toFixed(2)}`;
             document.getElementById('resLucro').innerText = `R$ ${lucroP.toFixed(2)}`;
             document.getElementById('resLucroPix').innerText = `R$ ${lucroX.toFixed(2)}`;
 
-            acionarIA(n, pv.toFixed(2));
+            // TRAVA DE PLANO PARA IA
+            if (planoAtivo !== 'bronze') {
+                acionarIA(n, pv.toFixed(2));
+            } else {
+                document.getElementById('containerTitulo').innerHTML = `
+                    <div class="p-8 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 text-center">
+                        <i class="fas fa-lock text-gray-300 text-3xl mb-4"></i>
+                        <p class="font-black text-gray-400 uppercase text-[10px] tracking-widest">
+                            Inteligência Artificial Bloqueada no Plano Bronze.<br>
+                            Faça o upgrade para gerar anúncios automáticos.
+                        </p>
+                    </div>`;
+                document.getElementById('containerDescricao').innerHTML = "";
+                document.getElementById('containerTags').innerHTML = "";
+            }
         }
 
         async function acionarIA(nome, preco) {
             const aT = document.getElementById('containerTitulo');
-            const aD = document.getElementById('containerDescricao');
-            const aG = document.getElementById('containerTags');
-
-            aT.innerHTML = `<div class="p-4 bg-gray-50 rounded-2xl animate-pulse text-[10px] font-black uppercase text-slate-400">Turbinando anúncio...</div>`;
-            aD.innerHTML = ""; aG.innerHTML = "";
-
+            aT.innerHTML = `<div class="p-6 bg-slate-50 rounded-3xl animate-pulse font-black text-[10px] text-slate-400 uppercase tracking-widest">Turbinando Anúncio com IA...</div>`;
+            
             try {
                 const response = await fetch('/api/gerarTexto', {
                     method: 'POST',
@@ -213,29 +215,25 @@
                 const partes = data.split('###').map(p => p.trim());
 
                 if (partes.length >= 3) {
-                    // TITULO
                     aT.innerHTML = `
-                        <div class="relative bg-orange-50/50 p-6 rounded-3xl border border-orange-100 group transition-all">
-                            <h4 class="font-black text-slate-700 uppercase italic pr-24 leading-tight">${partes[0].toUpperCase()}</h4>
-                            <button onclick="copiar('${partes[0].toUpperCase()}', this)" class="absolute top-1/2 -translate-y-1/2 right-4 bg-[#ee4d2d] text-white text-[9px] font-black px-4 py-2 rounded-xl shadow-lg shadow-orange-200 hover:scale-105 transition-all">COPIAR</button>
+                        <div class="relative bg-orange-50/50 p-6 rounded-3xl border border-orange-100 mb-4">
+                            <h4 class="font-black text-slate-700 uppercase italic pr-24 leading-tight text-sm">${partes[0].toUpperCase()}</h4>
+                            <button onclick="copiar('${partes[0].toUpperCase()}', this)" class="absolute top-1/2 -translate-y-1/2 right-4 bg-[#ee4d2d] text-white text-[9px] font-black px-4 py-2 rounded-xl shadow-lg">COPIAR</button>
                         </div>`;
                     
-                    // DESCRICAO
-                    aD.innerHTML = `
-                        <div class="relative bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 group">
+                    document.getElementById('containerDescricao').innerHTML = `
+                        <div class="relative bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 mb-4">
                             <div class="text-xs text-slate-600 leading-relaxed font-medium whitespace-pre-line pr-10 italic">${partes[1]}</div>
-                            <button onclick="copiar(\`${partes[1]}\`, this)" class="absolute top-4 right-4 bg-slate-800 text-white text-[8px] font-black px-3 py-1.5 rounded-lg shadow-xl">COPIAR</button>
-                            <button onclick="copiar(\`${partes[1]}\`, this)" class="w-full mt-8 bg-slate-800 text-white font-black py-4 rounded-2xl text-[10px] uppercase tracking-widest hover:bg-black transition-all">Copiar Descrição Completa</button>
+                            <button onclick="copiar(\`${partes[1]}\`, this)" class="absolute top-4 right-4 bg-slate-800 text-white text-[8px] font-black px-3 py-1.5 rounded-lg">COPIAR</button>
                         </div>`;
 
-                    // TAGS
-                    aG.innerHTML = `
+                    document.getElementById('containerTags').innerHTML = `
                         <div class="relative bg-green-50/50 p-5 rounded-2xl border border-green-100 flex items-center justify-between">
-                            <span class="text-green-600 font-black italic tracking-tighter text-[10px]">${partes[2]}</span>
+                            <span class="text-green-600 font-black italic text-[10px] tracking-tighter">${partes[2]}</span>
                             <button onclick="copiar('${partes[2]}', this)" class="bg-green-600 text-white text-[9px] font-black px-4 py-1.5 rounded-xl">COPIAR</button>
                         </div>`;
                 }
-            } catch (e) { aT.innerHTML = "Erro ao conectar com a IA."; }
+            } catch (e) { aT.innerHTML = "Erro ao gerar anúncio."; }
         }
 
         init();
