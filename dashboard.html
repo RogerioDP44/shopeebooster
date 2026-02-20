@@ -155,42 +155,48 @@
             body: JSON.stringify({ nome, preco })
         });
 
-        const data = await response.json();
-        // Novo separador mais forte para não misturar
-        let partes = data.split('###').map(p => p.trim());
+        if (!response.ok) throw new Error('Falha na resposta');
+
+        const textoCompleto = await response.json();
+        
+        // Separa usando o marcador ###
+        let partes = textoCompleto.split('###').map(p => p.trim());
 
         if (partes.length >= 3) {
-            // Título: Sem emojis e com botão
+            // Título: Sem emojis + Botão de cópia
             tituloDiv.innerHTML = `
-                <div class="flex justify-between items-center">
-                    <span>${partes[0].toUpperCase()}</span>
-                    <button onclick="copiarTexto('${partes[0].toUpperCase()}')" class="bg-orange-600 text-[8px] text-white px-2 py-1 rounded shadow">COPIAR</button>
+                <div class="flex justify-between items-start">
+                    <span class="flex-1">${partes[0].toUpperCase()}</span>
+                    <button onclick="copiarTexto('${partes[0].toUpperCase()}')" class="ml-2 bg-orange-600 text-[10px] text-white px-2 py-1 rounded shadow hover:bg-orange-700">COPIAR</button>
                 </div>`;
             
-            // Descrição: Com emojis e botão
+            // Descrição: Com emojis + Botão de cópia
             descDiv.innerHTML = `
-                <div class="mb-4">${partes[1]}</div>
-                <button onclick="copiarTexto(\`${partes[1]}\`)" class="bg-gray-800 text-[8px] text-white px-2 py-1 rounded shadow">COPIAR DESCRIÇÃO</button>`;
+                <div class="whitespace-pre-line">${partes[1]}</div>
+                <button onclick="copiarTexto(\`${partes[1]}\`)" class="mt-4 w-full bg-gray-800 text-[10px] text-white px-2 py-2 rounded shadow hover:bg-black uppercase font-bold">Copiar Descrição Completa</button>`;
             
-            // Tags: Com botão
+            // Tags: Botão de cópia
             tagsDiv.innerHTML = `
                 <div class="flex justify-between items-center">
                     <span>${partes[2]}</span>
-                    <button onclick="copiarTexto('${partes[2]}')" class="bg-green-600 text-[8px] text-white px-2 py-1 rounded shadow">COPIAR #</button>
+                    <button onclick="copiarTexto('${partes[2]}')" class="ml-2 bg-green-600 text-[10px] text-white px-2 py-1 rounded shadow">COPIAR #</button>
                 </div>`;
+        } else {
+            descDiv.innerText = textoCompleto;
         }
     } catch (e) {
         tituloDiv.innerText = "ERRO AO GERAR ❌";
+        descDiv.innerText = "Verifique sua chave da OpenAI no painel da Vercel.";
         console.error(e);
     }
 }
 
-// Adicione esta função logo abaixo da acionarIA
+// Função para copiar texto para a área de transferência
 function copiarTexto(texto) {
-    navigator.clipboard.writeText(texto);
-    alert("Copiado com sucesso! ✅");
+    navigator.clipboard.writeText(texto).then(() => {
+        alert("Copiado com sucesso! ✅");
+    });
 }
-
         async function fazerLogout() {
             await _supabase.auth.signOut();
             window.location.href = 'index.html';
