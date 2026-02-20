@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
+    
     const { nome, preco } = req.body;
 
     try {
@@ -13,36 +14,28 @@ export default async function handler(req, res) {
                 model: "gpt-4o-mini",
                 messages: [
                     {
-                        role: "system",
-                        content: `Você é um Especialista em SEO e Copywriting para Shopee. 
-                        
-                        REGRAS DO TÍTULO: 
-                        - Máximo 80 caracteres, SEM EMOJIS, foco total em busca orgânica.
-
-                        REGRAS DA DESCRIÇÃO (ORGANIZAÇÃO TOTAL):
-                        - Use parágrafos curtos e pule linhas entre eles.
-                        - Use tópicos com emojis para facilitar a leitura.
-                        - Estrutura obrigatória:
-                          1. Frase de impacto com emoji.
-                          2. Seção "✅ BENEFÍCIOS".
-                          3. Seção "📦 ESPECIFICAÇÕES".
-                          4. Seção "🚀 POR QUE COMPRAR CONOSCO?".
-                        
-                        FORMATO: TITULO | DESCRIÇÃO | TAGS`
+                        role: "system",       
+content: "Você é um especialista em SEO para Shopee Brasil. Responda APENAS no formato: TITULO | DESCRIÇÃO | TAGS. Regras: 1. O TITULO deve ser focado em palavras-chave de busca, com no máximo 120 caracteres e SEM EMOJIS. 2. A DESCRIÇÃO deve usar o método AIDA e conter MUITOS EMOJIS. 3. As TAGS devem ser separadas por vírgula."
                     },
                     {
                         role: "user",
-                        content: `Gere um anúncio profissional para: ${nome}, preço R$ ${preco}.`
+                        content: `Crie um anúncio para: ${nome}, preço R$ ${preco}.`
                     }
                 ],
-                temperature: 0.7
+                temperature: 0.8
             })
         });
 
         const data = await response.json();
-        res.setHeader('Cache-Control', 'no-store');
+        
+        // Se a OpenAI der erro, precisamos avisar o frontend
+        if (data.error) {
+            return res.status(500).json("Erro na chave da OpenAI");
+        }
+
         res.status(200).json(data.choices[0].message.content);
+
     } catch (error) {
-        res.status(500).json("Erro na conexão");
+        res.status(500).json("Erro de conexão");
     }
 }
