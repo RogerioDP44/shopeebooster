@@ -25,21 +25,30 @@
     <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-1 space-y-6">
             <div class="bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 space-y-5 uppercase font-bold text-[10px]">
-                <h2 class="text-xl font-bold text-gray-800 italic uppercase">Cálculos Março 2026</h2>
+                <h2 class="text-xl font-bold text-gray-800 italic uppercase text-[12px]">Cálculos Taxas Março 2026</h2>
                 <div class="space-y-4">
                     <input type="text" id="nome" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none focus:border-orange-500" placeholder="Nome do Produto">
+                    
                     <div class="grid grid-cols-2 gap-4">
                         <input type="number" id="custo" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Custo R$">
                         <input type="number" id="embalagem" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Embalagem R$">
                     </div>
+
                     <div class="grid grid-cols-2 gap-4">
                         <input type="number" id="margem" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" value="30" placeholder="Margem %">
                         <input type="number" id="imposto" class="w-full p-4 border-2 border-gray-50 rounded-2xl outline-none" placeholder="Imposto %">
                     </div>
+
+                    <div class="w-full">
+                        <label class="text-[8px] text-gray-400 ml-2 mb-1 block uppercase">Investimento Ads (Shopee Ads %)</label>
+                        <input type="number" id="ads" class="w-full p-4 border-2 border-orange-50 bg-orange-50/30 rounded-2xl outline-none focus:border-orange-500" value="5" placeholder="Ads %">
+                    </div>
+
                     <label class="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl cursor-pointer">
                         <input type="checkbox" id="freteGratis" class="w-5 h-5 accent-orange-600" checked>
                         <span class="text-orange-900 italic">Programa Frete Grátis (+6%)</span>
                     </label>
+
                     <button onclick="calcularTudo()" class="w-full bg-orange-600 text-white font-black py-5 rounded-2xl shadow-lg hover:bg-orange-700 transition-all uppercase tracking-widest">Turbinar Anúncio</button>
                 </div>
             </div>
@@ -50,27 +59,31 @@
                     <table class="w-full text-[9px] text-left uppercase">
                         <thead class="bg-orange-50 text-orange-900">
                             <tr>
-                                <th class="p-2">Categoria</th>
-                                <th class="p-2">Margem Ideal</th>
+                                <th class="p-2 border-r border-orange-100">Categoria</th>
+                                <th class="p-2 border-r border-orange-100">Margem</th>
+                                <th class="p-2">Sug. Ads</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 font-bold">
                             <tr class="border-b border-gray-50">
                                 <td class="p-2">Eletrônicos</td>
-                                <td class="p-2 text-green-600">10% a 15%</td>
+                                <td class="p-2 text-green-600">10-15%</td>
+                                <td class="p-2 text-orange-500">3-5%</td>
                             </tr>
                             <tr class="border-b border-gray-50">
                                 <td class="p-2">Moda / Acess.</td>
-                                <td class="p-2 text-green-600">25% a 40%</td>
+                                <td class="p-2 text-green-600">25-40%</td>
+                                <td class="p-2 text-orange-500">7-10%</td>
                             </tr>
                             <tr>
-                                <td class="p-2">Casa / Decora.</td>
-                                <td class="p-2 text-green-600">20% a 30%</td>
+                                <td class="p-2">Casa / Decor.</td>
+                                <td class="p-2 text-green-600">20-30%</td>
+                                <td class="p-2 text-orange-500">5-8%</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <p class="text-[8px] text-gray-400 italic leading-tight">* Compare sua Margem de Contribuição com esta tabela para garantir um negócio saudável.</p>
+                <p class="text-[8px] text-gray-400 italic leading-tight">* Valores de Ads variam conforme a competitividade do nicho.</p>
             </div>
         </div>
 
@@ -81,11 +94,11 @@
                     <p id="resPreco" class="text-3xl text-green-600">R$ 0,00</p>
                 </div>
                 <div class="bg-white p-6 rounded-[2rem] border-b-4 border-blue-500 shadow-lg">
-                    <span class="text-[10px] text-gray-400 uppercase">Lucro Padrão</span>
+                    <span class="text-[10px] text-gray-400 uppercase italic">Lucro Líquido (Já com Ads)</span>
                     <p id="resLucro" class="text-3xl text-blue-600">R$ 0,00</p>
                 </div>
                 <div class="bg-white p-6 rounded-[2rem] border-b-4 border-purple-600 shadow-lg bg-purple-50">
-                    <span class="text-[10px] text-purple-400 uppercase italic text-[8px]">Lucro via Pix</span>
+                    <span class="text-[10px] text-purple-400 uppercase italic">Lucro Pix + Ads</span>
                     <p id="resLucroPix" class="text-3xl text-purple-700">R$ 0,00</p>
                 </div>
             </div>
@@ -133,6 +146,7 @@
             const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
             const margemInput = (parseFloat(document.getElementById('margem').value) || 0) / 100;
             const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
+            const adsInput = (parseFloat(document.getElementById('ads').value) || 0) / 100;
             const comFrete = document.getElementById('freteGratis').checked;
 
             if (!nome || custo <= 0) return alert("Preencha os campos corretamente.");
@@ -140,19 +154,26 @@
             let estPV = (custo + embalagem) * 1.6;
             let comBase = 0.14, taxaF = 26.00, subPix = 0.05;
 
+            // FAIXAS MARÇO 2026
             if (estPV <= 79.99) { comBase = 0.20; taxaF = 4.00; subPix = 0; }
             else if (estPV <= 99.99) { taxaF = 16.00; }
             else if (estPV <= 199.99) { taxaF = 20.00; }
             else if (estPV >= 500) { subPix = 0.08; }
 
             let comFinal = comFrete ? (comBase + 0.06) : comBase;
-            let divisor = (1 - comFinal - margemInput - imposto);
-            if (divisor <= 0) return alert("Margem impossível para estas taxas!");
+            
+            // O ADS é uma taxa variável adicional
+            let divisor = (1 - comFinal - margemInput - imposto - adsInput);
+            
+            if (divisor <= 0) return alert("Margem impossível! As taxas e Ads superam o valor do produto.");
 
             let precoVenda = (custo + embalagem + taxaF) / divisor;
+            
             let vImposto = precoVenda * imposto;
-            let lucroP = precoVenda - (precoVenda * comFinal + taxaF) - custo - embalagem - vImposto;
-            let lucroX = precoVenda - (precoVenda * (comFinal - subPix) + taxaF) - custo - embalagem - vImposto;
+            let vAds = precoVenda * adsInput;
+            
+            let lucroP = precoVenda - (precoVenda * comFinal + taxaF) - custo - embalagem - vImposto - vAds;
+            let lucroX = precoVenda - (precoVenda * (comFinal - subPix) + taxaF) - custo - embalagem - vImposto - vAds;
 
             document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
             document.getElementById('resLucro').innerText = `R$ ${lucroP.toFixed(2)}`;
