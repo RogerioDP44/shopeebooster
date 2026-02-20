@@ -14,7 +14,7 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: "Você é um especialista em Shopee. Responda estritamente no formato: TITULO ### DESCRIÇÃO ### TAGS. Regras: Título sem emojis. Descrição com muitos emojis. Tags com #. Use ### como único separador."
+                        content: "Você é um especialista em SEO Shopee. Responda estritamente no formato: TITULO ### DESCRIÇÃO ### TAGS. Regras: Título sem emojis. Descrição com muitos emojis. Tags com #. Use ### como único separador."
                     },
                     { role: "user", content: `Produto: ${nome}, Preço: ${preco}` }
                 ],

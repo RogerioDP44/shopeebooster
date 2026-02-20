@@ -142,14 +142,14 @@
 
 
 
-     async function acionarIA(nome, preco) {
+    async function acionarIA(nome, preco) {
     const tituloDiv = document.getElementById('resTitulo');
     const descDiv = document.getElementById('resDescricao');
     const tagsDiv = document.getElementById('resTags');
 
-    // Limpa tudo antes de começar para evitar duplicados
-    tituloDiv.innerHTML = "Gerando título...";
-    descDiv.innerHTML = "Criando descrição...";
+    // PASSO 1: Limpeza total das áreas de resultado para matar botões antigos
+    tituloDiv.innerHTML = "Processando...";
+    descDiv.innerHTML = "Gerando descrição...";
     tagsDiv.innerHTML = "...";
 
     try {
@@ -159,46 +159,53 @@
             body: JSON.stringify({ nome, preco })
         });
 
-        const texto = await response.json();
-        const partes = texto.split('###').map(p => p.trim());
+        const textoCompleto = await response.json();
+        
+        // Divide o texto pela marcação ###
+        const partes = textoCompleto.split('###').map(p => p.trim());
 
         if (partes.length >= 3) {
-            // Define o conteúdo substituindo o anterior (remove duplicatas)
+            // PASSO 2: Injetar o conteúdo NOVO substituindo o texto de carregamento
+            // Título: Injeta texto + botão lateral
             tituloDiv.innerHTML = `
-                <div class="flex justify-between items-center w-full">
-                    <span class="font-bold">${partes[0].toUpperCase()}</span>
-                    <button onclick="copiarTexto('${partes[0].toUpperCase()}', this)" class="bg-orange-600 text-white text-[10px] px-2 py-1 rounded">COPIAR</button>
+                <div class="flex justify-between items-center w-full gap-2">
+                    <span class="font-bold flex-1">${partes[0].toUpperCase()}</span>
+                    <button onclick="copiarTexto('${partes[0].toUpperCase()}', this)" class="bg-orange-600 text-white text-[10px] px-3 py-1 rounded shadow-sm hover:bg-orange-700 transition-all">COPIAR</button>
                 </div>`;
 
+            // Descrição: Injeta texto + botão inferior
             descDiv.innerHTML = `
-                <div class="mb-4">${partes[1]}</div>
-                <button onclick="copiarTexto(\`${partes[1]}\`, this)" class="w-full bg-gray-800 text-white text-[10px] py-2 rounded uppercase font-bold">Copiar Descrição</button>`;
+                <div class="mb-4 text-gray-700 leading-relaxed">${partes[1]}</div>
+                <button onclick="copiarTexto(\`${partes[1]}\`, this)" class="w-full bg-gray-800 text-white text-[10px] py-2 rounded uppercase font-bold hover:bg-black transition-all">Copiar Descrição Completa</button>`;
 
+            // Tags: Injeta texto + botão lateral
             tagsDiv.innerHTML = `
-                <div class="flex justify-between items-center w-full">
-                    <span>${partes[2]}</span>
-                    <button onclick="copiarTexto('${partes[2]}', this)" class="bg-gray-200 text-gray-700 text-[10px] px-2 py-1 rounded">COPIAR #</button>
+                <div class="flex justify-between items-center w-full gap-2">
+                    <span class="text-blue-600 font-mono flex-1">${partes[2]}</span>
+                    <button onclick="copiarTexto('${partes[2]}', this)" class="bg-gray-200 text-gray-700 text-[10px] px-3 py-1 rounded hover:bg-gray-300">COPIAR #</button>
                 </div>`;
         }
     } catch (e) {
-        tituloDiv.innerHTML = "Erro ao gerar resultados.";
+        tituloDiv.innerHTML = "ERRO NA API ❌";
+        console.error("Erro na geração:", e);
     }
 }
 
-// Função de cópia única e global
-function copiarTexto(texto, botao) {
+// Função de cópia com feedback visual (Impede duplicidade de alerts e botões)
+function copiarTexto(texto, btn) {
     navigator.clipboard.writeText(texto).then(() => {
-        const textoOriginal = botao.innerText;
-        botao.innerText = "COPIADO! ✅";
-        botao.classList.add('bg-green-600');
+        const originalText = btn.innerText;
+        btn.innerText = "COPIADO! ✅";
+        btn.classList.add('bg-green-600');
         
         setTimeout(() => {
-            botao.innerText = textoOriginal;
-            botao.classList.remove('bg-green-600');
+            btn.innerText = originalText;
+            btn.classList.remove('bg-green-600');
         }, 2000);
+    }).catch(err => {
+        console.error('Erro ao copiar:', err);
     });
 }
-
 
         async function fazerLogout() {
             await _supabase.auth.signOut();
