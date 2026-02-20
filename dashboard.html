@@ -54,49 +54,57 @@
                 </div>
             </div>
 
-           <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100 space-y-4">
-    <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 Inteligência SEO & Emojis</h3>
-    
-    <div class="relative group">
-        <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold text-gray-700 border-l-4 border-orange-500 uppercase text-sm min-h-[50px]">
-            Aguardando...
-        </div>
-        <button onclick="copiarTexto('resTitulo')" class="absolute top-2 right-2 bg-orange-600 text-white text-[8px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">COPIAR</button>
-    </div>
+            <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100 space-y-4">
+                <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 Inteligência SEO & Emojis</h3>
+                
+                <div class="relative">
+                    <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold text-gray-700 border-l-4 border-orange-500 uppercase text-sm min-h-[50px] pr-20">
+                        Aguardando...
+                    </div>
+                    <button onclick="copiarTexto('resTitulo')" class="absolute top-2 right-2 bg-orange-600 text-white text-[8px] px-2 py-1 rounded-md hover:bg-orange-700 transition-all">COPIAR</button>
+                </div>
 
-    <div class="relative group">
-        <div id="resDescricao" class="p-4 bg-gray-50 rounded-xl text-xs text-gray-600 border-l-4 border-gray-300 whitespace-pre-line leading-relaxed">
-            ...
-        </div>
-        <button onclick="copiarTexto('resDescricao')" class="absolute top-2 right-2 bg-gray-800 text-white text-[8px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">COPIAR</button>
-    </div>
+                <div class="relative">
+                    <div id="resDescricao" class="p-4 bg-gray-50 rounded-xl text-xs text-gray-600 border-l-4 border-gray-300 whitespace-pre-line leading-relaxed pr-20">
+                        Os detalhes do anúncio aparecerão aqui...
+                    </div>
+                    <button onclick="copiarTexto('resDescricao')" class="absolute top-2 right-2 bg-gray-800 text-white text-[8px] px-2 py-1 rounded-md hover:bg-gray-900 transition-all">COPIAR</button>
+                </div>
 
-    <div id="resTags" class="p-4 bg-green-50 rounded-xl text-[10px] text-green-700 font-mono border-l-4 border-green-500">
-        ...
-    </div>
-</div>
-                <div id="resTags" class="p-4 bg-green-50 rounded-xl text-[10px] text-green-700 font-mono border-l-4 border-green-500">
-                    ...
+                <div class="relative">
+                    <div id="resTags" class="p-4 bg-green-50 rounded-xl text-[10px] text-green-700 font-mono border-l-4 border-green-500 pr-20">
+                        #tags #venda #shopee
+                    </div>
+                    <button onclick="copiarTexto('resTags')" class="absolute top-2 right-2 bg-green-600 text-white text-[8px] px-2 py-1 rounded-md hover:bg-green-700 transition-all">COPIAR</button>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-
-	function copiarTexto(idElemento) {
-    const texto = document.getElementById(idElemento).innerText;
-    navigator.clipboard.writeText(texto).then(() => {
-        const btn = event.target;
-        const originalText = btn.innerText;
-        btn.innerText = "COPIADO! ✅";
-        setTimeout(() => { btn.innerText = originalText; }, 2000);
-    });
-}
-
+        // Configuração Supabase
         const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
 
-        // FUNÇÃO DE CÁLCULO ATUALIZADA 2026
+        // FUNÇÃO ÚNICA PARA COPIAR
+        function copiarTexto(idElemento) {
+            const elemento = document.getElementById(idElemento);
+            const texto = elemento.innerText;
+            
+            navigator.clipboard.writeText(texto).then(() => {
+                const btn = event.target;
+                const originalText = btn.innerText;
+                btn.innerText = "COPIADO! ✅";
+                btn.classList.replace('bg-orange-600', 'bg-green-600');
+                
+                setTimeout(() => { 
+                    btn.innerText = originalText; 
+                    btn.classList.replace('bg-green-600', 'bg-orange-600');
+                }, 2000);
+            }).catch(err => {
+                alert("Erro ao copiar: " + err);
+            });
+        }
+
         async function calcularTudo() {
             const nome = document.getElementById('nome').value;
             const custo = parseFloat(document.getElementById('custo').value) || 0;
@@ -107,7 +115,6 @@
 
             if (!nome || custo <= 0) return alert("Preencha os dados do produto.");
 
-            // Lógica de taxas baseada no preço final estimado
             let estPV = (custo + embalagem) * 1.5;
             let comissaoBase = 0.14; let taxaFixa = 26.00; let subsidioPix = 0.05;
 
@@ -133,41 +140,37 @@
             acionarIA(nome, precoVenda.toFixed(2));
         }
 
-      async function acionarIA(nome, preco) {
-    const tituloDiv = document.getElementById('resTitulo');
-    const descDiv = document.getElementById('resDescricao');
-    const tagsDiv = document.getElementById('resTags');
+        async function acionarIA(nome, preco) {
+            const tituloDiv = document.getElementById('resTitulo');
+            const descDiv = document.getElementById('resDescricao');
+            const tagsDiv = document.getElementById('resTags');
 
-    try {
-        const response = await fetch('/api/gerarTexto', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, preco })
-        });
+            tituloDiv.innerText = "Gerando título...";
+            descDiv.innerText = "Criando descrição otimizada...";
 
-        const data = await response.json();
-        // Divide usando o novo separador mais forte
-        let partes = data.split('[DIVIDIR]').map(p => p.trim());
+            try {
+                const response = await fetch('/api/gerarTexto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, preco })
+                });
 
-        if (partes.length >= 3) {
-            // Remove emojis do título caso a IA ainda envie por erro
-            const tituloLimpo = partes[0].replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
-            
-            tituloDiv.innerHTML = `${tituloLimpo.toUpperCase()} <button onclick="copiar('resTitulo')" class="ml-2 text-[8px] bg-orange-200 px-2 py-1 rounded">COPIAR</button>`;
-            descDiv.innerHTML = `${partes[1]} <br><button onclick="copiar('resDescricao')" class="mt-4 text-[8px] bg-gray-200 px-2 py-1 rounded">COPIAR DESCRIÇÃO</button>`;
-            tagsDiv.innerText = partes[2];
+                const data = await response.json();
+                let partes = data.split('[DIVIDIR]').map(p => p.trim());
+
+                if (partes.length >= 3) {
+                    // Limpa emojis apenas do título se necessário
+                    const tituloLimpo = partes[0].replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+                    
+                    tituloDiv.innerText = tituloLimpo.toUpperCase();
+                    descDiv.innerText = partes[1];
+                    tagsDiv.innerText = partes[2];
+                }
+            } catch (e) {
+                console.error("Erro na IA:", e);
+                tituloDiv.innerText = "Erro ao gerar texto.";
+            }
         }
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-// Função auxiliar para copiar
-function copiar(id) {
-    const texto = document.getElementById(id).innerText.replace('COPIAR', '').replace('COPIAR DESCRIÇÃO', '');
-    navigator.clipboard.writeText(texto.trim());
-    alert("Copiado com sucesso! 🔥");
-}
 
         async function fazerLogout() {
             await _supabase.auth.signOut();
