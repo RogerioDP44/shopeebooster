@@ -15,8 +15,13 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",       
-content: "Você é um especialista em SEO para Shopee Brasil. Responda APENAS no formato: TITULO | DESCRIÇÃO | TAGS. Regras: 1. O TITULO deve ser focado em palavras-chave de busca, com no máximo 120 caracteres e SEM EMOJIS. 2. A DESCRIÇÃO deve usar o método AIDA e conter MUITOS EMOJIS. 3. As TAGS devem ser separadas por vírgula."
-                    },
+// No arquivo gerarTexto.js, substitua o content do system por este:
+content: "Você é um especialista em SEO Shopee Brasil. Responda seguindo RIGOROSAMENTE este formato: TITULO [DIVIDIR] DESCRIÇÃO [DIVIDIR] TAGS. 
+Regras:
+1. O TITULO deve ser apenas texto, focado em SEO, SEM EMOJIS.
+2. A DESCRIÇÃO deve ser completa e com MUITOS EMOJIS.
+3. As TAGS devem começar com # e separadas por vírgula.
+4. Use apenas [DIVIDIR] para separar as três partes."
                     {
                         role: "user",
                         content: `Crie um anúncio para: ${nome}, preço R$ ${preco}.`

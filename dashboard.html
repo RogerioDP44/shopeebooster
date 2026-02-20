@@ -133,15 +133,10 @@
             acionarIA(nome, precoVenda.toFixed(2));
         }
 
-       async function acionarIA(nome, preco) {
-    // 1. Reseta os campos para o usuário saber que começou
+      async function acionarIA(nome, preco) {
     const tituloDiv = document.getElementById('resTitulo');
     const descDiv = document.getElementById('resDescricao');
     const tagsDiv = document.getElementById('resTags');
-
-    tituloDiv.innerText = "GERANDO TÍTULO... ⏳";
-    descDiv.innerText = "CRIANDO DESCRIÇÃO COM EMOJIS... ✨";
-    tagsDiv.innerText = "...";
 
     try {
         const response = await fetch('/api/gerarTexto', {
@@ -150,27 +145,28 @@
             body: JSON.stringify({ nome, preco })
         });
 
-        if (!response.ok) throw new Error('Falha na resposta');
-
         const data = await response.json();
-        
-        // Divide o texto pela barra "|"
-        let partes = data.split('|').map(p => p.trim());
+        // Divide usando o novo separador mais forte
+        let partes = data.split('[DIVIDIR]').map(p => p.trim());
 
         if (partes.length >= 3) {
-            tituloDiv.innerText = partes[0].toUpperCase();
-            descDiv.innerText = partes[1];
+            // Remove emojis do título caso a IA ainda envie por erro
+            const tituloLimpo = partes[0].replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+            
+            tituloDiv.innerHTML = `${tituloLimpo.toUpperCase()} <button onclick="copiar('resTitulo')" class="ml-2 text-[8px] bg-orange-200 px-2 py-1 rounded">COPIAR</button>`;
+            descDiv.innerHTML = `${partes[1]} <br><button onclick="copiar('resDescricao')" class="mt-4 text-[8px] bg-gray-200 px-2 py-1 rounded">COPIAR DESCRIÇÃO</button>`;
             tagsDiv.innerText = partes[2];
-        } else {
-            // Se a IA não usar o separador, coloca tudo na descrição
-            descDiv.innerText = data;
-            tituloDiv.innerText = "ANÚNCIO GERADO";
         }
     } catch (e) {
-        tituloDiv.innerText = "ERRO AO GERAR ❌";
-        descDiv.innerText = "Verifique se a chave da OpenAI está correta na Vercel.";
         console.error(e);
     }
+}
+
+// Função auxiliar para copiar
+function copiar(id) {
+    const texto = document.getElementById(id).innerText.replace('COPIAR', '').replace('COPIAR DESCRIÇÃO', '');
+    navigator.clipboard.writeText(texto.trim());
+    alert("Copiado com sucesso! 🔥");
 }
 
         async function fazerLogout() {
