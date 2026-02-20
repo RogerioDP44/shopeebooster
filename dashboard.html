@@ -177,46 +177,60 @@
         }
 
         // --- LÓGICA DO DASHBOARD ---
-        async function init() {
-            try {
-                const { data: { user } } = await _supabase.auth.getUser();
-                if(!user) return window.location.href = 'index.html';
-                const { data: perfil } = await _supabase.from('profiles').select('plano, data_expiracao').eq('id', user.id).single();
-                globalPlano = perfil?.plano || 'bronze';
-                const dataExp = perfil?.data_expiracao ? new Date(perfil.data_expiracao) : null;
-                const hoje = new Date();
-                let bloqueado = (globalPlano === 'bronze' || (dataExp && hoje > dataExp));
-                atualizarInterface(bloqueado, globalPlano);
-            } catch (e) {
-                document.getElementById('badgePlano').innerText = "ERRO AO CARREGAR";
-            }
-        }
+        // --- LÓGICA DO DASHBOARD CORRIGIDA ---
+async function init() {
+    try {
+        const { data: { user } } = await _supabase.auth.getUser();
+        if(!user) return window.location.href = 'index.html';
+        
+        const { data: perfil } = await _supabase.from('profiles').select('plano, data_expiracao').eq('id', user.id).single();
+        globalPlano = perfil?.plano || 'bronze';
+        
+        const dataExp = perfil?.data_expiracao ? new Date(perfil.data_expiracao) : null;
+        const hoje = new Date();
+        
+        // Agora "bloqueado" só acontece se a data de expiração passou
+        let acessoExpirado = (dataExp && hoje > dataExp);
+        
+        atualizarInterface(acessoExpirado, globalPlano);
+    } catch (e) {
+        document.getElementById('badgePlano').innerText = "ERRO AO CARREGAR";
+    }
+}
 
-        function atualizarInterface(bloqueado, plano) {
-            const badge = document.getElementById('badgePlano');
-            const btn = document.getElementById('btnCalcular');
-            const ids = ['nome', 'custo', 'embalagem', 'margem', 'imposto', 'ads', 'freteGratis'];
+function atualizarInterface(expirado, plano) {
+    const badge = document.getElementById('badgePlano');
+    const btn = document.getElementById('btnCalcular');
+    const campoAds = document.getElementById('ads');
+    const adsWarning = document.getElementById('adsWarning');
+    const idsParaBloquearSeExpirado = ['nome', 'custo', 'embalagem', 'margem', 'imposto', 'ads', 'freteGratis'];
 
-            if (bloqueado) {
-                badge.innerText = "ACESSO BLOQUEADO 🔒";
-                badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-red-100 text-red-600 border border-red-200";
-                ids.forEach(id => {
-                    const el = document.getElementById(id);
-                    if(el) { el.disabled = true; el.parentElement.classList.add('locked-field'); }
-                });
-                btn.disabled = true;
-                btn.innerHTML = "REATIVE SUA ASSINATURA";
-                btn.className = "w-full bg-gray-400 text-white font-black py-5 rounded-2xl cursor-not-allowed uppercase text-sm";
-                document.getElementById('containerTitulo').innerHTML = `<div class="p-8 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200 text-center"><p class="font-black text-slate-400 uppercase text-[10px]">Cálculos e IA bloqueados.</p><a href="upgrade.html" class="mt-4 inline-block bg-[#ee4d2d] text-white px-6 py-2 rounded-xl text-[10px] font-black">VER PLANOS</a></div>`;
-            } else {
-                badge.innerText = `Plano: ${plano.toUpperCase()}`;
-                badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-orange-600 text-white shadow-lg";
-                if(plano === 'iniciante') {
-                    document.getElementById('ads').disabled = true;
-                    document.getElementById('adsWarning').classList.remove('hidden');
-                }
-            }
+    if (expirado) {
+        // Bloqueio TOTAL apenas se o plano vencer
+        badge.innerText = "ACESSO EXPIRADO 🔒";
+        badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-red-100 text-red-600 border border-red-200";
+        idsParaBloquearSeExpirado.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) { el.disabled = true; el.parentElement.classList.add('locked-field'); }
+        });
+        btn.disabled = true;
+        btn.innerHTML = "REATIVE SUA ASSINATURA";
+        btn.className = "w-full bg-gray-400 text-white font-black py-5 rounded-2xl cursor-not-allowed uppercase text-sm";
+    } else {
+        // Se não expirou, libera a calculadora
+        badge.innerText = `Plano: ${plano.toUpperCase()}`;
+        badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-orange-600 text-white shadow-lg";
+
+        // Se for BRONZE ou INICIANTE, bloqueia especificamente o ADS e mostra o aviso
+        if(plano === 'bronze' || plano === 'iniciante') {
+            campoAds.disabled = true;
+            campoAds.value = 0; // Garante que o Ads não entre no cálculo
+            campoAds.parentElement.classList.add('locked-field');
+            adsWarning.classList.remove('hidden');
+            adsWarning.innerText = `* Ads bloqueado no plano ${plano.toUpperCase()}`;
         }
+    }
+}
 
         async function calcularTudo() {
             const n = document.getElementById('nome').value;
