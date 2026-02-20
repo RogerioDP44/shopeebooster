@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
-    const { nome, preco } = req.body;
+    const { nome, preco, evitar } = req.body;
 
     try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
