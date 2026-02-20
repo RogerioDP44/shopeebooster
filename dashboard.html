@@ -2,7 +2,6 @@
 <html lang="pt-br">
 <head>
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1356/1356479.png" type="image/png">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopee Booster - Dashboard Profissional</title>
@@ -13,24 +12,56 @@
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .card-rounded { border-radius: 2.5rem; }
         .locked-field { pointer-events: none; opacity: 0.5; filter: grayscale(1); background-color: #f1f5f9 !important; }
+        
+        /* Animações */
         @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .toast-msg { animation: slideInUp 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
+        
+        @keyframes rocketLaunch {
+            0% { transform: translate(-50%, 100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(-50%, -100vh) scale(1.2); opacity: 0; }
+        }
+
+        .rocket-fly {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            font-size: 5rem;
+            z-index: 10000;
+            pointer-events: none;
+            animation: rocketLaunch 1.5s ease-in forwards;
+        }
+
+        .toast-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #22c55e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 15px;
+            font-weight: 900;
+            font-size: 10px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 10001;
+            animation: slideInUp 0.3s ease-out;
+        }
     </style>
 </head>
-<body class="bg-[#f8fafc] min-h-screen font-sans">
+<body class="bg-[#f8fafc] min-h-screen font-sans"> 
+    <div id="rocket-container"></div>
     
     <nav class="bg-white border-b border-gray-100 p-4 flex justify-between items-center shadow-sm">
-    <span class="text-xl font-black text-[#ee4d2d] uppercase italic">Shopee Booster 🔥</span>
-    <div class="flex items-center gap-6">
-        <a href="tutorial.html" class="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#ee4d2d] transition-all flex items-center gap-2">
-            <i class="fas fa-question-circle"></i> Como Usar
-        </a>
-        
-        <span id="badgePlano" class="text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter bg-gray-100 text-gray-500 italic border border-gray-200">Plano: Carregando...</span>
-        
-        <button onclick="fazerLogout()" class="text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-red-500 transition">Sair</button>
-    </div>
-</nav>
+        <span class="text-xl font-black text-[#ee4d2d] uppercase italic">Shopee Booster 🔥</span>
+        <div class="flex items-center gap-6">
+            <a href="tutorial.html" class="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#ee4d2d] transition-all flex items-center gap-2">
+                <i class="fas fa-question-circle"></i> Como Usar
+            </a>
+            <span id="badgePlano" class="text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter bg-gray-100 text-gray-500 italic border border-gray-200">Plano: Carregando...</span>
+            <button onclick="fazerLogout()" class="text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-red-500 transition">Sair</button>
+        </div>
+    </nav>
 
     <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div class="lg:col-span-4 space-y-6">
@@ -125,6 +156,24 @@
         let globalPlano = 'bronze';
         let historicoIA = "";
 
+        // FUNÇÕES DE EFEITO VISUAL
+        function mostrarToast(msg) {
+            const t = document.createElement('div');
+            t.className = 'toast-success';
+            t.innerHTML = `<i class="fas fa-check-circle mr-2"></i> ${msg}`;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        function animarFoguete() {
+            const c = document.getElementById('rocket-container');
+            const r = document.createElement('div');
+            r.className = 'rocket-fly';
+            r.innerHTML = '🚀';
+            c.appendChild(r);
+            setTimeout(() => r.remove(), 1500);
+        }
+
         async function init() {
             try {
                 const { data: { user } } = await _supabase.auth.getUser();
@@ -177,6 +226,9 @@
 
             if (!n || c <= 0) return alert("Preencha o nome e o custo!");
 
+            // DISPARA O FOGUETE NA DECOLAGEM DO CÁLCULO
+            animarFoguete();
+
             let estPV = (c + e) * 1.6;
             let comBase = 0.14, taxaF = 26.00, subPix = 0.05;
             if (estPV <= 79.99) { comBase = 0.20; taxaF = 4.00; subPix = 0; }
@@ -207,7 +259,7 @@
             const aT = document.getElementById('containerTitulo');
             const aD = document.getElementById('containerDescricao');
             const aTags = document.getElementById('containerTags');
-            aT.innerHTML = `<div class="p-4 bg-slate-50 rounded-2xl animate-pulse text-[10px] text-slate-400 font-black">GERANDO...</div>`;
+            aT.innerHTML = `<div class="p-4 bg-slate-50 rounded-2xl animate-pulse text-[10px] text-slate-400 font-black">IA PROCESSANDO...</div>`;
             
             try {
                 const res = await fetch('/api/gerarTexto', {
@@ -228,6 +280,7 @@
 
         function copiar(texto, btn) {
             navigator.clipboard.writeText(texto).then(() => {
+                mostrarToast("Copiado com sucesso!"); // DISPARA O BALÃO VERDE
                 const original = btn.innerText;
                 btn.innerText = "OK! ✅";
                 btn.style.backgroundColor = "#22c55e";
