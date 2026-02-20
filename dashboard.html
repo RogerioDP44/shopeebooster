@@ -81,132 +81,113 @@
         </div>
     </main>
 
-    <script>
-        // Configuração Supabase
-        const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
+   <script>
+    // Configuração Supabase
+    const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
 
-        // FUNÇÃO ÚNICA PARA COPIAR
-        function copiarTexto(idElemento) {
-            const elemento = document.getElementById(idElemento);
-            const texto = elemento.innerText;
-            
-            navigator.clipboard.writeText(texto).then(() => {
-                const btn = event.target;
+    // FUNÇÃO DE CÓPIA UNIFICADA (Lida com cliques nos botões injetados e fixos)
+    function copiarTexto(valor, btn) {
+        let textoParaCopiar = "";
+
+        // Se o primeiro argumento for um ID de elemento (string), pega o texto dele
+        // Se não, usa o próprio valor passado (texto direto)
+        if (typeof valor === 'string' && document.getElementById(valor)) {
+            textoParaCopiar = document.getElementById(valor).innerText.replace("COPIAR", "").trim();
+        } else {
+            textoParaCopiar = valor;
+        }
+
+        navigator.clipboard.writeText(textoParaCopiar).then(() => {
+            // Se o botão foi passado como segundo argumento (this)
+            if (btn) {
                 const originalText = btn.innerText;
                 btn.innerText = "COPIADO! ✅";
-                btn.classList.replace('bg-orange-600', 'bg-green-600');
+                const originalColor = btn.className;
+                btn.className = btn.className.replace('bg-orange-600', 'bg-green-600').replace('bg-gray-800', 'bg-green-600');
                 
                 setTimeout(() => { 
                     btn.innerText = originalText; 
-                    btn.classList.replace('bg-green-600', 'bg-orange-600');
+                    btn.className = originalColor;
                 }, 2000);
-            }).catch(err => {
-                alert("Erro ao copiar: " + err);
-            });
-        }
-
-        async function calcularTudo() {
-            const nome = document.getElementById('nome').value;
-            const custo = parseFloat(document.getElementById('custo').value) || 0;
-            const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
-            const margem = (parseFloat(document.getElementById('margem').value) || 0) / 100;
-            const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
-            const comFrete = document.getElementById('freteGratis').checked;
-
-            if (!nome || custo <= 0) return alert("Preencha os dados do produto.");
-
-            let estPV = (custo + embalagem) * 1.5;
-            let comissaoBase = 0.14; let taxaFixa = 26.00; let subsidioPix = 0.05;
-
-            if (estPV < 80) { comissaoBase = 0.20; taxaFixa = 4.00; subsidioPix = 0; }
-            else if (estPV < 100) { taxaFixa = 16.00; }
-            else if (estPV < 200) { taxaFixa = 20.00; }
-            else if (estPV >= 500) { subsidioPix = 0.08; }
-
-            let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
-            let divisor = (1 - comissaoFinal - margem - imposto);
-            if (divisor <= 0) return alert("As taxas superam o preço!");
-            
-            let precoVenda = (custo + embalagem + taxaFixa) / divisor;
-
-            document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
-            let vNormal = (precoVenda * comissaoFinal) + taxaFixa;
-            let vPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
-            let vImposto = precoVenda * imposto;
-
-            document.getElementById('resLucro').innerText = `R$ ${(precoVenda - vNormal - custo - embalagem - vImposto).toFixed(2)}`;
-            document.getElementById('resLucroPix').innerText = `R$ ${(precoVenda - vPix - custo - embalagem - vImposto).toFixed(2)}`;
-
-            acionarIA(nome, precoVenda.toFixed(2));
-        }
-
-
-
-   async function acionarIA(nome, preco) {
-    // Referências das divs onde os resultados aparecem
-    const tituloDiv = document.getElementById('resTitulo');
-    const descDiv = document.getElementById('resDescricao');
-    const tagsDiv = document.getElementById('resTags');
-
-    // LIMPEZA TOTAL: Isso mata qualquer botão duplicado antes de começar
-    tituloDiv.innerHTML = "<span class='text-gray-400'>Gerando...</span>";
-    descDiv.innerHTML = "<span class='text-gray-400'>Criando descrição...</span>";
-    tagsDiv.innerHTML = "...";
-
-    try {
-        const response = await fetch('/api/gerarTexto', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, preco })
+            }
+        }).catch(err => {
+            console.error("Erro ao copiar: ", err);
         });
-
-        const textoCompleto = await response.json();
-        const partes = textoCompleto.split('###').map(p => p.trim());
-
-        if (partes.length >= 3) {
-            // INJETANDO TÍTULO (O .innerHTML substitui tudo, então não duplica)
-            tituloDiv.innerHTML = `
-                <div class="flex justify-between items-center w-full">
-                    <span class="font-bold flex-1">${partes[0].toUpperCase()}</span>
-                    <button onclick="copiarTexto('${partes[0].toUpperCase()}', this)" class="bg-orange-600 text-white text-[10px] px-2 py-1 rounded shadow-sm">COPIAR</button>
-                </div>`;
-
-            // INJETANDO DESCRIÇÃO
-            descDiv.innerHTML = `
-                <div class="mb-4 whitespace-pre-line text-gray-700">${partes[1]}</div>
-                <button onclick="copiarTexto(\`${partes[1]}\`, this)" class="w-full bg-gray-800 text-white text-[10px] py-2 rounded uppercase font-bold hover:bg-black">Copiar Descrição</button>`;
-
-            // INJETANDO TAGS
-            tagsDiv.innerHTML = `
-                <div class="flex justify-between items-center w-full">
-                    <span class="text-orange-600 font-mono">${partes[2]}</span>
-                    <button onclick="copiarTexto('${partes[2]}', this)" class="bg-gray-200 text-gray-600 text-[10px] px-2 py-1 rounded">COPIAR #</button>
-                </div>`;
-        }
-    } catch (e) {
-        tituloDiv.innerHTML = "Erro ao conectar com a IA.";
-        console.error(e);
     }
-}
 
-// Função de cópia única
-function copiarTexto(texto, btn) {
-    navigator.clipboard.writeText(texto).then(() => {
-        const original = btn.innerText;
-        btn.innerText = "COPIADO! ✅";
-        btn.classList.add('bg-green-600');
-        setTimeout(() => {
-            btn.innerText = original;
-            btn.classList.remove('bg-green-600');
-        }, 2000);
-    });
-}
+    async function calcularTudo() {
+        const nome = document.getElementById('nome').value;
+        const custo = parseFloat(document.getElementById('custo').value) || 0;
+        const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
+        const margem = (parseFloat(document.getElementById('margem').value) || 0) / 100;
+        const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
+        const comFrete = document.getElementById('freteGratis').checked;
 
+        if (!nome || custo <= 0) return alert("Preencha os dados do produto.");
 
-        async function fazerLogout() {
-            await _supabase.auth.signOut();
-            window.location.href = 'index.html';
+        let estPV = (custo + embalagem) * 1.5;
+        let comissaoBase = 0.14; let taxaFixa = 26.00; let subsidioPix = 0.05;
+
+        if (estPV < 80) { comissaoBase = 0.20; taxaFixa = 4.00; subsidioPix = 0; }
+        else if (estPV < 100) { taxaFixa = 16.00; }
+        else if (estPV < 200) { taxaFixa = 20.00; }
+        else if (estPV >= 500) { subsidioPix = 0.08; }
+
+        let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
+        let divisor = (1 - comissaoFinal - margem - imposto);
+        if (divisor <= 0) return alert("As taxas superam o preço!");
+        
+        let precoVenda = (custo + embalagem + taxaFixa) / divisor;
+
+        document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
+        let vNormal = (precoVenda * comissaoFinal) + taxaFixa;
+        let vPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
+        let vImposto = precoVenda * imposto;
+
+        document.getElementById('resLucro').innerText = `R$ ${(precoVenda - vNormal - custo - embalagem - vImposto).toFixed(2)}`;
+        document.getElementById('resLucroPix').innerText = `R$ ${(precoVenda - vPix - custo - embalagem - vImposto).toFixed(2)}`;
+
+        acionarIA(nome, precoVenda.toFixed(2));
+    }
+
+    async function acionarIA(nome, preco) {
+        const tituloDiv = document.getElementById('resTitulo');
+        const descDiv = document.getElementById('resDescricao');
+        const tagsDiv = document.getElementById('resTags');
+
+        // Limpa e prepara para novos dados
+        tituloDiv.innerHTML = "<span class='text-gray-400'>Gerando...</span>";
+        descDiv.innerHTML = "<span class='text-gray-400'>Criando descrição...</span>";
+        tagsDiv.innerHTML = "...";
+
+        try {
+            const response = await fetch('/api/gerarTexto', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, preco })
+            });
+
+            const textoCompleto = await response.json();
+            const partes = textoCompleto.split('###').map(p => p.trim());
+
+            if (partes.length >= 3) {
+                // TÍTULO: Note que removemos o botão daqui para usar o botão fixo do HTML
+                tituloDiv.innerText = partes[0].toUpperCase();
+                // DESCRIÇÃO
+                descDiv.innerText = partes[1];
+                // TAGS
+                tagsDiv.innerText = partes[2];
+            }
+        } catch (e) {
+            tituloDiv.innerHTML = "Erro ao conectar com a IA.";
+            console.error(e);
         }
-    </script>
+    }
+
+    async function fazerLogout() {
+        await _supabase.auth.signOut();
+        window.location.href = 'index.html';
+    }
+</script>
 </body>
 </html>
