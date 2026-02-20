@@ -55,7 +55,7 @@
             </div>
 
             <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100 space-y-4">
-                <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 Inteligência SEO & Emojis</h3>
+                <h3 class="font-black text-gray-800 uppercase text-xs italic">🪄 Inteligência SEO SISMATIC</h3>
                 
                 <div class="relative">
                     <div id="resTitulo" class="p-4 bg-orange-50 rounded-xl font-bold text-gray-700 border-l-4 border-orange-500 uppercase text-sm min-h-[50px] pr-20">
@@ -125,7 +125,7 @@
         setTimeout(() => { toast.remove(); }, 3000);
     }
 
-   async function calcularTudo() {
+  async function calcularTudo() {
     const nome = document.getElementById('nome').value;
     const custo = parseFloat(document.getElementById('custo').value) || 0;
     const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
@@ -135,47 +135,65 @@
 
     if (!nome || custo <= 0) return alert("Preencha os dados do produto.");
 
-    // --- LÓGICA DE PRECIFICAÇÃO SHOPEE 2026 ---
-    // Estimativa de PV para definir a faixa de comissão
-    let estPV = (custo + embalagem) * 1.5;
-    let comissaoBase = 0.14; 
-    let taxaFixa = 20.00; // Taxa padrão para produtos acima de R$ 100
-    let subsidioPix = 0.05; // 5% de subsídio médio em 2026
+    // 1. Estimativa inicial para enquadramento na faixa
+    let estPV = (custo + embalagem) * 1.6; 
+    
+    let comissaoBase = 0.14;
+    let taxaFixa = 0;
+    let subsidioPix = 0.05;
 
-    // Ajuste de faixas de preço
-    if (estPV < 79) {
-        comissaoBase = 0.20; // Comissão maior para produtos baratos
+    // 2. Aplicação das Regras de Faixa Março/2026
+    if (estPV <= 79.99) {
+        comissaoBase = 0.20;
         taxaFixa = 4.00;
-        subsidioPix = 0;
-    } else if (estPV < 150) {
-        taxaFixa = 15.00;
+        subsidioPix = 0; // Geralmente sem subsídio em faixas muito baixas, ou mantenha 0.05 se preferir
+    } else if (estPV >= 80 && estPV <= 99.99) {
+        comissaoBase = 0.14;
+        taxaFixa = 16.00;
+        subsidioPix = 0.05;
+    } else if (estPV >= 100 && estPV <= 199.99) {
+        comissaoBase = 0.14;
+        taxaFixa = 20.00;
+        subsidioPix = 0.05;
+    } else if (estPV >= 200 && estPV <= 499.99) {
+        comissaoBase = 0.14;
+        taxaFixa = 26.00;
+        subsidioPix = 0.05;
+    } else if (estPV >= 500) {
+        comissaoBase = 0.14;
+        taxaFixa = 26.00;
+        subsidioPix = 0.08; // Subsídio maior conforme solicitado
     }
 
-    // Adiciona 6% se participar do programa de Frete Grátis
+    // 3. Taxa de Frete Grátis (+6% se ativo)
     let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
 
-    // Fórmula de Preço de Venda: PV = (Custo + Embalagem + TaxaFixa) / (1 - Comissão - Margem - Imposto)
+    // 4. Cálculo do Preço de Venda Final (Margem sobre o Preço de Venda)
+    // Fórmula: PV = (Custo + Embalagem + TaxaFixa) / (1 - Comissão - Margem - Imposto)
     let divisor = (1 - comissaoFinal - margemDesejada - imposto);
     
-    if (divisor <= 0) return alert("As taxas e margem somadas são muito altas!");
+    if (divisor <= 0) return alert("As taxas impedem o cálculo desta margem!");
 
     let precoVenda = (custo + embalagem + taxaFixa) / divisor;
 
-    // --- CÁLCULO DOS RESULTADOS ---
-    let valorComissaoNormal = (precoVenda * comissaoFinal) + taxaFixa;
-    let valorComissaoPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
-    let valorImposto = precoVenda * imposto;
+    // 5. Cálculos de Lucro
+    let vComissaoNormal = (precoVenda * comissaoFinal) + taxaFixa;
+    let vComissaoPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
+    let vImpostoTotal = precoVenda * imposto;
 
-    let lucroPadrao = precoVenda - valorComissaoNormal - custo - embalagem - valorImposto;
-    let lucroPix = precoVenda - valorComissaoPix - custo - embalagem - valorImposto;
+    let lucroPadrao = precoVenda - vComissaoNormal - custo - embalagem - vImpostoTotal;
+    let lucroPix = precoVenda - vComissaoPix - custo - embalagem - vImpostoTotal;
 
-    // --- EXIBIÇÃO NA TELA ---
+    // 6. Exibição nos cards
     document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
     document.getElementById('resLucro').innerText = `R$ ${lucroPadrao.toFixed(2)}`;
     document.getElementById('resLucroPix').innerText = `R$ ${lucroPix.toFixed(2)}`;
 
-    // Dispara a IA para gerar o SEO com o preço calculado
+    // 7. Chamada da IA para SEO (Sem emojis no título, apenas na descrição)
     acionarIA(nome, precoVenda.toFixed(2));
+    
+    // Feedback de confirmação
+    mostrarAviso("Cálculo realizado com as taxas de Março/2026!");
 }
 
     async function acionarIA(nome, preco) {
