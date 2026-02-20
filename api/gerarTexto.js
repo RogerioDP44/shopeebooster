@@ -14,7 +14,7 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: "Você é um especialista em SEO Shopee. Responda estritamente no formato: TITULO ### DESCRIÇÃO ### TAGS. Regras: Título sem emojis. Descrição com muitos emojis. Tags com #. Use ### como único separador."
+                        content: "Você é um especialista em SEO Shopee Brasil. Responda seguindo exatamente este formato: TITULO ### DESCRIÇÃO ### TAGS. Regras: 1. O TITULO deve ser SEM EMOJIS. 2. A DESCRIÇÃO deve ter muitos emojis. 3. As TAGS devem ter #. Use ### para separar."
                     },
                     { role: "user", content: `Produto: ${nome}, Preço: ${preco}` }
                 ],
@@ -25,6 +25,6 @@ export default async function handler(req, res) {
         const data = await response.json();
         res.status(200).json(data.choices[0].message.content);
     } catch (e) {
-        res.status(500).json({ error: "Erro na API" });
+        res.status(500).json({ error: "Erro interno" });
     }
 }
