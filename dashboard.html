@@ -125,35 +125,58 @@
         setTimeout(() => { toast.remove(); }, 3000);
     }
 
-    async function calcularTudo() {
-        const nome = document.getElementById('nome').value;
-        const custo = parseFloat(document.getElementById('custo').value) || 0;
-        const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
-        const margem = (parseFloat(document.getElementById('margem').value) || 0) / 100;
-        const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
-        const comFrete = document.getElementById('freteGratis').checked;
+   async function calcularTudo() {
+    const nome = document.getElementById('nome').value;
+    const custo = parseFloat(document.getElementById('custo').value) || 0;
+    const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
+    const margemDesejada = (parseFloat(document.getElementById('margem').value) || 0) / 100;
+    const imposto = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
+    const comFrete = document.getElementById('freteGratis').checked;
 
-        if (!nome || custo <= 0) return alert("Preencha os dados do produto.");
+    if (!nome || custo <= 0) return alert("Preencha os dados do produto.");
 
-        // Cálculo de Preço (Lógica Shopee 2026)
-        let estPV = (custo + embalagem) * 1.5;
-        let comissaoBase = 0.14; let taxaFixa = 26.00; let subsidioPix = 0.05;
+    // --- LÓGICA DE PRECIFICAÇÃO SHOPEE 2026 ---
+    // Estimativa de PV para definir a faixa de comissão
+    let estPV = (custo + embalagem) * 1.5;
+    let comissaoBase = 0.14; 
+    let taxaFixa = 20.00; // Taxa padrão para produtos acima de R$ 100
+    let subsidioPix = 0.05; // 5% de subsídio médio em 2026
 
-        if (estPV < 80) { comissaoBase = 0.20; taxaFixa = 4.00; subsidioPix = 0; }
-        else if (estPV < 100) { taxaFixa = 16.00; }
-        else if (estPV < 200) { taxaFixa = 20.00; }
-
-        let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
-        let divisor = (1 - comissaoFinal - margem - imposto);
-        if (divisor <= 0) return alert("Taxas muito altas!");
-        
-        let precoVenda = (custo + embalagem + taxaFixa) / divisor;
-
-        document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
-        
-        // Dispara a IA
-        acionarIA(nome, precoVenda.toFixed(2));
+    // Ajuste de faixas de preço
+    if (estPV < 79) {
+        comissaoBase = 0.20; // Comissão maior para produtos baratos
+        taxaFixa = 4.00;
+        subsidioPix = 0;
+    } else if (estPV < 150) {
+        taxaFixa = 15.00;
     }
+
+    // Adiciona 6% se participar do programa de Frete Grátis
+    let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
+
+    // Fórmula de Preço de Venda: PV = (Custo + Embalagem + TaxaFixa) / (1 - Comissão - Margem - Imposto)
+    let divisor = (1 - comissaoFinal - margemDesejada - imposto);
+    
+    if (divisor <= 0) return alert("As taxas e margem somadas são muito altas!");
+
+    let precoVenda = (custo + embalagem + taxaFixa) / divisor;
+
+    // --- CÁLCULO DOS RESULTADOS ---
+    let valorComissaoNormal = (precoVenda * comissaoFinal) + taxaFixa;
+    let valorComissaoPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
+    let valorImposto = precoVenda * imposto;
+
+    let lucroPadrao = precoVenda - valorComissaoNormal - custo - embalagem - valorImposto;
+    let lucroPix = precoVenda - valorComissaoPix - custo - embalagem - valorImposto;
+
+    // --- EXIBIÇÃO NA TELA ---
+    document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
+    document.getElementById('resLucro').innerText = `R$ ${lucroPadrao.toFixed(2)}`;
+    document.getElementById('resLucroPix').innerText = `R$ ${lucroPix.toFixed(2)}`;
+
+    // Dispara a IA para gerar o SEO com o preço calculado
+    acionarIA(nome, precoVenda.toFixed(2));
+}
 
     async function acionarIA(nome, preco) {
         const tituloDiv = document.getElementById('resTitulo');
