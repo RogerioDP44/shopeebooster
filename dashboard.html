@@ -8,10 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-
-
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .card-rounded { border-radius: 2.5rem; }
+        .locked-field { pointer-events: none; opacity: 0.5; filter: grayscale(1); background-color: #f1f5f9 !important; }
         @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .toast-msg { animation: slideInUp 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
     </style>
@@ -27,25 +26,24 @@
     </nav>
 
     <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
         <div class="lg:col-span-4 space-y-6">
-            <div class="bg-white p-8 card-rounded shadow-xl border border-gray-50 space-y-6">
+            <div id="cardCalculos" class="bg-white p-8 card-rounded shadow-xl border border-gray-50 space-y-6">
                 <h2 class="text-2xl font-black text-slate-800 italic uppercase leading-none">Cálculos 2026</h2>
                 
                 <div class="space-y-4 font-bold text-[10px] uppercase text-slate-400">
                     <div class="space-y-1">
                         <label class="ml-2">Nome do Produto</label>
-                        <input type="text" id="nome" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] text-slate-700 font-bold" placeholder="Ex: Toalha de Rosto Mundi">
+                        <input type="text" id="nome" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] text-slate-700 font-bold" placeholder="Ex: Toalha de Rosto">
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1">
                             <label class="ml-2">Custo R$</label>
-                            <input type="number" id="custo" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]" placeholder="0,00">
+                            <input type="number" id="custo" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]">
                         </div>
                         <div class="space-y-1">
                             <label class="ml-2">Embalagem R$</label>
-                            <input type="number" id="embalagem" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]" placeholder="0,00">
+                            <input type="number" id="embalagem" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]">
                         </div>
                     </div>
 
@@ -56,7 +54,7 @@
                         </div>
                         <div class="space-y-1">
                             <label class="ml-2">Imposto %</label>
-                            <input type="number" id="imposto" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]" placeholder="0">
+                            <input type="number" id="imposto" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d]">
                         </div>
                     </div>
 
@@ -71,25 +69,7 @@
                         <span class="text-[#ee4d2d] font-black uppercase text-[10px] italic">Programa Frete Grátis (+6%)</span>
                     </label>
 
-                    <button onclick="calcularTudo()" class="w-full bg-[#ee4d2d] text-white font-black py-5 rounded-2xl shadow-lg hover:scale-[1.02] transition-all uppercase tracking-widest text-sm">Turbinar Anúncio</button>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 card-rounded shadow-lg border border-gray-50">
-                <p class="text-[11px] text-slate-500 font-medium mb-4 italic">
-                    Para saber se sua somatória está "saudável", compare sua <strong>Margem de Contribuição</strong> com esta tabela padrão:
-                </p>
-                <div class="overflow-hidden rounded-2xl border border-slate-50">
-                    <table class="w-full text-[10px] text-left uppercase">
-                        <thead class="bg-slate-50 text-slate-400 font-black">
-                            <tr><th class="p-3">Categoria</th><th class="p-3">Margem Ideal</th></tr>
-                        </thead>
-                        <tbody class="text-slate-700 font-black italic">
-                            <tr class="border-b border-slate-50"><td>Eletrônicos</td><td class="text-green-600">10% a 15%</td></tr>
-                            <tr class="border-b border-slate-50"><td>Moda / Acessórios</td><td class="text-green-600">25% a 40%</td></tr>
-                            <tr><td>Casa e Decoração</td><td class="text-green-600">20% a 30%</td></tr>
-                        </tbody>
-                    </table>
+                    <button id="btnCalcular" onclick="calcularTudo()" class="w-full bg-[#ee4d2d] text-white font-black py-5 rounded-2xl shadow-lg hover:scale-[1.02] transition-all uppercase tracking-widest text-sm">Turbinar Anúncio</button>
                 </div>
             </div>
         </div>
@@ -97,16 +77,16 @@
         <div class="lg:col-span-8 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white p-6 card-rounded border-b-8 border-green-500 shadow-xl text-center">
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Preço Venda</span>
-                    <p id="resPreco" class="text-4xl font-black text-green-600 mt-2 tracking-tighter">R$ 0,00</p>
+                    <span class="text-[10px] font-black text-slate-400 uppercase">Preço Venda</span>
+                    <p id="resPreco" class="text-4xl font-black text-green-600 mt-2">R$ 0,00</p>
                 </div>
                 <div class="bg-white p-6 card-rounded border-b-8 border-blue-500 shadow-xl text-center">
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Lucro Líquido</span>
-                    <p id="resLucro" class="text-4xl font-black text-blue-600 mt-2 tracking-tighter">R$ 0,00</p>
+                    <span class="text-[10px] font-black text-slate-400 uppercase italic">Lucro Líquido</span>
+                    <p id="resLucro" class="text-4xl font-black text-blue-600 mt-2">R$ 0,00</p>
                 </div>
                 <div class="bg-white p-6 card-rounded border-b-8 border-purple-600 shadow-xl text-center">
-                    <span class="text-[10px] font-black text-purple-400 uppercase tracking-widest italic">Lucro via Pix</span>
-                    <p id="resLucroPix" class="text-4xl font-black text-purple-700 mt-2 tracking-tighter">R$ 0,00</p>
+                    <span class="text-[10px] font-black text-purple-400 uppercase italic">Lucro via Pix</span>
+                    <p id="resLucroPix" class="text-4xl font-black text-purple-700 mt-2">R$ 0,00</p>
                 </div>
             </div>
 
@@ -124,84 +104,68 @@
     </main>
 
     <script>
-       <style>
-    .locked-field { pointer-events: none; opacity: 0.5; filter: grayscale(1); }
-    .upgrade-overlay { background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); }
-</style>
-
-<script>
-    const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
-
-    async function init() {
-        const { data: { user } } = await _supabase.auth.getUser();
+        const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
         
-        // Busca o plano e a validade
-        const { data: perfil } = await _supabase
-            .from('profiles')
-            .select('plano, data_expiracao')
-            .eq('id', user.id)
-            .single();
+        // VARIÁVEL GLOBAL PARA O PLANO
+        let globalPlano = 'bronze';
 
-        let planoAtivo = perfil?.plano || 'bronze';
-        const dataExp = perfil?.data_expiracao ? new Date(perfil.data_expiracao) : null;
-        const hoje = new Date();
+        async function init() {
+            try {
+                const { data: { user } } = await _supabase.auth.getUser();
+                if(!user) return window.location.href = 'index.html';
 
-        // VALIDAÇÃO DE PAGAMENTO
-        let bloqueioTotal = false;
-        if (planoAtivo === 'bronze' || (dataExp && hoje > dataExp)) {
-            bloqueioTotal = true;
+                const { data: perfil } = await _supabase.from('profiles').select('plano, data_expiracao').eq('id', user.id).single();
+
+                globalPlano = perfil?.plano || 'bronze';
+                const dataExp = perfil?.data_expiracao ? new Date(perfil.data_expiracao) : null;
+                const hoje = new Date();
+
+                // Regra de bloqueio
+                let bloqueado = (globalPlano === 'bronze' || (dataExp && hoje > dataExp));
+                
+                atualizarInterface(bloqueado, globalPlano);
+            } catch (e) {
+                console.error("Erro ao carregar plano:", e);
+                document.getElementById('badgePlano').innerText = "ERRO AO CARREGAR";
+            }
         }
 
-        aplicarRestricoes(bloqueioTotal, planoAtivo);
-    }
+        function atualizarInterface(bloqueado, plano) {
+            const badge = document.getElementById('badgePlano');
+            const btn = document.getElementById('btnCalcular');
+            const ids = ['nome', 'custo', 'embalagem', 'margem', 'imposto', 'ads', 'freteGratis'];
 
-    function aplicarRestricoes(bloqueado, plano) {
-        // IDs dos campos que serão bloqueados
-        const campos = ['nome', 'custo', 'embalagem', 'margem', 'imposto', 'ads', 'freteGratis'];
-        const btn = document.querySelector('button[onclick="calcularTudo()"]');
-        const badge = document.getElementById('badgePlano');
+            if (bloqueado) {
+                badge.innerText = "ACESSO BLOQUEADO 🔒";
+                badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-red-100 text-red-600 border border-red-200";
+                
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) { el.disabled = true; el.parentElement.classList.add('locked-field'); }
+                });
 
-        if (bloqueado) {
-            // BLOQUEIO TOTAL (Sem pagamento ou expirado)
-            campos.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) { el.disabled = true; el.parentElement.classList.add('locked-field'); }
-            });
-            btn.disabled = true;
-            btn.innerHTML = "ACESSO BLOQUEADO - REATIVE SUA CONTA";
-            btn.className = "w-full bg-gray-400 text-white font-black py-5 rounded-2xl cursor-not-allowed uppercase text-sm";
-            badge.innerText = "EXPIRADO / BRONZE";
-            
-            // Mensagem na área de IA
-            document.getElementById('containerTitulo').innerHTML = `
-                <div class="p-8 bg-red-50 rounded-3xl border-2 border-dashed border-red-200 text-center">
-                    <p class="font-black text-red-600 uppercase text-[10px]">Assine um plano para liberar os cálculos e a IA!</p>
-                    <a href="upgrade.html" class="inline-block mt-4 bg-red-600 text-white px-6 py-2 rounded-xl font-bold text-[10px]">VER PLANOS</a>
-                </div>`;
-        } else if (plano === 'iniciante') {
-            // BLOQUEIO PARCIAL (Plano de R$ 27 libera cálculos, mas não IA)
-            document.getElementById('ads').disabled = true; // Iniciante não tem simulador de Ads
-            document.getElementById('containerTitulo').innerHTML = `
-                <div class="p-8 bg-orange-50 rounded-3xl border-2 border-dashed border-orange-200 text-center">
-                    <p class="font-black text-orange-600 uppercase text-[10px]">Plano Iniciante: IA SEO Bloqueada. Faça upgrade para o PRO!</p>
-                </div>`;
-        }
-    }
-    
-    init();
-
-
-        function copiar(texto, btn) {
-            navigator.clipboard.writeText(texto).then(() => {
-                const original = btn.innerHTML;
-                btn.innerHTML = "COPIADO! ✅";
-                setTimeout(() => { btn.innerHTML = original; }, 2000);
-            });
+                btn.disabled = true;
+                btn.innerHTML = "REATIVE SUA ASSINATURA";
+                btn.className = "w-full bg-gray-400 text-white font-black py-5 rounded-2xl cursor-not-allowed uppercase text-sm";
+                
+                document.getElementById('containerTitulo').innerHTML = `
+                    <div class="p-8 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200 text-center">
+                        <p class="font-black text-slate-400 uppercase text-[10px]">Cálculos e IA bloqueados. Assine o Plano PRO.</p>
+                        <a href="upgrade.html" class="mt-4 inline-block bg-[#ee4d2d] text-white px-6 py-2 rounded-xl text-[10px] font-black">VER PLANOS</a>
+                    </div>`;
+            } else {
+                badge.innerText = `Plano: ${plano.toUpperCase()}`;
+                badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-orange-600 text-white shadow-lg";
+                
+                // Plano Iniciante bloqueia apenas Ads e IA
+                if(plano === 'iniciante') {
+                    document.getElementById('ads').disabled = true;
+                    document.getElementById('adsWarning').classList.remove('hidden');
+                }
+            }
         }
 
-     
-
-   async function calcularTudo() {
+        async function calcularTudo() {
             const n = document.getElementById('nome').value;
             const c = parseFloat(document.getElementById('custo').value) || 0;
             const e = parseFloat(document.getElementById('embalagem').value) || 0;
@@ -209,8 +173,7 @@
             const i = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
             const cf = document.getElementById('freteGratis').checked;
             
-            // Força Ads a 0 se for Bronze
-            let a = planoAtivo === 'bronze' ? 0 : (parseFloat(document.getElementById('ads').value) || 0) / 100;
+            let a = globalPlano === 'iniciante' ? 0 : (parseFloat(document.getElementById('ads').value) || 0) / 100;
 
             if (!n || c <= 0) return alert("Preencha o nome e o custo!");
 
@@ -235,56 +198,38 @@
             document.getElementById('resLucro').innerText = `R$ ${lucroP.toFixed(2)}`;
             document.getElementById('resLucroPix').innerText = `R$ ${lucroX.toFixed(2)}`;
 
-            // TRAVA DE PLANO PARA IA
-            if (planoAtivo !== 'bronze') {
+            // IA SÓ FUNCIONA EM PRO OU ANUAL
+            if (globalPlano === 'pro' || globalPlano === 'anual') {
                 acionarIA(n, pv.toFixed(2));
             } else {
-                document.getElementById('containerTitulo').innerHTML = `
-                    <div class="p-8 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 text-center">
-                        <i class="fas fa-lock text-gray-300 text-3xl mb-4"></i>
-                        <p class="font-black text-gray-400 uppercase text-[10px] tracking-widest">
-                            Inteligência Artificial Bloqueada no Plano Bronze.<br>
-                            Faça o upgrade para gerar anúncios automáticos.
-                        </p>
-                    </div>`;
-                document.getElementById('containerDescricao').innerHTML = "";
-                document.getElementById('containerTags').innerHTML = "";
+                document.getElementById('containerTitulo').innerHTML = "<p class='text-[10px] font-black text-orange-600 uppercase italic'>Upgrade necessário para IA SEO</p>";
             }
         }
 
         async function acionarIA(nome, preco) {
             const aT = document.getElementById('containerTitulo');
-            aT.innerHTML = `<div class="p-6 bg-slate-50 rounded-3xl animate-pulse font-black text-[10px] text-slate-400 uppercase tracking-widest">Turbinando Anúncio com IA...</div>`;
-            
+            aT.innerHTML = `<div class="p-4 bg-slate-50 rounded-2xl animate-pulse text-[10px] text-slate-400 font-black">IA GERANDO...</div>`;
             try {
-                const response = await fetch('/api/gerarTexto', {
+                const res = await fetch('/api/gerarTexto', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nome, preco })
                 });
-                const data = await response.json();
-                const partes = data.split('###').map(p => p.trim());
-
-                if (partes.length >= 3) {
-                    aT.innerHTML = `
-                        <div class="relative bg-orange-50/50 p-6 rounded-3xl border border-orange-100 mb-4">
-                            <h4 class="font-black text-slate-700 uppercase italic pr-24 leading-tight text-sm">${partes[0].toUpperCase()}</h4>
-                            <button onclick="copiar('${partes[0].toUpperCase()}', this)" class="absolute top-1/2 -translate-y-1/2 right-4 bg-[#ee4d2d] text-white text-[9px] font-black px-4 py-2 rounded-xl shadow-lg">COPIAR</button>
-                        </div>`;
-                    
-                    document.getElementById('containerDescricao').innerHTML = `
-                        <div class="relative bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 mb-4">
-                            <div class="text-xs text-slate-600 leading-relaxed font-medium whitespace-pre-line pr-10 italic">${partes[1]}</div>
-                            <button onclick="copiar(\`${partes[1]}\`, this)" class="absolute top-4 right-4 bg-slate-800 text-white text-[8px] font-black px-3 py-1.5 rounded-lg">COPIAR</button>
-                        </div>`;
-
-                    document.getElementById('containerTags').innerHTML = `
-                        <div class="relative bg-green-50/50 p-5 rounded-2xl border border-green-100 flex items-center justify-between">
-                            <span class="text-green-600 font-black italic text-[10px] tracking-tighter">${partes[2]}</span>
-                            <button onclick="copiar('${partes[2]}', this)" class="bg-green-600 text-white text-[9px] font-black px-4 py-1.5 rounded-xl">COPIAR</button>
-                        </div>`;
+                const data = await res.json();
+                const p = data.split('###').map(x => x.trim());
+                if(p.length >= 3) {
+                    aT.innerHTML = `<div class="bg-orange-50 p-4 rounded-2xl border border-orange-100 text-sm font-black text-slate-700 mb-2">${p[0].toUpperCase()}</div>`;
+                    document.getElementById('containerDescricao').innerHTML = `<div class="bg-slate-50 p-6 rounded-3xl text-xs text-slate-600 italic leading-relaxed mb-2">${p[1]}</div>`;
+                    document.getElementById('containerTags').innerHTML = `<div class="bg-green-50 p-4 rounded-2xl text-[10px] font-black text-green-600">${p[2]}</div>`;
                 }
-            } catch (e) { aT.innerHTML = "Erro ao gerar anúncio."; }
+            } catch (e) { aT.innerHTML = "Erro IA"; }
+        }
+
+        function copiar(texto, btn) {
+            navigator.clipboard.writeText(texto).then(() => {
+                btn.innerText = "OK!";
+                setTimeout(() => btn.innerText = "COPIAR", 2000);
+            });
         }
 
         init();
