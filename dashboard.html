@@ -85,34 +85,44 @@
     // Configuração Supabase
     const _supabase = supabase.createClient('https://amseupdyzghcypepohsy.supabase.co', 'sb_publishable_YwI94XF8jz2KmvaLrwJ57A_TH-pENRN');
 
-    // FUNÇÃO DE CÓPIA UNIFICADA (Lida com cliques nos botões injetados e fixos)
-    function copiarTexto(valor, btn) {
-        let textoParaCopiar = "";
-
-        // Se o primeiro argumento for um ID de elemento (string), pega o texto dele
-        // Se não, usa o próprio valor passado (texto direto)
-        if (typeof valor === 'string' && document.getElementById(valor)) {
-            textoParaCopiar = document.getElementById(valor).innerText.replace("COPIAR", "").trim();
-        } else {
-            textoParaCopiar = valor;
-        }
-
+    // FUNÇÃO DE CÓPIA COM NOTIFICAÇÃO
+    function copiarTexto(idElemento, btn) {
+        const elemento = document.getElementById(idElemento);
+        // Remove espaços extras e o texto dos botões que possam estar dentro da div
+        const textoParaCopiar = elemento.innerText.replace(/COPIAR|COPIADO! ✅/g, "").trim();
+        
         navigator.clipboard.writeText(textoParaCopiar).then(() => {
-            // Se o botão foi passado como segundo argumento (this)
+            // 1. Feedback Visual no Botão
             if (btn) {
-                const originalText = btn.innerText;
+                const textoOriginal = btn.innerText;
+                const corOriginal = btn.className;
+
                 btn.innerText = "COPIADO! ✅";
-                const originalColor = btn.className;
-                btn.className = btn.className.replace('bg-orange-600', 'bg-green-600').replace('bg-gray-800', 'bg-green-600');
-                
-                setTimeout(() => { 
-                    btn.innerText = originalText; 
-                    btn.className = originalColor;
+                btn.classList.remove('bg-orange-600', 'bg-gray-800', 'bg-green-600');
+                btn.classList.add('bg-green-500');
+
+                setTimeout(() => {
+                    btn.innerText = textoOriginal;
+                    btn.className = corOriginal;
                 }, 2000);
             }
+
+            // 2. Notificação Flutuante (Toast)
+            mostrarAviso("Código copiado com sucesso!");
+
         }).catch(err => {
-            console.error("Erro ao copiar: ", err);
+            alert("Erro ao copiar: " + err);
         });
+    }
+
+    // Função para mostrar a mensagem flutuante
+    function mostrarAviso(msg) {
+        const toast = document.createElement("div");
+        toast.innerText = msg;
+        toast.className = "fixed bottom-5 right-5 bg-gray-900 text-white px-6 py-3 rounded-2xl shadow-2xl text-xs font-bold uppercase tracking-widest animate-bounce z-50";
+        document.body.appendChild(toast);
+        
+        setTimeout(() => { toast.remove(); }, 3000);
     }
 
     async function calcularTudo() {
@@ -125,28 +135,23 @@
 
         if (!nome || custo <= 0) return alert("Preencha os dados do produto.");
 
+        // Cálculo de Preço (Lógica Shopee 2026)
         let estPV = (custo + embalagem) * 1.5;
         let comissaoBase = 0.14; let taxaFixa = 26.00; let subsidioPix = 0.05;
 
         if (estPV < 80) { comissaoBase = 0.20; taxaFixa = 4.00; subsidioPix = 0; }
         else if (estPV < 100) { taxaFixa = 16.00; }
         else if (estPV < 200) { taxaFixa = 20.00; }
-        else if (estPV >= 500) { subsidioPix = 0.08; }
 
         let comissaoFinal = comFrete ? (comissaoBase + 0.06) : comissaoBase;
         let divisor = (1 - comissaoFinal - margem - imposto);
-        if (divisor <= 0) return alert("As taxas superam o preço!");
+        if (divisor <= 0) return alert("Taxas muito altas!");
         
         let precoVenda = (custo + embalagem + taxaFixa) / divisor;
 
         document.getElementById('resPreco').innerText = `R$ ${precoVenda.toFixed(2)}`;
-        let vNormal = (precoVenda * comissaoFinal) + taxaFixa;
-        let vPix = (precoVenda * (comissaoFinal - subsidioPix)) + taxaFixa;
-        let vImposto = precoVenda * imposto;
-
-        document.getElementById('resLucro').innerText = `R$ ${(precoVenda - vNormal - custo - embalagem - vImposto).toFixed(2)}`;
-        document.getElementById('resLucroPix').innerText = `R$ ${(precoVenda - vPix - custo - embalagem - vImposto).toFixed(2)}`;
-
+        
+        // Dispara a IA
         acionarIA(nome, precoVenda.toFixed(2));
     }
 
@@ -155,10 +160,8 @@
         const descDiv = document.getElementById('resDescricao');
         const tagsDiv = document.getElementById('resTags');
 
-        // Limpa e prepara para novos dados
-        tituloDiv.innerHTML = "<span class='text-gray-400'>Gerando...</span>";
-        descDiv.innerHTML = "<span class='text-gray-400'>Criando descrição...</span>";
-        tagsDiv.innerHTML = "...";
+        tituloDiv.innerText = "GERANDO SEO... 🔥";
+        descDiv.innerText = "CRIANDO DESCRIÇÃO... ✨";
 
         try {
             const response = await fetch('/api/gerarTexto', {
@@ -167,20 +170,16 @@
                 body: JSON.stringify({ nome, preco })
             });
 
-            const textoCompleto = await response.json();
-            const partes = textoCompleto.split('###').map(p => p.trim());
+            const data = await response.json();
+            const partes = data.split('###').map(p => p.trim());
 
             if (partes.length >= 3) {
-                // TÍTULO: Note que removemos o botão daqui para usar o botão fixo do HTML
                 tituloDiv.innerText = partes[0].toUpperCase();
-                // DESCRIÇÃO
                 descDiv.innerText = partes[1];
-                // TAGS
                 tagsDiv.innerText = partes[2];
             }
         } catch (e) {
-            tituloDiv.innerHTML = "Erro ao conectar com a IA.";
-            console.error(e);
+            tituloDiv.innerText = "ERRO NA API ❌";
         }
     }
 
