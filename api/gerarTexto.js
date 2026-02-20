@@ -14,17 +14,37 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: "Você é um especialista em SEO Shopee Brasil. Responda seguindo RIGOROSAMENTE este formato: TITULO ### DESCRIÇÃO ### TAGS. Regras: 1. O TITULO deve ser apenas texto entre 70 e 90 caracteres. Nem mais nem menos, SEM EMOJIS Foque em palavras-chaves de alta conversão, NÃO REPITA o seguinte título: "${evitar}". Gere uma variação totalmente nova, mudando os gatilhos mentais (ex: se usou 'Luxo', use 'Oferta Especial'). 2. A DESCRIÇÃO deve ter muitos emojis. 3. As TAGS devem ter #. Use apenas ### como separador."
+                        // Usamos CRASE (`) aqui para envolver todo o texto e evitar erro com aspas
+                        content: `Você é um especialista em SEO Shopee Brasil. 
+                        Responda seguindo RIGOROSAMENTE este formato: TITULO ### DESCRIÇÃO ### TAGS. 
+                        
+                        REGRAS DO TÍTULO:
+                        - Deve ter entre 70 e 90 caracteres (CONTE OS CARACTERES ANTES DE RESPONDER).
+                        - SEM EMOJIS no título.
+                        - NÃO REPITA DE JEITO NENHUM este título anterior: "${evitar}".
+                        - Gere uma variação totalmente nova com diferentes gatilhos mentais.
+                        
+                        REGRAS DA DESCRIÇÃO:
+                        - Use muitos emojis e organize em tópicos.
+                        
+                        REGRAS DAS TAGS:
+                        - Use # e apenas o separador ###.`
                     },
                     { role: "user", content: `Produto: ${nome}, Preço: ${preco}` }
                 ],
-                temperature: 0.7
+                temperature: 0.8 // Aumentei um pouco para garantir mais criatividade nas variações
             })
         });
 
         const data = await response.json();
+
+        // Verificação de segurança caso a OpenAI retorne erro
+        if (data.error) {
+            return res.status(500).json({ error: data.error.message });
+        }
+
         res.status(200).json(data.choices[0].message.content);
     } catch (e) {
-        res.status(500).json({ error: "Erro interno" });
+        res.status(500).json({ error: "Erro interno: " + e.message });
     }
 }
