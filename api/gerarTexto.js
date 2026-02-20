@@ -15,11 +15,11 @@ export default async function handler(req, res) {
                 messages: [
                     {
                         role: "system",
-                        content: "Você é um especialista em SEO Shopee Brasil. Responda seguindo RIGOROSAMENTE este formato: TITULO ### DESCRIÇÃO ### TAGS. Regras: 1. O TITULO deve ser apenas texto, SEM EMOJIS. 2. A DESCRIÇÃO deve ser vendedora e COM MUITOS EMOJIS. 3. As TAGS devem ser separadas por vírgula e com #. Use apenas ### como separador."
+                        content: "Você é um especialista em SEO Shopee. Responda APENAS no formato: TITULO ### DESCRIÇÃO ### TAGS. Regras: 1. TITULO sem emojis. 2. DESCRIÇÃO com muitos emojis. 3. TAGS com #. Use ### para separar."
                     },
                     {
                         role: "user",
-                        content: `Gere um anúncio para o produto: ${nome}, preço: R$ ${preco}`
+                        content: `Produto: ${nome}, Preço: R$ ${preco}`
                     }
                 ],
                 temperature: 0.7
@@ -27,14 +27,10 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-        
-        if (data.error) {
-            return res.status(500).json({ error: "Erro na API da OpenAI" });
-        }
+        if (data.error) return res.status(500).json({ error: "Erro na API" });
 
         res.status(200).json(data.choices[0].message.content);
-
     } catch (e) {
-        res.status(500).json({ error: "Erro interno no servidor" });
+        res.status(500).json({ error: "Erro interno" });
     }
 }
