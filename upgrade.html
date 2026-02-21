@@ -2,66 +2,77 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invista no seu Lucro - Shopee Booster</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .card-pro {
+            transition: transform 0.3s ease;
+        }
+        @media (min-width: 768px) {
+            .card-pro-scale { transform: scale(1.05); z-index: 10; }
+        }
+    </style>
 </head>
-<body class="bg-[#0f172a] text-white font-sans min-h-screen flex flex-col items-center justify-center p-6">
+<body class="bg-[#0f172a] text-white font-sans min-h-screen flex flex-col items-center justify-start md:justify-center p-4 md:p-6">
 
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-black italic uppercase italic">Invista no seu Lucro</h1>
-        <p class="text-slate-400 text-sm mt-2 uppercase tracking-widest">Acesso imediato às novas taxas de 2026</p>
+    <div class="text-center mb-10 mt-8 md:mt-0">
+        <h1 class="text-3xl md:text-4xl font-black italic uppercase italic">Invista no seu Lucro</h1>
+        <p class="text-slate-400 text-[10px] md:text-sm mt-2 uppercase tracking-widest px-4">Acesso imediato às novas taxas de 2026</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl w-full px-2 md:px-0">
         
-        <div class="bg-[#1e293b] p-8 rounded-[2.5rem] border border-slate-700 flex flex-col">
-            <span class="text-[10px] font-bold text-slate-500 uppercase">Iniciante</span>
-            <div class="my-6">
-                <span class="text-3xl font-black">R$ 16,97</span>
+        <div class="bg-[#1e293b] p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-slate-700 flex flex-col order-2 md:order-1">
+            <span class="text-[10px] font-bold text-slate-500 uppercase italic">Iniciante</span>
+            <div class="my-4 md:my-6">
+                <span class="text-2xl md:text-3xl font-black">R$ 16,97</span>
                 <span class="text-slate-500 text-xs">/31 dias</span>
             </div>
-            <ul class="space-y-4 text-[11px] font-bold uppercase text-slate-300 flex-grow">
+            <ul class="space-y-3 text-[10px] md:text-[11px] font-bold uppercase text-slate-300 flex-grow">
                 <li class="flex items-center gap-2 text-green-500"><i class="fas fa-check"></i> Cálculos Taxas Março 2026</li>
-		<li class="flex items-center gap-2 text-slate-600 line-through"><i class="fas fa-times"></i> Dashboard Completo</li>               
+                <li class="flex items-center gap-2 text-slate-600 line-through"><i class="fas fa-times"></i> Dashboard Completo</li>                
                 <li class="flex items-center gap-2 text-slate-600 line-through"><i class="fas fa-times"></i> IA Ilimitada</li>
             </ul>
-            <a href="LINK_CHECKOUT_27" class="mt-8 block text-center border border-slate-600 py-4 rounded-2xl font-black text-xs hover:bg-slate-700 transition">ASSINAR AGORA</a>
+            <a href="LINK_CHECKOUT_27" class="mt-8 block text-center border border-slate-600 py-4 rounded-2xl font-black text-[10px] hover:bg-slate-700 transition">ASSINAR AGORA</a>
         </div>
 
-        <div class="bg-white p-8 rounded-[2.5rem] border-4 border-orange-500 flex flex-col relative scale-105 shadow-2xl shadow-orange-500/20">
-            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-orange-600 text-white px-6 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter italic">Mais Assinado</div>
-            <span class="text-[10px] font-bold text-orange-600 uppercase">Profissional PRO</span>
-            <div class="my-6 text-slate-900">
-                <span class="text-4xl font-black">R$ 39,97</span>
+        <div class="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border-4 border-orange-500 flex flex-col relative card-pro card-pro-scale shadow-2xl shadow-orange-500/20 order-1 md:order-2 mb-4 md:mb-0">
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-orange-600 text-white px-6 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter italic whitespace-nowrap">🔥 Mais Assinado</div>
+            <span class="text-[10px] font-bold text-orange-600 uppercase italic">Profissional PRO</span>
+            <div class="my-4 md:my-6 text-slate-900">
+                <span class="text-3xl md:text-4xl font-black">R$ 39,97</span>
                 <span class="text-slate-500 text-xs">/31 dias</span>
             </div>
-            <ul class="space-y-4 text-[11px] font-bold uppercase text-slate-600 flex-grow">
+            <ul class="space-y-3 text-[10px] md:text-[11px] font-bold uppercase text-slate-600 flex-grow">
                 <li class="flex items-center gap-2 text-orange-600"><i class="fas fa-check-circle"></i> Cálculos Março 2026</li>
                 <li class="flex items-center gap-2 text-orange-600"><i class="fas fa-check-circle"></i> IA SEO Ilimitada</li>
                 <li class="flex items-center gap-2 text-orange-600"><i class="fas fa-check-circle"></i> Simulador de Ads</li>
                 <li class="flex items-center gap-2 text-orange-600"><i class="fas fa-check-circle"></i> Suporte Premium</li>
             </ul>
-            <a href="LINK_CHECKOUT_47" class="mt-8 block text-center bg-orange-600 text-white py-5 rounded-2xl font-black text-sm shadow-lg shadow-orange-200 hover:scale-105 transition">QUERO O PLANO PRO</a>
+            <a href="LINK_CHECKOUT_47" class="mt-8 block text-center bg-orange-600 text-white py-4 md:py-5 rounded-2xl font-black text-xs md:text-sm shadow-lg shadow-orange-200 hover:brightness-110 transition uppercase">Quero o Plano PRO</a>
         </div>
 
-        <div class="bg-[#1e293b] p-8 rounded-[2.5rem] border border-slate-700 flex flex-col">
-            <span class="text-[10px] font-bold text-slate-500 uppercase">Anual (Economia)</span>
-            <div class="my-6">
-                <span class="text-3xl font-black">R$ 299</span>
+        <div class="bg-[#1e293b] p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-slate-700 flex flex-col order-3 md:order-3">
+            <span class="text-[10px] font-bold text-slate-500 uppercase italic">Anual (Economia)</span>
+            <div class="my-4 md:my-6">
+                <span class="text-2xl md:text-3xl font-black">R$ 299</span>
                 <span class="text-slate-500 text-xs">/366 dias</span>
             </div>
-            <ul class="space-y-4 text-[11px] font-bold uppercase text-slate-300 flex-grow">
+            <ul class="space-y-3 text-[10px] md:text-[11px] font-bold uppercase text-slate-300 flex-grow">
                 <li class="flex items-center gap-2 text-orange-500"><i class="fas fa-check"></i> Tudo do Plano PRO</li>
                 <li class="flex items-center gap-2 text-orange-500"><i class="fas fa-check"></i> Economize R$ 180/ano</li>
                 <li class="flex items-center gap-2 text-orange-500"><i class="fas fa-check"></i> Atualizações Gratuitas</li>
             </ul>
-            <a href="LINK_CHECKOUT_397" class="mt-8 block text-center bg-slate-700 py-4 rounded-2xl font-black text-xs hover:bg-slate-600 transition">GARANTIR ANUAL</a>
+            <a href="LINK_CHECKOUT_397" class="mt-8 block text-center bg-slate-700 py-4 rounded-2xl font-black text-[10px] hover:bg-slate-600 transition">GARANTIR ANUAL</a>
         </div>
 
     </div>
 
-    <a href="dashboard.html" class="mt-12 text-slate-500 text-[10px] font-bold uppercase hover:text-white transition">Voltar ao Painel</a>
+    <a href="dashboard.html" class="mt-10 mb-8 text-slate-500 text-[10px] font-bold uppercase hover:text-white transition flex items-center gap-2">
+        <i class="fas fa-arrow-left text-[8px]"></i> Voltar ao Painel
+    </a>
 
 </body>
 </html>

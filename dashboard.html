@@ -11,6 +11,9 @@
     <style>
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .card-rounded { border-radius: 2.5rem; }
+        /* Estilo para o campo bloqueado */
+        .locked-field { pointer-events: none; opacity: 0.6; filter: grayscale(1); background-color: #f1f5f9 !important; cursor: not-allowed; }
+        
         @keyframes rocketLaunch { 0% { transform: translate(-50%, 100vh) scale(0.6); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(-50%, -120vh) scale(1.5); opacity: 0; } }
         .rocket-fly { position: fixed; bottom: 0; left: 50%; font-size: 6rem; z-index: 10000; pointer-events: none; animation: rocketLaunch 3s forwards; }
         .animate-fade-in { animation: fadeIn 0.5s ease-in; }
@@ -52,7 +55,7 @@
                         <div class="space-y-1"><label>Imposto %</label><input type="number" id="imposto" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none"></div>
                     </div>
                     <div class="space-y-1">
-                        <label>Shopee Ads %</label>
+                        <label class="flex justify-between">Shopee Ads % <span id="lockAds" class="hidden text-[8px] text-orange-500 uppercase"><i class="fas fa-lock"></i> Pro</span></label>
                         <input type="number" id="ads" class="w-full p-4 bg-orange-50 border-2 border-orange-100 rounded-2xl text-[#ee4d2d] outline-none" value="0">
                     </div>
                     <label class="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl cursor-pointer border border-orange-100">
@@ -93,11 +96,20 @@
                 const { data: perfil } = await _supabase.from('profiles').select('plano').eq('id', user.id).single();
                 globalPlano = (perfil?.plano || 'bronze').toLowerCase();
                 const badge = document.getElementById('badgePlano');
+                const inputAds = document.getElementById('ads');
+                const lockAds = document.getElementById('lockAds');
+                
                 badge.innerText = `PLANO: ${globalPlano.toUpperCase()}`;
+                
                 if(globalPlano !== 'bronze') {
                     badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-green-500 text-white shadow-lg italic";
                 } else {
                     document.getElementById('btnUpgradeTopo').classList.remove('hidden');
+                    // BLOQUEIO DO CAMPO ADS NO PLANO BRONZE
+                    inputAds.classList.add('locked-field');
+                    inputAds.disabled = true;
+                    inputAds.value = 0;
+                    lockAds.classList.remove('hidden');
                 }
             } catch (e) { console.error(e); }
         }
@@ -113,25 +125,19 @@
         async function acionarIA(nome, preco) {
             const area = document.getElementById('containerTitulo');
             area.innerHTML = "<div class='text-center py-20'><p class='text-xs font-black text-green-600 animate-pulse uppercase italic'>🤖 IA GERANDO TÍTULOS PROFISSIONAIS...</p></div>";
-            
             try {
-                // Tenta buscar na rota da API (Certifique-se que o arquivo na pasta api se chama gerar-seo.js)
                 const res = await fetch('/api/gerar-seo', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nome, preco, evitar: memoryEvitar })
                 });
-
                 if (!res.ok) throw new Error('Falha no servidor');
-
                 const data = await res.json();
                 const partes = data.split('###');
                 const t = partes[0]?.trim() || "Título Indisponível";
                 const d = partes[1]?.trim() || "Descrição Indisponível";
                 const h = partes[2]?.trim() || "#shopee #vendas";
-                
                 memoryEvitar = t;
-
                 area.innerHTML = `
                     <div class="space-y-6 animate-fade-in text-left">
                         <div class="p-5 bg-green-50 rounded-2xl border border-green-100">
@@ -163,27 +169,17 @@
             const i = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
             const ads = (parseFloat(document.getElementById('ads').value) || 0) / 100;
             const cf = document.getElementById('freteGratis').checked;
-
             if(!n || c <= 0) return alert("Por favor, insira o nome e o custo do produto!");
-
             const rocket = document.createElement('div'); rocket.className = 'rocket-fly'; rocket.innerHTML = '🚀';
             document.getElementById('rocket-container').appendChild(rocket); setTimeout(() => rocket.remove(), 3000);
 
-            // REGRAS DE TAXAS 2026 SOLICITADAS
             let estPV = (c + e) * 1.6;
             let comBase = 0.14, taxaF = 26.00, subPix = 0.05;
-
-            if (estPV <= 79.99) { 
-                comBase = 0.20; taxaF = 4.00; subPix = 0; 
-            } else if (estPV <= 99.99) { 
-                taxaF = 16.00; 
-            } else if (estPV <= 199.99) { 
-                taxaF = 20.00; 
-            } else if (estPV <= 499.99) { 
-                taxaF = 26.00; 
-            } else { 
-                subPix = 0.08; 
-            }
+            if (estPV <= 79.99) { comBase = 0.20; taxaF = 4.00; subPix = 0; }
+            else if (estPV <= 99.99) { taxaF = 16.00; }
+            else if (estPV <= 199.99) { taxaF = 20.00; }
+            else if (estPV <= 499.99) { taxaF = 26.00; }
+            else { subPix = 0.08; }
 
             let comFinal = cf ? (comBase + 0.06) : comBase;
             let pv = (c + e + taxaF) / (1 - comFinal - m - i - ads);
