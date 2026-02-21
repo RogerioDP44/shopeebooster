@@ -29,27 +29,20 @@
         
         .animate-fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .copy-btn:active { transform: scale(0.9); }
     </style>
 </head>
-<body class="bg-[#f8fafc] min-h-screen font-sans">
+<body class="bg-[#f8fafc] min-h-screen font-sans text-slate-900">
     <div id="rocket-container"></div>
     
     <nav class="bg-white border-b border-gray-100 p-4 flex justify-between items-center shadow-sm">
         <span class="text-xl font-black text-[#ee4d2d] uppercase italic">Shopee Booster 🔥</span>
-        
         <div class="flex items-center gap-4">
             <a id="btnUpgradeTopo" href="upgrade.html" class="hidden animate-upgrade bg-green-500 text-white text-[10px] font-black px-5 py-2.5 rounded-full uppercase tracking-widest flex items-center gap-2 shadow-lg">
                 <i class="fas fa-crown"></i> Liberar Plano PRO
             </a>
-
-            <a href="tutorial.html" target="_blank" class="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#ee4d2d] transition-all flex items-center gap-2">
-                <i class="fas fa-question-circle"></i> Como Usar
-            </a>
-            
-            <span id="badgePlano" class="text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-orange-600 text-white shadow-lg italic">
-                PLANO: ...
-            </span>
-            
+            <span id="badgePlano" class="text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-orange-600 text-white shadow-lg italic">PLANO: ...</span>
             <button onclick="fazerLogout()" class="text-xs font-bold text-gray-400 uppercase hover:text-red-500 transition">Sair</button>
         </div>
     </nav>
@@ -61,7 +54,7 @@
                 <div class="space-y-4 font-bold text-[10px] uppercase text-slate-400">
                     <div class="space-y-1">
                         <label>Nome do Produto</label>
-                        <input type="text" id="nome" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] text-slate-700 font-bold" placeholder="Ex: Relógio Luxo">
+                        <input type="text" id="nome" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none focus:border-[#ee4d2d] text-slate-700 font-bold" placeholder="Ex: Camisa Polo">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1">
@@ -86,29 +79,29 @@
                     <div class="space-y-1">
                         <label>Shopee Ads %</label>
                         <input type="number" id="ads" class="w-full p-4 bg-orange-50 border-2 border-orange-100 rounded-2xl outline-none text-[#ee4d2d]" value="0">
-                        <p id="adsWarning" class="text-[8px] text-orange-600 hidden mt-1 ml-2 font-black italic">* Ads bloqueado no seu plano</p>
                     </div>
                     <label class="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl cursor-pointer border border-orange-100">
                         <input type="checkbox" id="freteGratis" class="w-5 h-5 accent-[#ee4d2d]" checked>
                         <span class="text-[#ee4d2d] font-black uppercase text-[10px] italic">Programa Frete Grátis (+6%)</span>
                     </label>
                     <button id="btnCalcular" onclick="calcularTudo()" class="w-full bg-[#ee4d2d] text-white font-black py-5 rounded-2xl shadow-lg hover:scale-[1.02] transition-all uppercase text-sm tracking-widest">Turbinar Anúncio</button>
+                    <button onclick="location.reload()" class="w-full text-center text-[9px] text-slate-300 font-bold uppercase hover:text-slate-500">Limpar Dados</button>
                 </div>
             </div>
         </div>
 
         <div class="lg:col-span-8 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 card-rounded border-b-8 border-green-500 shadow-xl text-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-white p-6 card-rounded border-b-8 border-green-500 shadow-xl">
                     <span class="text-[10px] font-black text-slate-400 uppercase">Preço Venda</span>
                     <p id="resPreco" class="text-4xl font-black text-green-600 mt-2">R$ 0,00</p>
                 </div>
-                <div class="bg-white p-6 card-rounded border-b-8 border-blue-500 shadow-xl text-center">
+                <div class="bg-white p-6 card-rounded border-b-8 border-blue-500 shadow-xl">
                     <span class="text-[10px] font-black text-slate-400 uppercase italic">Lucro Líquido</span>
                     <p id="resLucro" class="text-4xl font-black text-blue-600 mt-2">R$ 0,00</p>
                 </div>
-                <div class="bg-white p-6 card-rounded border-b-8 border-purple-600 shadow-xl text-center">
-                    <span class="text-[10px] font-black text-purple-400 uppercase italic italic">Subsídio Pix</span>
+                <div class="bg-white p-6 card-rounded border-b-8 border-purple-600 shadow-xl">
+                    <span class="text-[10px] font-black text-purple-400 uppercase italic">Subsídio Pix</span>
                     <p id="resLucroPix" class="text-4xl font-black text-purple-700 mt-2">R$ 0,00</p>
                 </div>
             </div>
@@ -117,9 +110,9 @@
                 <h3 class="font-black text-slate-800 uppercase text-xs italic flex items-center gap-2">
                     <i class="fas fa-magic text-[#ee4d2d]"></i> Inteligência SEO SISMATIC
                 </h3>
-                <div id="containerSEO" class="min-h-[150px] flex items-center justify-center">
-                   <div id="containerTitulo" class="w-full text-center">
-                       <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Aguardando cálculo...</p>
+                <div id="containerSEO" class="min-h-[200px] flex items-center justify-center">
+                   <div id="containerTitulo" class="w-full">
+                       <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest text-center">Aguardando cálculo...</p>
                    </div>
                 </div>
             </div>
@@ -134,69 +127,82 @@
             try {
                 const { data: { user } } = await _supabase.auth.getUser();
                 if(!user) return window.location.href = 'index.html';
-                
                 const { data: perfil } = await _supabase.from('profiles').select('plano').eq('id', user.id).single();
                 globalPlano = (perfil?.plano || 'bronze').toLowerCase();
                 
                 const badge = document.getElementById('badgePlano');
                 const btnUpgradeTopo = document.getElementById('btnUpgradeTopo');
-
                 badge.innerText = `PLANO: ${globalPlano.toUpperCase()}`;
 
-                if(globalPlano === 'bronze' || globalPlano === 'iniciante') {
+                if(globalPlano === 'bronze') {
                     btnUpgradeTopo.classList.remove('hidden');
-                    const ads = document.getElementById('ads');
-                    ads.disabled = true;
-                    ads.parentElement.classList.add('locked-field');
-                    document.getElementById('adsWarning').classList.remove('hidden');
+                    document.getElementById('ads').disabled = true;
+                    document.getElementById('ads').parentElement.classList.add('locked-field');
                 } else {
                     badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-green-500 text-white shadow-lg italic";
-                    btnUpgradeTopo.classList.add('hidden');
                 }
             } catch (e) { console.error(e); }
         }
 
-        async function acionarIA(nomeProduto, precoVenda) {
+        function copiarTexto(id, btn) {
+            const texto = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(texto).then(() => {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                btn.classList.replace('bg-slate-800', 'bg-green-500');
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.replace('bg-green-500', 'bg-slate-800');
+                }, 2000);
+            });
+        }
+
+        async function acionarIA(nome, preco) {
             const areaIA = document.getElementById('containerTitulo');
-            areaIA.innerHTML = "<p class='text-xs font-black text-green-600 animate-pulse uppercase italic'>🤖 SISMATIC IA: Analisando concorrência e gerando SEO...</p>";
+            areaIA.innerHTML = "<div class='text-center py-10'><p class='text-xs font-black text-green-600 animate-pulse uppercase italic'>🤖 IA SISMATIC: Criando variação exclusiva...</p></div>";
+
+            // VARIÁVEIS PARA EVITAR REPETIÇÃO
+            const prefixos = ["Original", "Premium", "Profissional", "Exclusivo", "Novo Modelagem"];
+            const chamadas = ["Envio Rápido", "Estoque Brasil", "Oferta Limitada", "Melhor do Mercado"];
+            const descricoes = [
+                "💎 Qualidade superior garantida para clientes exigentes.",
+                "🔥 Oportunidade única para garantir o seu com preço de fábrica.",
+                "🚀 Produto campeão de vendas agora disponível com entrega imediata.",
+                "✅ Testado e aprovado pelos melhores especialistas do setor."
+            ];
+
+            const pIdx = Math.floor(Math.random() * prefixos.length);
+            const cIdx = Math.floor(Math.random() * chamadas.length);
+            const dIdx = Math.floor(Math.random() * descricoes.length);
+
+            const tituloFinal = `${nome.toUpperCase()} - ${prefixos[pIdx].toUpperCase()} - ${chamadas[cIdx].toUpperCase()} 2026`;
+            const descFinal = `${descricoes[dIdx]}\n\n💰 Valor Promocional: R$ ${preco}\n📦 Envio em 24 horas\n⭐ Satisfação Garantida Shopee Booster`;
 
             setTimeout(() => {
                 areaIA.innerHTML = `
-                    <div class="space-y-5 animate-fade-in text-left">
-                        <div class="p-5 bg-green-50 border-2 border-green-100 rounded-[2rem] shadow-sm">
-                            <h4 class="text-[9px] font-black text-green-700 uppercase mb-2 flex items-center gap-2">
-                                <i class="fas fa-rocket"></i> Título SEO de Alta Conversão:
-                            </h4>
-                            <p class="text-sm font-black text-slate-800 uppercase italic leading-tight">
-                                🚀 ${nomeProduto} - Original 2026 🔥 Edição Limitada 📦 Envio Imediato Premium
-                            </p>
+                    <div class="space-y-6 animate-fade-in text-left">
+                        <div class="relative group">
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase mb-2">Título SEO (Sem Emojis)</h4>
+                            <div id="txtTitulo" class="p-5 bg-white border-2 border-slate-100 rounded-2xl font-black text-sm text-slate-800 uppercase italic leading-tight">${tituloFinal}</div>
+                            <button onclick="copiarTexto('txtTitulo', this)" class="copy-btn mt-2 bg-slate-800 text-white text-[9px] font-black px-4 py-2 rounded-xl transition-all flex items-center gap-2">
+                                <i class="fas fa-copy"></i> Copiar Título
+                            </button>
                         </div>
                         
-                        <div class="p-5 bg-slate-50 border-2 border-slate-100 rounded-[2rem] shadow-sm">
-                            <h4 class="text-[9px] font-black text-slate-400 uppercase mb-2 flex items-center gap-2">
-                                <i class="fas fa-align-left"></i> Descrição Otimizada:
-                            </h4>
-                            <div class="text-[11px] text-slate-600 space-y-2 font-bold leading-relaxed">
-                                <p>💎 Aproveite a melhor qualidade do mercado por apenas <span class="text-green-600 font-black text-sm">R$ ${precoVenda}</span>!</p>
-                                <ul class="space-y-1">
-                                    <li>✅ Produto Testado e Aprovado</li>
-                                    <li>✅ Garantia Total Shopee Booster</li>
-                                    <li>✅ Estoque no Brasil - Envio em 24h</li>
-                                </ul>
-                                <p class="pt-2 text-[#ee4d2d] italic">⚠️ Atenção: Poucas unidades disponíveis com este valor promocional!</p>
-                            </div>
+                        <div class="relative group">
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase mb-2">Descrição SEO (Com Emojis)</h4>
+                            <div id="txtDesc" class="p-5 bg-white border-2 border-slate-100 rounded-2xl text-[11px] font-bold text-slate-600 whitespace-pre-line leading-relaxed">${descFinal}</div>
+                            <button onclick="copiarTexto('txtDesc', this)" class="copy-btn mt-2 bg-slate-800 text-white text-[9px] font-black px-4 py-2 rounded-xl transition-all flex items-center gap-2">
+                                <i class="fas fa-copy"></i> Copiar Descrição
+                            </button>
                         </div>
 
-                        <div class="flex flex-wrap gap-2 px-2">
-                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#shopee</span>
-                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#oferta</span>
-                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#promocao</span>
-                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#vendas</span>
-                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#2026</span>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="text-[9px] font-black text-blue-600 italic">#shopee #oferta #promocao #vendas #brasil #2026</span>
                         </div>
                     </div>
                 `;
-            }, 1800);
+            }, 1200);
         }
 
         async function calcularTudo() {
@@ -207,31 +213,25 @@
             const i = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
             const cf = document.getElementById('freteGratis').checked;
 
-            if (!n || c <= 0) return alert("Preencha o Nome e o Custo!");
+            if (!n || c <= 0) return alert("Preencha Nome e Custo!");
 
+            // EFEITO ROCKET
             const rocket = document.createElement('div');
             rocket.className = 'rocket-fly'; rocket.innerHTML = '🚀';
             document.getElementById('rocket-container').appendChild(rocket);
             setTimeout(() => rocket.remove(), 3000);
 
+            // LOGICA TAXAS 2026
             let estPV = (c + e) * 1.6;
             let comBase = 0.14, taxaF = 26.00, subPix = 0.05;
             
-            if (estPV <= 79.99) { 
-                comBase = 0.20; taxaF = 4.00; subPix = 0; 
-            } else if (estPV <= 99.99) { 
-                taxaF = 16.00; subPix = 0.05; 
-            } else if (estPV <= 199.99) { 
-                taxaF = 20.00; subPix = 0.05; 
-            } else if (estPV <= 499.99) { 
-                taxaF = 26.00; subPix = 0.05; 
-            } else { 
-                taxaF = 26.00; subPix = 0.08; 
-            }
+            if (estPV <= 79.99) { comBase = 0.20; taxaF = 4.00; subPix = 0; }
+            else if (estPV <= 99.99) { taxaF = 16.00; }
+            else if (estPV <= 199.99) { taxaF = 20.00; }
+            else if (estPV >= 500.00) { subPix = 0.08; }
 
             let comFinal = cf ? (comBase + 0.06) : comBase;
-            let divisor = (1 - comFinal - m - i);
-            let pv = (c + e + taxaF) / divisor;
+            let pv = (c + e + taxaF) / (1 - comFinal - m - i);
             let lucroP = pv - (pv * comFinal + taxaF) - c - e - (pv * i);
             let lucroX = pv - (pv * (comFinal - subPix) + taxaF) - c - e - (pv * i);
 
@@ -239,17 +239,15 @@
             document.getElementById('resLucro').innerText = `R$ ${lucroP.toFixed(2)}`;
             document.getElementById('resLucroPix').innerText = `R$ ${lucroX.toFixed(2)}`;
 
-            const areaIA = document.getElementById('containerTitulo');
             if (globalPlano === 'pro' || globalPlano === 'anual') {
                 acionarIA(n, pv.toFixed(2));
             } else {
-                areaIA.innerHTML = `
-                    <div class="flex flex-col items-center justify-center p-6 bg-orange-50 rounded-[2rem] border-2 border-dashed border-orange-200 space-y-4">
-                        <div class="text-[#ee4d2d] text-2xl"><i class="fas fa-lock"></i></div>
-                        <p class="text-[10px] font-black text-slate-700 uppercase italic text-center">IA SEO SISMATIC BLOQUEADA NO PLANO BRONZE</p>
-                        <a href="upgrade.html" class="bg-[#ee4d2d] text-white text-[11px] font-black px-8 py-3.5 rounded-2xl shadow-xl hover:scale-105 transition-all uppercase">FAZER UPGRADE AGORA 🔥</a>
-                    </div>
-                `;
+                document.getElementById('containerTitulo').innerHTML = `
+                    <div class="text-center p-6 bg-orange-50 rounded-[2rem] border-2 border-dashed border-orange-200">
+                        <i class="fas fa-lock text-[#ee4d2d] text-2xl mb-4"></i>
+                        <p class="text-[10px] font-black uppercase italic">SEO PRO bloqueado</p>
+                        <a href="upgrade.html" class="inline-block mt-4 bg-[#ee4d2d] text-white text-[10px] font-black px-6 py-3 rounded-2xl shadow-xl">Upgrade Agora</a>
+                    </div>`;
             }
         }
 
