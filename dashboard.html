@@ -11,7 +11,6 @@
     <style>
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .card-rounded { border-radius: 2.5rem; }
-        .locked-field { pointer-events: none; opacity: 0.5; filter: grayscale(1); background-color: #f1f5f9 !important; }
         @keyframes rocketLaunch { 0% { transform: translate(-50%, 100vh) scale(0.6); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(-50%, -120vh) scale(1.5); opacity: 0; } }
         .rocket-fly { position: fixed; bottom: 0; left: 50%; font-size: 6rem; z-index: 10000; pointer-events: none; animation: rocketLaunch 3s forwards; }
         .animate-fade-in { animation: fadeIn 0.5s ease-in; }
@@ -24,8 +23,8 @@
     <nav class="bg-white border-b border-gray-100 p-4 flex justify-between items-center shadow-sm">
         <span class="text-xl font-black text-[#ee4d2d] uppercase italic">Shopee Booster 🔥</span>
         <div class="flex items-center gap-4">
-            <a href="#" class="text-[10px] font-bold text-slate-400 uppercase hover:text-[#ee4d2d] transition flex items-center gap-1">
-                <i class="fas fa-question-circle"></i> Como Usar
+            <a href="tutorial.html" target="_blank" class="text-[10px] font-bold text-slate-400 uppercase hover:text-[#ee4d2d] transition flex items-center gap-1">
+                <i class="fas fa-play-circle"></i> Tutorial
             </a>
             <a id="btnUpgradeTopo" href="upgrade.html" class="hidden animate-bounce bg-green-500 text-white text-[10px] font-black px-5 py-2.5 rounded-full uppercase flex items-center gap-2">
                 <i class="fas fa-crown"></i> Plano PRO
@@ -38,11 +37,11 @@
     <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div class="lg:col-span-4 space-y-6">
             <div class="bg-white p-8 card-rounded shadow-xl border border-gray-50 space-y-6">
-                <h2 class="text-2xl font-black text-slate-800 italic uppercase">Calculadora 2026</h2>
+                <h2 class="text-2xl font-black text-slate-800 italic uppercase tracking-tighter">Calculadora 2026</h2>
                 <div class="space-y-4 font-bold text-[10px] uppercase text-slate-400">
                     <div class="space-y-1">
-                        <label>Nome do Produto</label>
-                        <input type="text" id="nome" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:border-[#ee4d2d] outline-none text-slate-700 font-bold" placeholder="Ex: Smartwatch D20">
+                        <label>Nome do Produto (Keywords)</label>
+                        <input type="text" id="nome" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:border-[#ee4d2d] outline-none text-slate-700 font-bold" placeholder="Ex: Garrafa Térmica 500ml">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1"><label>Custo R$</label><input type="number" id="custo" class="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none"></div>
@@ -58,24 +57,25 @@
                     </div>
                     <label class="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl cursor-pointer border border-orange-100">
                         <input type="checkbox" id="freteGratis" class="w-5 h-5 accent-[#ee4d2d]" checked>
-                        <span class="text-[#ee4d2d] font-black uppercase text-[10px] italic">Frete Grátis (+6%)</span>
+                        <span class="text-[#ee4d2d] font-black uppercase text-[10px] italic">Programa Frete Grátis (+6%)</span>
                     </label>
                     <button id="btnCalcular" onclick="calcularTudo()" class="w-full bg-[#ee4d2d] text-white font-black py-5 rounded-2xl shadow-lg hover:scale-[1.02] transition-all uppercase text-sm tracking-widest">Turbinar Anúncio</button>
+                    <button onclick="location.reload()" class="w-full text-slate-300 py-2 text-[9px] font-black uppercase hover:text-slate-500 transition"> Limpar Dados</button>
                 </div>
             </div>
         </div>
 
         <div class="lg:col-span-8 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center font-black">
-                <div class="bg-white p-6 card-rounded border-b-8 border-green-500 shadow-xl"><span class="text-[10px] text-slate-400 uppercase">Preço Venda</span><p id="resPreco" class="text-4xl text-green-600 mt-2">R$ 0,00</p></div>
+                <div class="bg-white p-6 card-rounded border-b-8 border-green-500 shadow-xl"><span class="text-[10px] text-slate-400 uppercase">Preço de Venda</span><p id="resPreco" class="text-4xl text-green-600 mt-2">R$ 0,00</p></div>
                 <div class="bg-white p-6 card-rounded border-b-8 border-blue-500 shadow-xl"><span class="text-[10px] text-slate-400 uppercase italic">Lucro Líquido</span><p id="resLucro" class="text-4xl text-blue-600 mt-2">R$ 0,00</p></div>
                 <div class="bg-white p-6 card-rounded border-b-8 border-purple-600 shadow-xl"><span class="text-[10px] text-purple-400 uppercase italic">Subsídio Pix</span><p id="resLucroPix" class="text-4xl text-purple-700 mt-2">R$ 0,00</p></div>
             </div>
 
             <div class="bg-white p-10 card-rounded shadow-xl border border-gray-50 space-y-6">
-                <h3 class="font-black text-slate-800 uppercase text-xs italic flex items-center gap-2"><i class="fas fa-magic text-[#ee4d2d]"></i> IA SEO SISMATIC 2026</h3>
+                <h3 class="font-black text-slate-800 uppercase text-xs italic flex items-center gap-2"><i class="fas fa-magic text-[#ee4d2d]"></i> Inteligência SEO Sismatic</h3>
                 <div id="containerSEO" class="min-h-[300px] flex items-center justify-center">
-                   <div id="containerTitulo" class="w-full text-center text-slate-300 font-bold uppercase text-[10px]">Aguardando cálculo...</div>
+                   <div id="containerTitulo" class="w-full text-center text-slate-300 font-bold uppercase text-[10px]">Aguardando preenchimento dos dados...</div>
                 </div>
             </div>
         </div>
@@ -94,8 +94,11 @@
                 globalPlano = (perfil?.plano || 'bronze').toLowerCase();
                 const badge = document.getElementById('badgePlano');
                 badge.innerText = `PLANO: ${globalPlano.toUpperCase()}`;
-                if(globalPlano !== 'bronze') badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-green-500 text-white shadow-lg italic";
-                else document.getElementById('btnUpgradeTopo').classList.remove('hidden');
+                if(globalPlano !== 'bronze') {
+                    badge.className = "text-[10px] font-black px-4 py-1.5 rounded-full uppercase bg-green-500 text-white shadow-lg italic";
+                } else {
+                    document.getElementById('btnUpgradeTopo').classList.remove('hidden');
+                }
             } catch (e) { console.error(e); }
         }
 
@@ -109,24 +112,47 @@
 
         async function acionarIA(nome, preco) {
             const area = document.getElementById('containerTitulo');
-            area.innerHTML = "<div class='text-center py-20'><p class='text-xs font-black text-green-600 animate-pulse uppercase italic'>🤖 GERANDO SEO PARA RANKING SHOPEE...</p></div>";
+            area.innerHTML = "<div class='text-center py-20'><p class='text-xs font-black text-green-600 animate-pulse uppercase italic'>🤖 IA GERANDO TÍTULOS PROFISSIONAIS...</p></div>";
+            
             try {
+                // Tenta buscar na rota da API (Certifique-se que o arquivo na pasta api se chama gerar-seo.js)
                 const res = await fetch('/api/gerar-seo', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nome, preco, evitar: memoryEvitar })
                 });
+
+                if (!res.ok) throw new Error('Falha no servidor');
+
                 const data = await res.json();
                 const partes = data.split('###');
-                const t = partes[0]?.trim(); const d = partes[1]?.trim(); const h = partes[2]?.trim();
+                const t = partes[0]?.trim() || "Título Indisponível";
+                const d = partes[1]?.trim() || "Descrição Indisponível";
+                const h = partes[2]?.trim() || "#shopee #vendas";
+                
                 memoryEvitar = t;
+
                 area.innerHTML = `
-                    <div class="space-y-6 animate-fade-in">
-                        <div><h4 class="text-[9px] font-black text-slate-400 uppercase mb-2">Título SEO (Sem Emojis)</h4><div id="tId" class="p-5 bg-white border-2 border-slate-100 rounded-2xl font-black text-sm text-slate-800 uppercase italic">${t}</div><button onclick="copiar('tId', this)" class="mt-2 bg-slate-800 text-white text-[9px] font-black px-4 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-copy"></i> Copiar Título</button></div>
-                        <div><h4 class="text-[9px] font-black text-slate-400 uppercase mb-2">Descrição (Com Emojis)</h4><div id="dId" class="p-5 bg-white border-2 border-slate-100 rounded-2xl text-[11px] font-bold text-slate-600 whitespace-pre-line">${d}</div><button onclick="copiar('dId', this)" class="mt-2 bg-slate-800 text-white text-[9px] font-black px-4 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-copy"></i> Copiar Descrição</button></div>
-                        <div><h4 class="text-[9px] font-black text-slate-400 uppercase mb-2">Hashtags</h4><div id="hId" class="p-4 bg-blue-50 border border-blue-100 rounded-2xl text-[10px] font-black text-blue-600 italic">${h}</div><button onclick="copiar('hId', this)" class="mt-2 bg-blue-600 text-white text-[9px] font-black px-4 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-hashtag"></i> Copiar Tags</button></div>
+                    <div class="space-y-6 animate-fade-in text-left">
+                        <div class="p-5 bg-green-50 rounded-2xl border border-green-100">
+                            <h4 class="text-[9px] font-black text-green-600 uppercase mb-2"><i class="fas fa-rocket"></i> Título Sugerido:</h4>
+                            <div id="tId" class="font-black text-sm text-slate-800 uppercase italic mb-3">${t}</div>
+                            <button onclick="copiar('tId', this)" class="bg-slate-800 text-white text-[9px] font-black px-4 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-copy"></i> Copiar Título</button>
+                        </div>
+                        <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100">
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase mb-2"><i class="fas fa-align-left"></i> Descrição Otimizada:</h4>
+                            <div id="dId" class="text-[11px] font-bold text-slate-600 whitespace-pre-line mb-3">${d}</div>
+                            <button onclick="copiar('dId', this)" class="bg-slate-800 text-white text-[9px] font-black px-4 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-copy"></i> Copiar Descrição</button>
+                        </div>
+                        <div class="p-5 bg-blue-50 rounded-2xl border border-blue-100">
+                            <h4 class="text-[9px] font-black text-blue-400 uppercase mb-2"><i class="fas fa-hashtag"></i> Tags de Ranking:</h4>
+                            <div id="hId" class="text-[10px] font-black text-blue-600 italic mb-3">${h}</div>
+                            <button onclick="copiar('hId', this)" class="bg-blue-600 text-white text-[9px] font-black px-4 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-copy"></i> Copiar Tags</button>
+                        </div>
                     </div>`;
-            } catch (e) { area.innerHTML = `<p class="text-red-500 font-bold text-center">Erro de Conexão. Tente novamente.</p>`; }
+            } catch (e) { 
+                area.innerHTML = `<div class="text-center py-10"><p class="text-red-500 font-black uppercase text-xs italic">❌ Erro na API: Verifique se o arquivo 'api/gerar-seo.js' existe no servidor.</p></div>`; 
+            }
         }
 
         function calcularTudo() {
@@ -137,25 +163,26 @@
             const i = (parseFloat(document.getElementById('imposto').value) || 0) / 100;
             const ads = (parseFloat(document.getElementById('ads').value) || 0) / 100;
             const cf = document.getElementById('freteGratis').checked;
-            if(!n || c <= 0) return alert("Preencha o Nome e Custo!");
+
+            if(!n || c <= 0) return alert("Por favor, insira o nome e o custo do produto!");
 
             const rocket = document.createElement('div'); rocket.className = 'rocket-fly'; rocket.innerHTML = '🚀';
             document.getElementById('rocket-container').appendChild(rocket); setTimeout(() => rocket.remove(), 3000);
 
-            // LOGICA TAXAS 2026 DEFINITIVA
-        let estPV = (c + e) * 1.6;
+            // REGRAS DE TAXAS 2026 SOLICITADAS
+            let estPV = (c + e) * 1.6;
             let comBase = 0.14, taxaF = 26.00, subPix = 0.05;
-            
+
             if (estPV <= 79.99) { 
-                comBase = 0.20; taxaF = 4.00; subPix = 0; // Até 79.99: 20% + 4.00
+                comBase = 0.20; taxaF = 4.00; subPix = 0; 
             } else if (estPV <= 99.99) { 
-                taxaF = 16.00; subPix = 0.05; // 80 a 99.99: 14% + 16.00 + 5% Pix
+                taxaF = 16.00; 
             } else if (estPV <= 199.99) { 
-                taxaF = 20.00; subPix = 0.05; // 100 a 199.99: 14% + 20.00 + 5% Pix
+                taxaF = 20.00; 
             } else if (estPV <= 499.99) { 
-                taxaF = 26.00; subPix = 0.05; // 200 a 499.99: 14% + 26.00 + 5% Pix
+                taxaF = 26.00; 
             } else { 
-                taxaF = 26.00; subPix = 0.08; // Acima de 500: 14% + 26.00 + 8% Pix
+                subPix = 0.08; 
             }
 
             let comFinal = cf ? (comBase + 0.06) : comBase;
@@ -167,8 +194,17 @@
             document.getElementById('resLucro').innerText = `R$ ${lucroP.toFixed(2)}`;
             document.getElementById('resLucroPix').innerText = `R$ ${lucroX.toFixed(2)}`;
 
-            if(globalPlano !== 'bronze') acionarIA(n, pv.toFixed(2));
-            else document.getElementById('containerTitulo').innerHTML = `<div class="text-center p-10 bg-orange-50 rounded-[3rem] border-2 border-dashed border-orange-200"><i class="fas fa-lock text-[#ee4d2d] text-4xl mb-4"></i><p class="text-[12px] font-black uppercase italic">IA SEO Bloqueada</p><a href="upgrade.html" class="inline-block mt-4 bg-[#ee4d2d] text-white text-[10px] font-black px-10 py-4 rounded-2xl shadow-xl">Upgrade PRO</a></div>`;
+            if(globalPlano !== 'bronze') {
+                acionarIA(n, pv.toFixed(2));
+            } else {
+                document.getElementById('containerTitulo').innerHTML = `
+                <div class="text-center p-10 bg-orange-50 rounded-[3rem] border-2 border-dashed border-orange-200 animate-fade-in">
+                    <i class="fas fa-lock text-[#ee4d2d] text-4xl mb-4"></i>
+                    <p class="text-[12px] font-black uppercase italic text-slate-700">IA SEO SISMATIC BLOQUEADA NO PLANO BRONZE</p>
+                    <a href="upgrade.html" class="inline-block mt-4 bg-[#ee4d2d] text-white text-[10px] font-black px-10 py-4 rounded-2xl shadow-xl hover:scale-105 transition">FAZER UPGRADE AGORA 🔥</a>
+                    <p class="mt-2 text-[8px] text-slate-400 font-bold uppercase">Gere descrições e títulos automáticos no Plano PRO</p>
+                </div>`;
+            }
         }
         async function fazerLogout() { await _supabase.auth.signOut(); window.location.href = 'index.html'; }
         init();
