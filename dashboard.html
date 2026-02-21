@@ -158,24 +158,45 @@
 
         async function acionarIA(nomeProduto, precoVenda) {
             const areaIA = document.getElementById('containerTitulo');
-            areaIA.innerHTML = "<p class='text-xs font-black text-green-600 animate-pulse uppercase italic'>🤖 SISMATIC IA: Gerando títulos e descrição de alta conversão...</p>";
+            areaIA.innerHTML = "<p class='text-xs font-black text-green-600 animate-pulse uppercase italic'>🤖 SISMATIC IA: Analisando concorrência e gerando SEO...</p>";
 
             setTimeout(() => {
                 areaIA.innerHTML = `
-                    <div class="space-y-4 animate-fade-in text-left">
-                        <div class="p-4 bg-green-50 border border-green-100 rounded-2xl">
-                            <h4 class="text-[9px] font-black text-green-700 uppercase mb-1">🚀 Título SEO Sugerido:</h4>
-                            <p class="text-sm font-bold text-slate-700 uppercase italic">${nomeProduto} - Original 2026 - Premium Quality</p>
-                        </div>
-                        <div class="p-4 bg-slate-50 border border-slate-100 rounded-2xl">
-                            <h4 class="text-[9px] font-black text-slate-400 uppercase mb-1">📝 Descrição Otimizada:</h4>
-                            <p class="text-[10px] text-slate-600 leading-relaxed font-bold">
-                                O melhor do mercado por apenas R$ ${precoVenda}. Compre com segurança através do Shopee Booster. Estoque limitado para este anúncio turbinado!
+                    <div class="space-y-5 animate-fade-in text-left">
+                        <div class="p-5 bg-green-50 border-2 border-green-100 rounded-[2rem] shadow-sm">
+                            <h4 class="text-[9px] font-black text-green-700 uppercase mb-2 flex items-center gap-2">
+                                <i class="fas fa-rocket"></i> Título SEO de Alta Conversão:
+                            </h4>
+                            <p class="text-sm font-black text-slate-800 uppercase italic leading-tight">
+                                🚀 ${nomeProduto} - Original 2026 🔥 Edição Limitada 📦 Envio Imediato Premium
                             </p>
+                        </div>
+                        
+                        <div class="p-5 bg-slate-50 border-2 border-slate-100 rounded-[2rem] shadow-sm">
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase mb-2 flex items-center gap-2">
+                                <i class="fas fa-align-left"></i> Descrição Otimizada:
+                            </h4>
+                            <div class="text-[11px] text-slate-600 space-y-2 font-bold leading-relaxed">
+                                <p>💎 Aproveite a melhor qualidade do mercado por apenas <span class="text-green-600 font-black text-sm">R$ ${precoVenda}</span>!</p>
+                                <ul class="space-y-1">
+                                    <li>✅ Produto Testado e Aprovado</li>
+                                    <li>✅ Garantia Total Shopee Booster</li>
+                                    <li>✅ Estoque no Brasil - Envio em 24h</li>
+                                </ul>
+                                <p class="pt-2 text-[#ee4d2d] italic">⚠️ Atenção: Poucas unidades disponíveis com este valor promocional!</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 px-2">
+                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#shopee</span>
+                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#oferta</span>
+                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#promocao</span>
+                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#vendas</span>
+                            <span class="text-[9px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 italic">#2026</span>
                         </div>
                     </div>
                 `;
-            }, 1500);
+            }, 1800);
         }
 
         async function calcularTudo() {
@@ -193,40 +214,31 @@
             document.getElementById('rocket-container').appendChild(rocket);
             setTimeout(() => rocket.remove(), 3000);
 
-            // --- MOTOR DE TAXAS 2026 (BASEADO NA SUA TABELA) ---
-            let estPV = (c + e) * 1.6; // Estimativa para encontrar a faixa
+            let estPV = (c + e) * 1.6;
             let comBase = 0.14, taxaF = 26.00, subPix = 0.05;
             
             if (estPV <= 79.99) { 
-                comBase = 0.20; taxaF = 4.00; subPix = 0; // Até 79.99: 20% + 4.00
+                comBase = 0.20; taxaF = 4.00; subPix = 0; 
             } else if (estPV <= 99.99) { 
-                taxaF = 16.00; subPix = 0.05; // 80 a 99.99: 14% + 16.00 + 5% Pix
+                taxaF = 16.00; subPix = 0.05; 
             } else if (estPV <= 199.99) { 
-                taxaF = 20.00; subPix = 0.05; // 100 a 199.99: 14% + 20.00 + 5% Pix
+                taxaF = 20.00; subPix = 0.05; 
             } else if (estPV <= 499.99) { 
-                taxaF = 26.00; subPix = 0.05; // 200 a 499.99: 14% + 26.00 + 5% Pix
+                taxaF = 26.00; subPix = 0.05; 
             } else { 
-                taxaF = 26.00; subPix = 0.08; // Acima de 500: 14% + 26.00 + 8% Pix
+                taxaF = 26.00; subPix = 0.08; 
             }
 
-            let comFinal = cf ? (comBase + 0.06) : comBase; // Soma +6% se Frete Grátis
+            let comFinal = cf ? (comBase + 0.06) : comBase;
             let divisor = (1 - comFinal - m - i);
-            
-            // Preço de Venda Final
             let pv = (c + e + taxaF) / divisor;
-            
-            // Lucro Padrão
             let lucroP = pv - (pv * comFinal + taxaF) - c - e - (pv * i);
-            
-            // Lucro com Subsídio Pix (Abatendo o subsídio da comissão paga)
             let lucroX = pv - (pv * (comFinal - subPix) + taxaF) - c - e - (pv * i);
 
-            // Exibição na Tela
             document.getElementById('resPreco').innerText = `R$ ${pv.toFixed(2)}`;
             document.getElementById('resLucro').innerText = `R$ ${lucroP.toFixed(2)}`;
             document.getElementById('resLucroPix').innerText = `R$ ${lucroX.toFixed(2)}`;
 
-            // Logica de Exibição da IA
             const areaIA = document.getElementById('containerTitulo');
             if (globalPlano === 'pro' || globalPlano === 'anual') {
                 acionarIA(n, pv.toFixed(2));
@@ -234,8 +246,8 @@
                 areaIA.innerHTML = `
                     <div class="flex flex-col items-center justify-center p-6 bg-orange-50 rounded-[2rem] border-2 border-dashed border-orange-200 space-y-4">
                         <div class="text-[#ee4d2d] text-2xl"><i class="fas fa-lock"></i></div>
-                        <p class="text-[10px] font-black text-slate-700 uppercase italic text-center">IA SEO Bloqueada no Plano Bronze</p>
-                        <a href="upgrade.html" class="bg-[#ee4d2d] text-white text-[11px] font-black px-8 py-3.5 rounded-2xl shadow-xl hover:scale-105 transition-all uppercase">Fazer Upgrade Agora 🔥</a>
+                        <p class="text-[10px] font-black text-slate-700 uppercase italic text-center">IA SEO SISMATIC BLOQUEADA NO PLANO BRONZE</p>
+                        <a href="upgrade.html" class="bg-[#ee4d2d] text-white text-[11px] font-black px-8 py-3.5 rounded-2xl shadow-xl hover:scale-105 transition-all uppercase">FAZER UPGRADE AGORA 🔥</a>
                     </div>
                 `;
             }
