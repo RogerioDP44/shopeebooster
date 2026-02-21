@@ -12,6 +12,11 @@
         .bg-shopee { background-color: #ee4d2d; }
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
+        /* Efeito de brilho no Plano PRO */
+        .shadow-pro { box-shadow: 0 0 50px rgba(238, 77, 45, 0.25); }
+        /* Botão WhatsApp Flutuante */
+        .btn-whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 1000; transition: transform 0.3s ease; }
+        .btn-whatsapp:hover { transform: scale(1.1); }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 scroll-smooth">
@@ -19,6 +24,10 @@
     <div class="bg-slate-900 text-white py-2 px-4 text-center text-[10px] font-black uppercase tracking-[3px] sticky top-0 z-[100]">
         Oferta de lançamento expira em: <span id="timer" class="text-orange-500">00:00:00</span>
     </div>
+
+    <a href="https://wa.me/SEUNUMERO" target="_blank" class="btn-whatsapp bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
 
     <nav class="p-6 flex justify-between items-center max-w-7xl mx-auto">
         <div class="text-2xl font-black italic text-orange-600">SHOPEE BOOSTER 🔥</div>
@@ -31,31 +40,31 @@
     </nav>
 
     <header class="max-w-7xl mx-auto px-6 py-16 md:py-24 text-center">
-        <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight italic">
+        <h1 class="text-4xl md:text-7xl font-black mb-8 leading-tight italic px-2">
             PARE DE PERDER <br><span class="gradient-text">DINHEIRO NA SHOPEE</span>
         </h1>
-        <p class="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto font-medium">
+        <p class="text-base md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto font-medium px-4">
             O único sistema atualizado para as <span class="text-slate-900 font-bold underline decoration-orange-500">taxas de Março/2026</span>. Calcule lucro real e gere anúncios SEO com IA em segundos.
         </p>
-        <div class="flex flex-col md:row gap-4 justify-center items-center">
-            <a href="#precos" class="bg-orange-600 text-white px-12 py-6 rounded-2xl text-lg font-black shadow-2xl hover:scale-105 transition-all uppercase tracking-widest">Turbinar Minha Loja Agora</a>
-            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-4"><i class="fas fa-shield-alt mr-2"></i> Acesso imediato após o pagamento</p>
+        <div class="flex flex-col gap-4 justify-center items-center">
+            <a href="#precos" class="bg-orange-600 text-white px-8 md:px-12 py-5 md:py-6 rounded-2xl text-lg font-black shadow-2xl hover:scale-105 transition-all uppercase tracking-widest w-full md:w-auto">Turbinar Minha Loja Agora</a>
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-4"><i class="fas fa-shield-alt mr-2 text-green-500"></i> Acesso imediato após o pagamento</p>
         </div>
     </header>
 
     <section id="funcionalidades" class="bg-white py-24 border-y border-slate-100">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
-            <div>
+            <div class="hover:translate-y-[-10px] transition-transform">
                 <div class="w-20 h-20 bg-orange-100 text-orange-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 text-3xl shadow-inner"><i class="fas fa-calculator"></i></div>
                 <h3 class="text-xl font-black mb-4 uppercase italic">Cálculo 2026</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Fórmulas reversas que consideram as novas taxas fixas de até R$ 26,00 e comissões de 20%.</p>
             </div>
-            <div>
+            <div class="hover:translate-y-[-10px] transition-transform">
                 <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 text-3xl shadow-inner"><i class="fas fa-robot"></i></div>
                 <h3 class="text-xl font-black mb-4 uppercase italic">Inteligência SEO</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Títulos limpos sem emojis e descrições otimizadas para o algoritmo da Shopee Brasil.</p>
             </div>
-            <div>
+            <div class="hover:translate-y-[-10px] transition-transform">
                 <div class="w-20 h-20 bg-green-100 text-green-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 text-3xl shadow-inner"><i class="fas fa-coins"></i></div>
                 <h3 class="text-xl font-black mb-4 uppercase italic">Margem de Ads</h3>
                 <p class="text-slate-500 text-sm leading-relaxed">Saiba quanto investir em publicidade sem queimar seu lucro. Projeção de ROI integrada.</p>
@@ -93,28 +102,27 @@
         </div>
     </section>
 
-    
-    <section id="precos" class="py-24 bg-slate-900 text-white rounded-[4rem] mx-4 my-10">
+    <section id="precos" class="py-24 bg-slate-900 text-white rounded-[3rem] md:rounded-[4rem] mx-2 md:mx-4 my-10 overflow-hidden">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-20">
-                <h2 class="text-4xl font-black mb-4 uppercase italic">Invista no seu lucro</h2>
+                <h2 class="text-3xl md:text-4xl font-black mb-4 uppercase italic">Invista no seu lucro</h2>
                 <p class="text-slate-400 font-bold text-xs uppercase tracking-[3px]">Acesso imediato às novas taxas de 2026</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-slate-800 p-10 rounded-[3rem] border border-slate-700">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-center">
+                <div class="bg-slate-800 p-8 md:p-10 rounded-[3rem] border border-slate-700 order-2 md:order-1">
                     <h4 class="text-xs font-black text-slate-500 uppercase mb-4 tracking-widest">Iniciante</h4>
                     <div class="text-4xl font-black mb-8">R$ 16,97<span class="text-sm text-slate-500 font-medium">/mês</span></div>
                     <ul class="space-y-4 mb-10 text-xs font-bold text-slate-400 uppercase tracking-wider">
                         <li><i class="fas fa-check text-green-500 mr-2"></i> Cálculos Taxas Março 2026</li>
- 			<li class="opacity-30 line-through"><i class="fas fa-times mr-2"></i> Dashboard Completo</li>
+                        <li class="opacity-30 line-through"><i class="fas fa-times mr-2"></i> Dashboard Completo</li>
                         <li class="opacity-30 line-through"><i class="fas fa-times mr-2"></i> IA Ilimitada</li>
                     </ul>
-                    <button class="w-full py-5 rounded-2xl border-2 border-slate-700 font-black text-[10px] uppercase tracking-widest hover:bg-slate-700 transition">Assinar Agora</button>
+                    <button onclick="location.href='LINK_CHECKOUT_BRONZE'" class="w-full py-5 rounded-2xl border-2 border-slate-700 font-black text-[10px] uppercase tracking-widest hover:bg-slate-700 transition">Assinar Agora</button>
                 </div>
 
-                <div class="bg-white text-slate-900 p-10 rounded-[3.5rem] border-4 border-orange-500 scale-105 relative shadow-2xl">
-                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest italic">Mais Assinado</div>
+                <div class="bg-white text-slate-900 p-8 md:p-10 rounded-[3.5rem] border-4 border-orange-500 scale-100 md:scale-110 relative shadow-2xl shadow-pro order-1 md:order-2">
+                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest italic whitespace-nowrap">🔥 Mais Assinado</div>
                     <h4 class="text-xs font-black text-orange-600 uppercase mb-4 tracking-widest">Profissional PRO</h4>
                     <div class="text-5xl font-black mb-8">R$ 39,97<span class="text-sm text-slate-400 font-medium">/mês</span></div>
                     <ul class="space-y-4 mb-10 text-xs font-black text-slate-600 uppercase tracking-wider leading-relaxed">
@@ -123,10 +131,10 @@
                         <li><i class="fas fa-check-circle text-orange-600 mr-2"></i> Simulador de Ads</li>
                         <li><i class="fas fa-check-circle text-orange-600 mr-2"></i> Suporte Premium</li>
                     </ul>
-                    <button class="w-full py-5 rounded-2xl bg-orange-600 text-white font-black text-[10px] uppercase tracking-widest hover:bg-orange-700 shadow-xl shadow-orange-100 transition">Quero o Plano PRO</button>
+                    <button onclick="location.href='LINK_CHECKOUT_PRO'" class="w-full py-5 rounded-2xl bg-orange-600 text-white font-black text-[10px] uppercase tracking-widest hover:bg-orange-700 shadow-xl shadow-orange-100 transition animate-pulse">Quero o Plano PRO</button>
                 </div>
 
-                <div class="bg-slate-800 p-10 rounded-[3rem] border border-slate-700">
+                <div class="bg-slate-800 p-8 md:p-10 rounded-[3rem] border border-slate-700 order-3 md:order-3">
                     <h4 class="text-xs font-black text-slate-500 uppercase mb-4 tracking-widest">Anual (Economia)</h4>
                     <div class="text-4xl font-black mb-8">R$ 299<span class="text-sm text-slate-500 font-medium">/ano</span></div>
                     <ul class="space-y-4 mb-10 text-xs font-bold text-slate-400 uppercase tracking-wider leading-relaxed">
@@ -134,13 +142,12 @@
                         <li><i class="fas fa-check text-orange-500 mr-2"></i> Economize R$ 180/ano</li>
                         <li><i class="fas fa-check text-orange-500 mr-2"></i> Atualizações Gratuitas</li>
                     </ul>
-                    <button class="w-full py-5 rounded-2xl bg-slate-700 text-white font-black text-[10px] uppercase tracking-widest hover:bg-slate-600 transition">Garantir Anual</button>
+                    <button onclick="location.href='LINK_CHECKOUT_ANUAL'" class="w-full py-5 rounded-2xl bg-slate-700 text-white font-black text-[10px] uppercase tracking-widest hover:bg-slate-600 transition">Garantir Anual</button>
                 </div>
             </div>
         </div>
     </section>
 
-    
     <section id="faq" class="py-24 max-w-3xl mx-auto px-6">
         <h2 class="text-3xl font-black text-center mb-16 uppercase italic">Dúvidas Frequentes</h2>
         <div class="space-y-4">
@@ -151,26 +158,10 @@
                 </summary>
                 <p class="mt-6 text-slate-500 text-sm leading-relaxed">Sim! Nosso sistema já está pré-configurado com as novas comissões de até 20% e as taxas fixas progressivas (R$ 4 a R$ 26) que entram em vigor em março.</p>
             </details>
-
-            <details class="group bg-white rounded-[2rem] border border-slate-100 p-8 cursor-pointer">
-                <summary class="flex items-center justify-between font-black uppercase text-xs italic tracking-widest">
-                    A IA gera o anúncio na hora?
-                    <i class="fas fa-chevron-down group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <p class="mt-6 text-slate-500 text-sm leading-relaxed">Imediatamente. Ao clicar em calcular, nossa IA processa o nome do seu produto e entrega o Título SEO, Descrição e Tags prontos para copiar.</p>
-            </details>
-
-            <details class="group bg-white rounded-[2rem] border border-slate-100 p-8 cursor-pointer">
-                <summary class="flex items-center justify-between font-black uppercase text-xs italic tracking-widest">
-                    Como funciona o pagamento?
-                    <i class="fas fa-chevron-down group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <p class="mt-6 text-slate-500 text-sm leading-relaxed">O pagamento é processado via Hotmart ou Stripe com segurança SSL. Após a confirmação, o acesso ao seu dashboard é liberado na hora via e-mail.</p>
-            </details>
-        </div>
+            </div>
     </section>
 
-    <footer class="bg-white border-t border-slate-100 py-16 text-center">
+    <footer class="bg-white border-t border-slate-100 py-16 text-center px-6">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-[4px] mb-8">Desenvolvido por SISMATIC © 2026</p>
         <div class="flex justify-center gap-8 text-slate-300">
             <a href="#" class="hover:text-orange-600 transition text-lg"><i class="fab fa-instagram"></i></a>
@@ -180,29 +171,26 @@
     </footer>
 
     <script>
+        // Timer de Urgência
         function startTimer(duration, display) {
             var timer = duration, hours, minutes, seconds;
             setInterval(function () {
                 hours = parseInt(timer / 3600, 10);
                 minutes = parseInt((timer % 3600) / 60, 10);
                 seconds = parseInt(timer % 60, 10);
-
                 hours = hours < 10 ? "0" + hours : hours;
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 10 ? "0" + seconds : seconds;
-
                 display.textContent = hours + ":" + minutes + ":" + seconds;
-
                 if (--timer < 0) { timer = duration; }
             }, 1000);
         }
 
         window.onload = function () {
-            var duration = 60 * 45; // 45 minutos de urgência
+            var duration = 60 * 45; 
             var display = document.querySelector('#timer');
             startTimer(duration, display);
         };
     </script>
-
 </body>
 </html>
